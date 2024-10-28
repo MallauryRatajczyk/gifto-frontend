@@ -1,28 +1,18 @@
 import { Text, View, Image, StyleSheet, TouchableOpacity, TextInput } from "react-native";
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { useState } from 'react';
-
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Connection from "./connexionPage";
 import Inscription from "./inscriptionPage";
+import { NavigationProp, ParamListBase } from "@react-navigation/native";
 
+type HomeScreenProps = {
+    navigation: NavigationProp<ParamListBase>
+};
 
-export default function Authentification() {
-
-    const Stack = createNativeStackNavigator();
+export default function Authentification({ navigation }: HomeScreenProps) {
     return (
-
-
         <SafeAreaProvider style={{ flex: 1 }}>
             <SafeAreaView style={{ flex: 1, marginBottom: 100, alignItems: "center", justifyContent: "space-between" }}>
-
-                <NavigationContainer>
-                    <Stack.Navigator screenOptions={{ headerShown: false }}>
-                        <Stack.Screen name="Connection" component={Connection} />
-                        <Stack.Screen name="Inscription" component={Inscription} />
-                    </Stack.Navigator>
-                </NavigationContainer>
                 <View
                     style={{
                         paddingTop: 10,
@@ -33,15 +23,17 @@ export default function Authentification() {
                     <Image source={require('../assets/images/logoWithoutGifto.png')} style={styles.logoConnection} />
                     <Text style={styles.h1}>Bienvenue sur Gifto</Text>
                 </View>
-                <TouchableOpacity style={styles.purpleSquare} >
+                <TouchableOpacity style={styles.purpleSquare} onPress={() => navigation.navigate('Connection')} >
                     <Text style={styles.textButton}>Se connecter</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.whiteSquare} >
+                <TouchableOpacity style={styles.whiteSquare} onPress={() => navigation.navigate('Inscription')} >
                     <Text style={styles.textButtonWithWhiteSquare}>S'inscrire</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.whiteSquare} >
                     <Text style={styles.textButtonWithWhiteSquare}>Google</Text>
                 </TouchableOpacity>
+
+
             </SafeAreaView>
         </SafeAreaProvider >
     );
