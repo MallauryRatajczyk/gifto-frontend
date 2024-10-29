@@ -1,9 +1,6 @@
 import { Text, View, Image, StyleSheet, TouchableOpacity, TextInput } from "react-native";
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { useState } from 'react';
-import Connection from "./connexionPage";
-import Inscription from "./inscriptionPage";
-import { NavigationProp, ParamListBase } from "@react-navigation/native";
 
 export default function Authentification({ navigation }) {
     return (

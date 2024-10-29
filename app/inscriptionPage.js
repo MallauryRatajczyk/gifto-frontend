@@ -2,7 +2,7 @@ import { Text, View, Image, StyleSheet, TouchableOpacity, TextInput, Pressable, 
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker'
-import { NavigationProp, ParamListBase } from "@react-navigation/native";
+const { dateRequired } = require('../modules/dateRequirement')
 
 
 export default function Inscription({ navigation }) {
@@ -16,6 +16,7 @@ export default function Inscription({ navigation }) {
     const [show, setShow] = useState(false);
 
     const toggleShow = () => {
+        setDate(dateRequired())
         setShow(!show)
     }
 
@@ -23,6 +24,10 @@ export default function Inscription({ navigation }) {
         if (type == 'set') {
             const currentDate = selectedDate;
             setDate(currentDate)
+            if (Platform.OS === 'android') {
+                toggleShow();
+                setDate(currentDate)
+            }
         } else {
             toggleShow()
         }
@@ -88,33 +93,35 @@ export default function Inscription({ navigation }) {
                             keyboardType="default"
                             textAlign={'center'}
                         />
-                        <TouchableOpacity
-                            style={styles.ageInput}
-                            onPress={() => setShow(true)}
-                        >
 
-                        </TouchableOpacity>
                         {show && (
                             <DateTimePicker
                                 mode="date"
                                 display="spinner"
                                 value={date}
                                 onChange={changeDate}
+                                style={styles.dateTimePicker}
                             />
                         )}
-                        <Pressable
-                            onPress={toggleShow}>
-                            <TextInput
-                                onChangeText={(value) => setUsername(value)}
-                                value={date}
-                                style={styles.usernameInput}
-                                placeholder="Nom d'utilisateur"
-                                autoComplete="username"
-                                keyboardType="default"
-                                textAlign={'center'} />
-                        </Pressable>
+                        {show && Platform.OS == 'ios' && (
+                            <View style={{ flexDirection: 'row', justifyContent: "space-around" }}>
 
+                            </View>
+                        )}
 
+                        {!show && (
+                            <Pressable
+                                onPress={toggleShow}>
+                                <TextInput
+                                    onChangeText={setDate}
+                                    value={date.toDateString()}
+                                    style={styles.ageInput}
+                                    placeholder="Date de naissance"
+                                    textAlign={'center'}
+                                    editable={false}
+                                />
+                            </Pressable>
+                        )}
 
                     </View>
                     <TextInput
@@ -126,6 +133,7 @@ export default function Inscription({ navigation }) {
                         textAlign={'center'}
                         keyboardType="default"
                         secureTextEntry={true}
+                        onPressIn={toggleShow}
                     />
                     <TextInput
                         onChangeText={(value) => setVerifPassword(value)}
@@ -210,7 +218,7 @@ const styles = StyleSheet.create({
     usernameInput: {
         borderWidth: 1,
         borderRadius: 50,
-        width: 220,
+        width: 180,
         height: 40,
         margin: 10,
         fontFamily: 'BalooBhaina2-Regular',
@@ -221,14 +229,14 @@ const styles = StyleSheet.create({
     ageInput: {
         borderWidth: 1,
         borderRadius: 50,
-        width: 80,
+        width: 120,
         height: 40,
         margin: 10,
         fontFamily: 'BalooBhaina2-Regular',
         fontSize: 15,
         alignItems: "center",
         backgroundColor: "white",
-        justifyContent: 'center'
+
     },
     retourButton: {
         margin: 15
@@ -241,5 +249,9 @@ const styles = StyleSheet.create({
         fontFamily: 'BalooBhaina2-Regular',
         color: "gray",
         textAlign: 'center'
+    },
+    dateTimePicker: {
+        height: 40,
+        marginTop: -10
     }
 });

@@ -17,6 +17,8 @@
     "app/authentification.js",
     "app/connexionPage.js",
     "app/index.js",
-    "app/inscriptionPage.js"
+    "app/inscriptionPage.js",
+    "app/_layout.js",
+    "app/loadingScreen.js"
   ]
 }
