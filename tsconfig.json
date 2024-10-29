@@ -12,6 +12,13 @@
     "**/*.ts",
     "**/*.tsx",
     ".expo/types/**/*.ts",
-    "expo-env.d.ts"
+    "expo-env.d.ts",
+    "reducers/user.js",
+    "app/authentification.js",
+    "app/connexionPage.js",
+    "app/index.js",
+    "app/inscriptionPage.js",
+    "app/_layout.js",
+    "app/loadingScreen.js"
   ]
 }
