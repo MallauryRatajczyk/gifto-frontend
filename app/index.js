@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, Image, StyleSheet } from "react-native";
 import { useFonts } from "expo-font";
-import Authentification from "./authentification";
 import "@fontsource/baloo-bhaina-2"
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Authentification from "./authentification";
 import Connection from "./connexionPage";
 import Inscription from "./inscriptionPage";
 import { Provider } from 'react-redux';

@@ -1,12 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export type UserState = {
-    value: {
-        email: string | null;
-        token: string | null;
-    };
-};
-
 const initialState = {
     value: {
         email: null,
@@ -18,7 +11,7 @@ export const connectUser = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        toConnectUser: (state: UserState, action: PayloadAction<string>) => {
+        toConnectUser: (state, action) => {
             state.value.token = action.payload;
         },
     },

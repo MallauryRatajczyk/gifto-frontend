@@ -5,11 +5,7 @@ import Connection from "./connexionPage";
 import Inscription from "./inscriptionPage";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
 
-type HomeScreenProps = {
-    navigation: NavigationProp<ParamListBase>
-};
-
-export default function Authentification({ navigation }: HomeScreenProps) {
+export default function Authentification({ navigation }) {
     return (
         <SafeAreaProvider style={{ flex: 1 }}>
             <SafeAreaView style={{ flex: 1, marginBottom: 100, alignItems: "center", justifyContent: "space-between" }}>

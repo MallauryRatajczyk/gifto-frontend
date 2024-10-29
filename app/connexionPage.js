@@ -1,24 +1,13 @@
-import { Text, View, Image, StyleSheet, TouchableOpacity, TextInput, Button } from "react-native";
+import { Text, View, Image, StyleSheet, TouchableOpacity, TextInput } from "react-native";
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { useState } from 'react';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import DatePicker from '@react-native-community/datetimepicker';
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
 
-type HomeScreenProps = {
-    navigation: NavigationProp<ParamListBase>
-};
-export default function Inscription({ navigation }: HomeScreenProps) {
+
+
+export default function Connection({ navigation }) {
     const [email, setEmail] = useState('')
-    const [nom, setNom] = useState('')
-    const [prenom, setPrenom] = useState('')
     const [password, setPassword] = useState('')
-    const [verifPassword, setVerifPassword] = useState('')
-    const [username, setUsername] = useState('')
-    const [date, setDate] = useState<any>(new Date())
-    const [show, setShow] = useState(false);
-
-
     return (
         <SafeAreaProvider style={{ flex: 1 }}>
             <SafeAreaView style={{ flex: 1 }}>
@@ -31,12 +20,11 @@ export default function Inscription({ navigation }: HomeScreenProps) {
                 >
                     <Image source={require('../assets/images/logoGifto.png')} style={styles.logoConnection} />
                 </View>
-
                 <View style={{
-                    flex: 1,
                     alignItems: "center",
+                    marginBottom: 25
                 }}>
-                    <Text style={styles.textContain}>Inscription</Text>
+                    <Text style={styles.textContain}>Connexion</Text>
                     <TextInput
                         onChangeText={(value) => setEmail(value)}
                         value={email}
@@ -46,69 +34,21 @@ export default function Inscription({ navigation }: HomeScreenProps) {
                         keyboardType="email-address"
                         textAlign={'center'}
                         autoCapitalize="none"
+                        textContentType="emailAddress"
                     />
-                    <View style={styles.twoContainer}>
-                        <TextInput
-                            onChangeText={(value) => setNom(value)}
-                            value={nom}
-                            style={styles.nomEtPrenomInput}
-                            placeholder="NOM"
-                            autoComplete="family-name"
-                            keyboardType="default"
-                            textAlign={'center'}
-                            autoCapitalize="characters"
-                        />
-                        <TextInput
-                            onChangeText={(value) => setPrenom(value)}
-                            value={prenom}
-                            style={styles.nomEtPrenomInput}
-                            placeholder="Prénom"
-                            autoComplete="given-name"
-                            keyboardType="default"
-                            textAlign={'center'}
-                            autoCapitalize="words"
-                        />
-                    </View>
-                    <View style={styles.twoContainer}>
-                        <TextInput
-                            onChangeText={(value) => setUsername(value)}
-                            value={username}
-                            style={styles.usernameInput}
-                            placeholder="Nom d'utilisateur"
-                            autoComplete="username"
-                            keyboardType="default"
-                            textAlign={'center'}
-                        />
-                        <TouchableOpacity
-                            style={styles.ageInput}
-                            onPress={() => setShow(true)}
-                        >
-                            <Text style={styles.ageInputText}>Age</Text>
-                        </TouchableOpacity>
-
-                    </View>
                     <TextInput
                         onChangeText={(value) => setPassword(value)}
                         value={password}
                         style={styles.textInput}
                         placeholder="Mot de passe"
-                        autoComplete="new-password"
+                        autoComplete="current-password"
                         textAlign={'center'}
-                        keyboardType="default"
-                        secureTextEntry={true}
-                    />
-                    <TextInput
-                        onChangeText={(value) => setVerifPassword(value)}
-                        value={verifPassword}
-                        style={styles.textInput}
-                        placeholder="Confirmer le mot de passe"
-                        autoComplete="new-password"
-                        textAlign={'center'}
+                        textContentType="password"
                         keyboardType="default"
                         secureTextEntry={true}
                     />
                     <TouchableOpacity style={styles.button} >
-                        <Text style={styles.textButton}>S'inscrire</Text>
+                        <Text style={styles.textButton}>Se connecter</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.retourButton} onPress={() => navigation.navigate('Authentification')} >
                         <Text style={styles.retourButtonText}>Retour</Text>
@@ -144,7 +84,8 @@ const styles = StyleSheet.create({
         padding: 10,
         width: 320,
         height: 40,
-        borderRadius: 50
+        borderRadius: 50,
+        margin: 5
     },
     textButton: {
         fontFamily: 'BalooBhaina2-Regular',
@@ -160,9 +101,9 @@ const styles = StyleSheet.create({
         fontFamily: 'BalooBhaina2-Regular',
         fontSize: 15,
         alignItems: "center",
-        backgroundColor: "white",
+        backgroundColor: "white"
     },
-    twoContainer: {
+    nomEtPrenomContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
     },
@@ -175,7 +116,7 @@ const styles = StyleSheet.create({
         fontFamily: 'BalooBhaina2-Regular',
         fontSize: 15,
         alignItems: "center",
-        backgroundColor: "white",
+        backgroundColor: "white"
     },
     usernameInput: {
         borderWidth: 1,
@@ -197,8 +138,7 @@ const styles = StyleSheet.create({
         fontFamily: 'BalooBhaina2-Regular',
         fontSize: 15,
         alignItems: "center",
-        backgroundColor: "white",
-        justifyContent: 'center'
+        backgroundColor: "white"
     },
     retourButton: {
         margin: 15
@@ -206,10 +146,5 @@ const styles = StyleSheet.create({
     retourButtonText: {
         fontFamily: 'BalooBhaina2-Regular',
         color: "#8B85EF"
-    },
-    ageInputText: {
-        fontFamily: 'BalooBhaina2-Regular',
-        color: "gray",
-        textAlign: 'center'
     }
 });
