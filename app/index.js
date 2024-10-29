@@ -1,3 +1,20 @@
+<<<<<<< HEAD
+import { Text, View } from "react-native";
+
+export default function Index() {
+  return (
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Text>Edit app/index.tsx to edit this screen.</Text>
+    </View>
+  );
+}
+=======
 import React, { useEffect, useState } from 'react';
 import { Text, View, Image, StyleSheet } from "react-native";
 import { useFonts } from "expo-font";
@@ -55,3 +72,4 @@ const styles = StyleSheet.create({
     backgroundColor: "#F7FAFE"
   }
 });
+>>>>>>> 4ab33ca1f43f2dca96d1b706fcf2fdd2931d6e9d
