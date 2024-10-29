@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/logoGifto.png",
-    "scheme": "myapp",
+    "scheme": "Gifto",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/logoGiftoSpaced.png",

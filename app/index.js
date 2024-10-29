@@ -1,28 +1,11 @@
-<<<<<<< HEAD
-import { Text, View } from "react-native";
-
-export default function Index() {
-  return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
-    </View>
-  );
-}
-=======
 import React, { useEffect, useState } from 'react';
 import { Text, View, Image, StyleSheet } from "react-native";
 import { useFonts } from "expo-font";
-import Authentification from "./authentification";
 import "@fontsource/baloo-bhaina-2"
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Authentification from "./authentification";
 import Connection from "./connexionPage";
 import Inscription from "./inscriptionPage";
 import { Provider } from 'react-redux';
@@ -72,4 +55,3 @@ const styles = StyleSheet.create({
     backgroundColor: "#F7FAFE"
   }
 });
->>>>>>> 4ab33ca1f43f2dca96d1b706fcf2fdd2931d6e9d
