@@ -8,6 +8,22 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Connection from "./connexionPage";
 import Inscription from "./inscriptionPage";
+import { Provider } from 'react-redux';
+import { persistStore, persistReducer } from 'redux-persist';
+import { PersistGate } from 'redux-persist/integration/react';
+import storage from 'redux-persist/lib/storage';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import user from '../reducers/user'
+//IMPORTER LES REDUCERS Exemple:
+const reducers = combineReducers({ user });
+const persistConfig = { key: 'gifto', storage };
+
+const store = configureStore({
+  reducer: persistReducer(persistConfig, reducers),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }),
+});
+const persistor = persistStore(store);
+
 
 export default function Index() {
   const Stack = createNativeStackNavigator();
@@ -20,12 +36,15 @@ export default function Index() {
   } //Chargement de la police
   return (
     <SafeAreaProvider>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Authentification" component={Authentification} />
-        <Stack.Screen name="Connection" component={Connection} />
-        <Stack.Screen name="Inscription" component={Inscription} />
-      </Stack.Navigator>
-
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Authentification" component={Authentification} />
+            <Stack.Screen name="Connection" component={Connection} />
+            <Stack.Screen name="Inscription" component={Inscription} />
+          </Stack.Navigator>
+        </PersistGate>
+      </Provider>
     </SafeAreaProvider>
   );
 }

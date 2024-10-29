@@ -2,7 +2,12 @@ import { Text, View, Image, StyleSheet, TouchableOpacity, TextInput, Button } fr
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import DatePicker from '@react-native-community/datetimepicker';
+import { NavigationProp, ParamListBase } from "@react-navigation/native";
 
+type HomeScreenProps = {
+    navigation: NavigationProp<ParamListBase>
+};
 export default function Inscription({ navigation }: HomeScreenProps) {
     const [email, setEmail] = useState('')
     const [nom, setNom] = useState('')
@@ -13,11 +18,7 @@ export default function Inscription({ navigation }: HomeScreenProps) {
     const [date, setDate] = useState<any>(new Date())
     const [show, setShow] = useState(false);
 
-    const onChange = (event, selectedDate) => {
-        const currentDate = selectedDate || date;
-        setShow(false);
-        setDate(currentDate);
-    };
+
     return (
         <SafeAreaProvider style={{ flex: 1 }}>
             <SafeAreaView style={{ flex: 1 }}>
@@ -46,7 +47,7 @@ export default function Inscription({ navigation }: HomeScreenProps) {
                         textAlign={'center'}
                         autoCapitalize="none"
                     />
-                    <View style={styles.nomEtPrenomContainer}>
+                    <View style={styles.twoContainer}>
                         <TextInput
                             onChangeText={(value) => setNom(value)}
                             value={nom}
@@ -68,7 +69,7 @@ export default function Inscription({ navigation }: HomeScreenProps) {
                             autoCapitalize="words"
                         />
                     </View>
-                    <View style={styles.nomEtPrenomContainer}>
+                    <View style={styles.twoContainer}>
                         <TextInput
                             onChangeText={(value) => setUsername(value)}
                             value={username}
@@ -84,18 +85,8 @@ export default function Inscription({ navigation }: HomeScreenProps) {
                         >
                             <Text style={styles.ageInputText}>Age</Text>
                         </TouchableOpacity>
-                        {show && (
-                            <DateTimePicker
-                                testID="dateTimePicker"
-                                value={date}
-                                mode="date"
-                                is24Hour={true}
-                                display="default"
-                                onChange={value => setDate(value)}
-                            />
-                        )}
-                    </View>
 
+                    </View>
                     <TextInput
                         onChangeText={(value) => setPassword(value)}
                         value={password}
@@ -171,7 +162,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         backgroundColor: "white",
     },
-    nomEtPrenomContainer: {
+    twoContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
     },
