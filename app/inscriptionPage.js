@@ -2,10 +2,13 @@ import { Text, View, Image, StyleSheet, TouchableOpacity, TextInput, Pressable, 
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker'
-import { NavigationProp, ParamListBase } from "@react-navigation/native";
+import { useDispatch } from 'react-redux';
+import { toConnectUser } from '../reducers/user'
 
+const { dateRequired } = require('../modules/dateRequirement')
 
 export default function Inscription({ navigation }) {
+    const dispatch = useDispatch();
     const [email, setEmail] = useState('')
     const [nom, setNom] = useState('')
     const [prenom, setPrenom] = useState('')
@@ -14,19 +17,41 @@ export default function Inscription({ navigation }) {
     const [username, setUsername] = useState('')
     const [date, setDate] = useState(new Date())
     const [show, setShow] = useState(false);
+    const [wrongPassword, setWrongPassword] = useState(false);
+    const [error, setError] = useState('');
 
     const toggleShow = () => {
+        setDate(dateRequired())
         setShow(!show)
     }
 
-    const changeDate = ({ type }, selectedDate) => {
-        if (type == 'set') {
-            const currentDate = selectedDate;
-            setDate(currentDate)
-        } else {
-            toggleShow()
-        }
+    const register = (userObject) => {
+        fetch('http://192.168.1.81:3000/users/enregistrer', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(userObject)
+        }).then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    setError(data.error)
+                } else {
+                    dispatch(toConnectUser({ token: data.token, email, username }));
+                    navigation.navigate('Authentification')
+                }
+            })
     }
+
+    const changeDate = ({ type }, selectedDate) => {
+        if (type === 'set') {
+            const currentDate = selectedDate || date;
+            setDate(currentDate);
+            if (Platform.OS === 'android') {
+                setShow(false); // Ferme le date picker après la sélection
+            }
+        } else {
+            setShow(false); // Ferme le date picker si l'utilisateur annule
+        }
+    };
 
     return (
         <SafeAreaProvider style={{ flex: 1 }}>
@@ -87,34 +112,32 @@ export default function Inscription({ navigation }) {
                             autoComplete="username"
                             keyboardType="default"
                             textAlign={'center'}
+                            autoCapitalize="none"
                         />
-                        <TouchableOpacity
-                            style={styles.ageInput}
-                            onPress={() => setShow(true)}
-                        >
 
-                        </TouchableOpacity>
                         {show && (
                             <DateTimePicker
                                 mode="date"
                                 display="spinner"
                                 value={date}
                                 onChange={changeDate}
+                                style={styles.dateTimePicker}
                             />
                         )}
-                        <Pressable
-                            onPress={toggleShow}>
-                            <TextInput
-                                onChangeText={(value) => setUsername(value)}
-                                value={date}
-                                style={styles.usernameInput}
-                                placeholder="Nom d'utilisateur"
-                                autoComplete="username"
-                                keyboardType="default"
-                                textAlign={'center'} />
-                        </Pressable>
 
-
+                        {!show && (
+                            <Pressable
+                                onPress={toggleShow}>
+                                <TextInput
+                                    onChangeText={setDate}
+                                    value={date.toDateString()}
+                                    style={styles.ageInput}
+                                    placeholder="Date de naissance"
+                                    textAlign={'center'}
+                                    editable={false}
+                                />
+                            </Pressable>
+                        )}
 
                     </View>
                     <TextInput
@@ -126,6 +149,7 @@ export default function Inscription({ navigation }) {
                         textAlign={'center'}
                         keyboardType="default"
                         secureTextEntry={true}
+                        autoCapitalize="none"
                     />
                     <TextInput
                         onChangeText={(value) => setVerifPassword(value)}
@@ -136,8 +160,21 @@ export default function Inscription({ navigation }) {
                         textAlign={'center'}
                         keyboardType="default"
                         secureTextEntry={true}
+                        autoCapitalize="none"
                     />
-                    <TouchableOpacity style={styles.button} >
+                    {wrongPassword && <Text>Les mots de passe ne correspondent pas.</Text>}
+                    {error && <Text>{error}</Text>}
+                    <TouchableOpacity style={styles.button} onPress={() => {
+                        setWrongPassword(false);
+                        setError('')
+                        if (password === verifPassword) {
+                            register({ email, nom, prenom, username, password, age: date })
+
+                        } else {
+                            setWrongPassword(true)
+                        }
+                    }
+                    }>
                         <Text style={styles.textButton}>S'inscrire</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.retourButton} onPress={() => navigation.navigate('Authentification')} >
@@ -210,7 +247,7 @@ const styles = StyleSheet.create({
     usernameInput: {
         borderWidth: 1,
         borderRadius: 50,
-        width: 220,
+        width: 180,
         height: 40,
         margin: 10,
         fontFamily: 'BalooBhaina2-Regular',
@@ -221,14 +258,14 @@ const styles = StyleSheet.create({
     ageInput: {
         borderWidth: 1,
         borderRadius: 50,
-        width: 80,
+        width: 120,
         height: 40,
         margin: 10,
         fontFamily: 'BalooBhaina2-Regular',
         fontSize: 15,
         alignItems: "center",
         backgroundColor: "white",
-        justifyContent: 'center'
+
     },
     retourButton: {
         margin: 15
@@ -241,5 +278,9 @@ const styles = StyleSheet.create({
         fontFamily: 'BalooBhaina2-Regular',
         color: "gray",
         textAlign: 'center'
+    },
+    dateTimePicker: {
+        height: 40,
+        marginTop: -10
     }
 });
