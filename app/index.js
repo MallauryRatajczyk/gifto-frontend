@@ -12,6 +12,7 @@ import { Provider } from 'react-redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
 import storage from 'redux-persist/lib/storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import user from '../reducers/user'
 //IMPORTER LES REDUCERS Exemple:
@@ -37,7 +38,7 @@ export default function Index() {
   return (
     <SafeAreaProvider>
       <Provider store={store}>
-        <PersistGate persistor={persistor}>
+        <PersistGate loading={null} persistor={persistor}>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Authentification" component={Authentification} />
             <Stack.Screen name="Connection" component={Connection} />
@@ -55,3 +56,81 @@ const styles = StyleSheet.create({
     backgroundColor: "#F7FAFE"
   }
 });
+
+/*
+
+
+import React, { useEffect, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { View, Text, Button } from 'react-native';
+
+import * as Font from 'expo-font';
+import { BalooBhaijaan2_400Regular, BalooBhaijaan2_500Medium,BalooBhaijaan2_600SemiBold, BalooBhaijaan2_700Bold } from '@expo-google-fonts/baloo-bhaijaan-2';
+import GlobalStyles from '../elements/styles/GlobalStyles'; 
+import Colors from '../elements/styles/Colors'; 
+import MainButton from '../elements/components/buttons/MainButton';
+import SecondaryButton from '../elements/components/buttons/SecondaryButton';
+import BigCardButton from '../elements/components/buttons/BigCardButton';
+
+import { GiftIcon, ReceiveIcon, ExchangeIcon } from '../elements/assets/Icons';
+
+
+
+
+export default function App() {
+  const [fontsLoaded, setFontsLoaded] = useState(false);
+  const navigation = useNavigation();
+
+  // Load custom fonts
+  useEffect(() => {
+    async function loadFonts() {
+      await Font.loadAsync({
+        BalooBhaijaan2_400Regular,
+        BalooBhaijaan2_500Medium,
+        BalooBhaijaan2_600SemiBold,
+        BalooBhaijaan2_700Bold,
+      });
+      setFontsLoaded(true);
+    }
+    loadFonts();
+  }, []);
+
+
+
+  return (
+    <View style={GlobalStyles.screenMainContainer}>
+
+    <View style={GlobalStyles.container}>
+      <MainButton 
+        title="Se connecter"
+        onPress={() => 
+          navigation.navigate('TargetPage')} 
+      />
+      </View>
+
+      
+
+    <View style={GlobalStyles.container}>
+      <SecondaryButton 
+        title="S’inscrire"
+        onPress={() => 
+          navigation.navigate('TargetPage')} 
+      />
+    </View>
+
+
+      <GiftIcon width={50} height={50} color={Colors.purpleColor} />
+
+
+      <View style={GlobalStyles.buttonSecondary}>
+      <Text style={GlobalStyles.buttonTextRed}>Se connecter</Text>
+      
+      </View>
+
+
+
+    </View>
+  );
+}
+
+*/

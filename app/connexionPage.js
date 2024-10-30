@@ -1,13 +1,32 @@
 import { Text, View, Image, StyleSheet, TouchableOpacity, TextInput } from "react-native";
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { useState } from 'react';
-import { NavigationProp, ParamListBase } from "@react-navigation/native";
-
-
+import { useDispatch } from 'react-redux';
+import { toConnectUser } from '../reducers/user'
 
 export default function Connection({ navigation }) {
+    const dispatch = useDispatch();
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [error, setError] = useState('');
+
+    const connect = (userObject) => {
+        fetch('http://192.168.1.81:3000/users/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(userObject)
+        }).then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    setError(data.error)
+                } else {
+                    dispatch(toConnectUser({ token: data.token, email, username }));
+                    navigation.navigate('Authentification')
+                }
+
+            })
+    }
+
     return (
         <SafeAreaProvider style={{ flex: 1 }}>
             <SafeAreaView style={{ flex: 1 }}>
@@ -29,7 +48,7 @@ export default function Connection({ navigation }) {
                         onChangeText={(value) => setEmail(value)}
                         value={email}
                         style={styles.textInput}
-                        placeholder="Adresse Email"
+                        placeholder="Adresse email ou nom d'utilisateur"
                         autoComplete="email"
                         keyboardType="email-address"
                         textAlign={'center'}
@@ -47,8 +66,12 @@ export default function Connection({ navigation }) {
                         keyboardType="default"
                         secureTextEntry={true}
                     />
+                    {error && <Text>{error}</Text>}
                     <TouchableOpacity style={styles.button} >
-                        <Text style={styles.textButton}>Se connecter</Text>
+                        <Text style={styles.textButton} onPress={() => {
+                            setError('')
+                            connect({ email, password })
+                        }}>Se connecter</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.retourButton} onPress={() => navigation.navigate('Authentification')} >
                         <Text style={styles.retourButtonText}>Retour</Text>

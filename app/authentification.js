@@ -1,11 +1,26 @@
-import { Text, View, Image, StyleSheet, TouchableOpacity, TextInput } from "react-native";
+import { Text, View, Image, StyleSheet, TouchableOpacity, Button, Alert } from "react-native";
+import * as AuthSession from 'expo-auth-session';
+import * as WebBrowser from 'expo-web-browser';
+import * as Application from 'expo-application';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-import { useState } from 'react';
-import Connection from "./connexionPage";
-import Inscription from "./inscriptionPage";
-import { NavigationProp, ParamListBase } from "@react-navigation/native";
+import * as Google from 'expo-auth-session/providers/google';
+import { useEffect, useState } from 'react';
 
 export default function Authentification({ navigation }) {
+    const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
+        clientId: '887056109032-ja5jqdiubjk4h8ppn2e2mu24q0v5u4io.apps.googleusercontent.com',
+        redirectUri: AuthSession.makeRedirectUri({
+            useProxy: true, // Utilisez true si vous êtes en développement avec Expo Go
+        }),
+    });
+    useEffect(() => {
+        if (response?.type === 'success') {
+            const { id_token } = response.params;
+            // Utilisez l'id_token pour authentifier l'utilisateur sur votre backend
+            Alert.alert('Token reçu', id_token);
+        }
+    }, [response]);
+
     return (
         <SafeAreaProvider style={{ flex: 1 }}>
             <SafeAreaView style={{ flex: 1, marginBottom: 100, alignItems: "center", justifyContent: "space-between" }}>
@@ -25,8 +40,11 @@ export default function Authentification({ navigation }) {
                 <TouchableOpacity style={styles.whiteSquare} onPress={() => navigation.navigate('Inscription')} >
                     <Text style={styles.textButtonWithWhiteSquare}>S'inscrire</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.whiteSquare} >
-                    <Text style={styles.textButtonWithWhiteSquare}>Google</Text>
+                <TouchableOpacity style={styles.whiteSquare} disabled={!request}
+                    onPress={() => {
+                        promptAsync();
+                    }} >
+                    <Text style={styles.textButtonWithWhiteSquare}>Se connecter avec Google</Text>
                 </TouchableOpacity>
 
 
