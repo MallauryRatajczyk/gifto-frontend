@@ -2,10 +2,13 @@ import { Text, View, Image, StyleSheet, TouchableOpacity, TextInput, Pressable, 
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker'
+import { useDispatch } from 'react-redux';
+import { toConnectUser } from '../reducers/user'
+
 const { dateRequired } = require('../modules/dateRequirement')
 
-
 export default function Inscription({ navigation }) {
+    const dispatch = useDispatch();
     const [email, setEmail] = useState('')
     const [nom, setNom] = useState('')
     const [prenom, setPrenom] = useState('')
@@ -14,24 +17,41 @@ export default function Inscription({ navigation }) {
     const [username, setUsername] = useState('')
     const [date, setDate] = useState(new Date())
     const [show, setShow] = useState(false);
+    const [wrongPassword, setWrongPassword] = useState(false);
+    const [error, setError] = useState('');
 
     const toggleShow = () => {
         setDate(dateRequired())
         setShow(!show)
     }
 
+    const register = (userObject) => {
+        fetch('http://192.168.1.81:3000/users/enregistrer', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(userObject)
+        }).then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    setError(data.error)
+                } else {
+                    dispatch(toConnectUser({ token: data.token, email, username }));
+                    navigation.navigate('Authentification')
+                }
+            })
+    }
+
     const changeDate = ({ type }, selectedDate) => {
-        if (type == 'set') {
-            const currentDate = selectedDate;
-            setDate(currentDate)
+        if (type === 'set') {
+            const currentDate = selectedDate || date;
+            setDate(currentDate);
             if (Platform.OS === 'android') {
-                toggleShow();
-                setDate(currentDate)
+                setShow(false); // Ferme le date picker après la sélection
             }
         } else {
-            toggleShow()
+            setShow(false); // Ferme le date picker si l'utilisateur annule
         }
-    }
+    };
 
     return (
         <SafeAreaProvider style={{ flex: 1 }}>
@@ -92,6 +112,7 @@ export default function Inscription({ navigation }) {
                             autoComplete="username"
                             keyboardType="default"
                             textAlign={'center'}
+                            autoCapitalize="none"
                         />
 
                         {show && (
@@ -102,11 +123,6 @@ export default function Inscription({ navigation }) {
                                 onChange={changeDate}
                                 style={styles.dateTimePicker}
                             />
-                        )}
-                        {show && Platform.OS == 'ios' && (
-                            <View style={{ flexDirection: 'row', justifyContent: "space-around" }}>
-
-                            </View>
                         )}
 
                         {!show && (
@@ -133,7 +149,7 @@ export default function Inscription({ navigation }) {
                         textAlign={'center'}
                         keyboardType="default"
                         secureTextEntry={true}
-                        onPressIn={toggleShow}
+                        autoCapitalize="none"
                     />
                     <TextInput
                         onChangeText={(value) => setVerifPassword(value)}
@@ -144,8 +160,21 @@ export default function Inscription({ navigation }) {
                         textAlign={'center'}
                         keyboardType="default"
                         secureTextEntry={true}
+                        autoCapitalize="none"
                     />
-                    <TouchableOpacity style={styles.button} >
+                    {wrongPassword && <Text>Les mots de passe ne correspondent pas.</Text>}
+                    {error && <Text>{error}</Text>}
+                    <TouchableOpacity style={styles.button} onPress={() => {
+                        setWrongPassword(false);
+                        setError('')
+                        if (password === verifPassword) {
+                            register({ email, nom, prenom, username, password, age: date })
+
+                        } else {
+                            setWrongPassword(true)
+                        }
+                    }
+                    }>
                         <Text style={styles.textButton}>S'inscrire</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.retourButton} onPress={() => navigation.navigate('Authentification')} >

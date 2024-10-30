@@ -12,6 +12,7 @@ import { Provider } from 'react-redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
 import storage from 'redux-persist/lib/storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import user from '../reducers/user'
 //IMPORTER LES REDUCERS Exemple:
@@ -37,7 +38,7 @@ export default function Index() {
   return (
     <SafeAreaProvider>
       <Provider store={store}>
-        <PersistGate persistor={persistor}>
+        <PersistGate loading={null} persistor={persistor}>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Authentification" component={Authentification} />
             <Stack.Screen name="Connection" component={Connection} />
