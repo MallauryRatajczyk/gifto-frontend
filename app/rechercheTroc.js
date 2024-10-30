@@ -33,7 +33,7 @@ export default function RechercheTrocScreen({ navigation }) {
                     <ScrollViewComponent></ScrollViewComponent>
                 </View>
                 <View>Ajouter un article
-                    <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('CreationTroc')}>
+                    <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Authentification')}>
                         <Text style={styles.buttonText}>Créer</Text>
                     </TouchableOpacity>
                 </View>
