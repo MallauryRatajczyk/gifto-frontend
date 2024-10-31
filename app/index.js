@@ -9,16 +9,22 @@ import Authentification from "./authentification";
 import Connection from "./connexionPage";
 import Inscription from "./inscriptionPage";
 import RechercheTrocScreen from "./rechercheTroc";
+// import AjoutDon from "./AjoutDonPage.js";
+// import UploadImages from '../elements/images/UploadImages';
 import { Provider } from 'react-redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
 import storage from 'redux-persist/lib/storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import user from '../reducers/user'
+import user from '../reducers/user';
+import imagesArticles from '../reducers/imagesArticles.js';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 //IMPORTER LES REDUCERS Exemple:
-const reducers = combineReducers({ user });
-const persistConfig = { key: 'gifto', storage };
+const reducers = combineReducers({ user, imagesArticles });
+const persistConfig = { key: 'gifto', storage: AsyncStorage,}; // utilisation de AsynStorage de redux persist pour react native
+      
+
 
 const store = configureStore({
   reducer: persistReducer(persistConfig, reducers),
@@ -41,6 +47,8 @@ export default function Index() {
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
+            {/* <Stack.Screen name="AjoutDon" component={AjoutDon} /> */}
+            {/* <Stack.Screen name="UploadImages" component={UploadImages} /> */}
             <Stack.Screen name="Authentification" component={Authentification} />
             <Stack.Screen name="Connection" component={Connection} />
             <Stack.Screen name="Inscription" component={Inscription} />
