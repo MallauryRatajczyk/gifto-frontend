@@ -20,10 +20,9 @@ export default function Connection({ navigation }) {
                 if (data.error) {
                     setError(data.error)
                 } else {
-                    dispatch(toConnectUser({ token: data.token, email, username }));
-                    navigation.navigate('Authentification')
+                    dispatch(toConnectUser({ token: data.token, email }));
+                    navigation.navigate('HomePage')
                 }
-
             })
     }
 
@@ -65,6 +64,7 @@ export default function Connection({ navigation }) {
                         textContentType="password"
                         keyboardType="default"
                         secureTextEntry={true}
+                        autoCapitalize="none"
                     />
                     {error && <Text>{error}</Text>}
                     <TouchableOpacity style={styles.button} >
