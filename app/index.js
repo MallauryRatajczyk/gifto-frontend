@@ -8,7 +8,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Authentification from "./authentification";
 import Connection from "./connexionPage";
 import Inscription from "./inscriptionPage";
-// import AjoutDon from "./ajoutDonPage";
+// import AjoutDon from "./AjoutDonPage.js";
 // import UploadImages from '../elements/images/UploadImages';
 import { Provider } from 'react-redux';
 import { persistStore, persistReducer } from 'redux-persist';
@@ -21,11 +21,9 @@ import imagesArticles from '../reducers/imagesArticles.js';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 //IMPORTER LES REDUCERS Exemple:
 const reducers = combineReducers({ user, imagesArticles });
-const persistConfig = { key: 'gifto', storage };
-// const persistConfig = {            // utilisation de AsynStorage de redux persist pour react native
-//   key: 'gifto',
-//   storage: AsyncStorage,
-// };
+const persistConfig = { key: 'gifto', storage: AsyncStorage,}; // utilisation de AsynStorage de redux persist pour react native
+      
+
 
 const store = configureStore({
   reducer: persistReducer(persistConfig, reducers),

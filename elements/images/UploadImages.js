@@ -2,23 +2,23 @@ import React, { useState, useEffect, useRef } from "react";
 import { StyleSheet, TouchableOpacity, View, Modal, Text, Alert } from "react-native";
 import { Camera, CameraType, FlashMode } from "expo-camera/legacy";
 import { useDispatch } from "react-redux";
-import { addPhoto } from "../reducers/user";
+import { addPhoto } from "../../reducers/imagesArticles";
 import * as ImagePicker from "expo-image-picker";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useIsFocused } from "@react-navigation/native";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
 
-const BACKEND_ADDRESS = "http://BACKEND_IP:3000";        
+const BACKEND_ADDRESS = "http://192.168.1.182:3000";        
 
-export default function UploadImages(navigation) {
+export default function UploadImages(onImageAdd, onClose) {
 	const dispatch = useDispatch();
 	const isFocused = useIsFocused();
 
 	const [hasPermission, setHasPermission] = useState(false);
 	const [type, setType] = useState(CameraType.back);
 	const [flashMode, setFlashMode] = useState(FlashMode.off);
-	const [modalVisible, setModalVisible] = useState(false);
-	const [selectedImage, setSelectedImage] = useState(null);                       // image sélectionnée depuis la galerie
+	const [modalVisible, setModalVisible] = useState(true);
+	const [selectedImage, setSelectedImage] = useState(null);                      
 
 	let cameraRef = useRef(null);                                                   // ref de la camera pour la prise de photo
 
@@ -30,7 +30,7 @@ export default function UploadImages(navigation) {
 	}, []);
 
 	const takePicture = async () => {                                                // fonction pour prise de photo avec la caméra
-		const photo = await cameraRef.takePictureAsync({ quality: 0.3 });
+		const photo = await ImagePicker.launchCameraAsync({ quality: 0.3 });
 		uploadImage(photo.uri);
 	};
 
@@ -48,21 +48,23 @@ export default function UploadImages(navigation) {
 		}
 	};
 
-	const uploadImage = async (imageUri) => {                                     // envoi de l'image au serveur
+	const uploadImage = (imageUri) => {                                     // envoi de l'image au serveur
 		const data = new FormData();                                              // ajout de l'image à la requête FormData
 		data.append("photoFromFront", {
 			uri: imageUri,
 			name: "upload.jpg",
 			type: "image/jpeg",
 		});
-		await fetch(`${BACKEND_ADDRESS}/upload`, {
+		console.log(data);
+		 fetch(`${BACKEND_ADDRESS}/upload`, {
 			method: "POST",
 			body: data,
 		})
 			.then((response) => response.json())
 			.then((data) => {
 				if (data.result) {
-					dispatch(addPhoto(data.url));                                 // ajout de l'url de l'image au store redux
+					onImageAdd(data.url);                                              // image ajouté
+                    onClose();                                                        // l'UploadImages de l'image est fermé après chargement                                
 				} else {
 					Alert.alert("Échec du téléchargement de l'image.");
 				}
@@ -78,36 +80,8 @@ export default function UploadImages(navigation) {
 
 	return (
 		<View style={{ flex: 1 }}>
-			<Camera
-				type={type}
-				flashMode={flashMode}
-				ref={(ref) => (cameraRef = ref)}
-				style={styles.camera}
-			>
-				<View style={styles.buttonsContainer}>
-					<TouchableOpacity
-						onPress={() => setType(type === CameraType.back ? CameraType.front : CameraType.back)}                           //type camera
-						style={styles.button}
-					>
-						<FontAwesome name="rotate-right" size={25} color="#ffffff" />
-					</TouchableOpacity>
 
-					<TouchableOpacity
-						onPress={() => setFlashMode(flashMode === FlashMode.off ? FlashMode.torch : FlashMode.off)}                     //flash
-						style={styles.button}
-					>
-						<FontAwesome name="flash" size={25} color={flashMode === FlashMode.off ? "#ffffff" : "#e8be4b"} />
-					</TouchableOpacity>
-				</View>
-
-				<View style={styles.snapContainer}>               
-					<TouchableOpacity onPress={() => setModalVisible(true)}>                                                         
-						<FontAwesome name="upload" size={45} color="#ffffff" />
-					</TouchableOpacity>
-				</View>
-			</Camera>
-
-			<Modal
+            <Modal                                                                         //modal visible
 				animationType="slide"
 				transparent={true}
 				visible={modalVisible}
@@ -131,6 +105,38 @@ export default function UploadImages(navigation) {
 					</View>
 				</View>
 			</Modal>
+
+            {!modalVisible && (                                                              //modal invisible
+			<Camera
+				type={type}
+				flashMode={flashMode}
+				ref={(ref) => (cameraRef = ref)}
+				style={styles.camera}
+			>         
+				<View style={styles.buttonsContainer}>
+					<TouchableOpacity
+						onPress={() => setType(type === CameraType.back ? CameraType.front : CameraType.back)}                           //type camera
+						style={styles.button}
+					>
+						<FontAwesome name="rotate-right" size={25} color="#ffffff" />
+					</TouchableOpacity>
+
+					<TouchableOpacity
+						onPress={() => setFlashMode(flashMode === FlashMode.off ? FlashMode.torch : FlashMode.off)}                     //flash
+						style={styles.button}
+					>
+						<FontAwesome name="flash" size={25} color={flashMode === FlashMode.off ? "#ffffff" : "#e8be4b"} />
+					</TouchableOpacity>
+				</View>
+                <View style={styles.snapContainer}>               
+					<TouchableOpacity onPress={() => setModalVisible(true)}>                                                         
+						<FontAwesome name="upload" size={45} color="#ffffff" />
+					</TouchableOpacity>
+				</View>
+				
+			</Camera>
+            )}
+			
 		</View>
 	);
 }
