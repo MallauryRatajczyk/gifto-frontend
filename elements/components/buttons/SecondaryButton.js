@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, SafeAreaView, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
-
+import { View, Text, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import Colors from '../../styles/Colors';
 import GlobalStyles from '../../styles/GlobalStyles';
-
-// Define the secondaryButton component, receiving "title" as a prop
-const secondaryButton = ({ title, onPress }) => {
+const secondaryButton = ({ 
+  title,
+  onPress,
+  normalBackgroundColor = Colors.backgroundColor,
+  clickedBackgroundColor = Colors.redColor,
+  normalStrokeColor = Colors.redColor,
+  clickedStrokeColor = Colors.redColor,
+  normalTextColorStyle = GlobalStyles.buttonTextRed,
+  clickedTextColorStyle = GlobalStyles.buttonTextWhite,
+  }) => {
     const [isClicked, setIsClicked] = useState(false);
     const handlePress = () => {
         setIsClicked(!isClicked);
@@ -15,20 +21,21 @@ const secondaryButton = ({ title, onPress }) => {
   return (
     <TouchableOpacity
       style={[GlobalStyles.buttonSecondary, 
-        isClicked && { backgroundColor: Colors.redColor }]}
+        { 
+          backgroundColor: isClicked ? clickedBackgroundColor : normalBackgroundColor,
+          borderColor: isClicked ? clickedStrokeColor : normalStrokeColor,
+          borderWidth: 2,
+         } // use prop color if clicked
+      ]}
       onPress={handlePress}
     >
-      <Text style={[GlobalStyles.buttonTextRed, 
-        isClicked && { color: Colors.whiteColor }]}>{title}</Text>
+      <Text style={isClicked ? clickedTextColorStyle : normalTextColorStyle}>
+        {title}
+      </Text>
     </TouchableOpacity>
   );
 };
 
-const styles = StyleSheet.create({
-  newColor: {
-    ...GlobalStyles.buttonSecondary,
-    //backgroundColor: Colors.redColor, // to be changed for other colors
-  },
-});
+
 
 export default secondaryButton;

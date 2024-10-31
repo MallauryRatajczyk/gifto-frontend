@@ -12,7 +12,7 @@ export default StyleSheet.create({
   },
   h2: { //secondary title
     fontFamily: 'BalooBhaijaan2_600SemiBold',
-    fontSize: 24,
+    fontSize: 20,
     lineHeight: 24,
   },
   h3: {
@@ -38,8 +38,16 @@ export default StyleSheet.create({
   paragraphSmall: { //for description text
     fontFamily: 'BalooBhaijaan2_400Regular',
     fontSize: 11,
-    lineHeight: 11,
+    lineHeight: 12,
   },
+
+  paragraphSmallGrey: { //for navbar
+    fontFamily: 'BalooBhaijaan2_400Regular',
+    fontSize: 11,
+    lineHeight: 16,
+    opacity:0.5,
+  },
+
   paragraphTiny: {
     fontFamily: 'BalooBhaijaan2_400Regular',
     fontSize: 9.5,

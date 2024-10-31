@@ -9,6 +9,23 @@ export default function RechercheTrocScreen({ navigation }) {
     const [montreResult, setMontreResult] = useState(false);
 
     useEffect(() => {
+        async function itemRandom() {
+            const fetched = await fetch('http://192.168.86.114:3000/item');
+            const response = await fetched.json();
+
+            console.log(response);
+            if (response) {
+                // Filtre les items où troc est true
+                const itemsTroc = response.filter(item => item.troc === true);
+                const tableauMelange = itemsTroc.sort((a, b) => Math.random() - 0.5);
+                if (tableauMelange.length == 1 || tableauMelange.length == 2) {
+                    setItemRecommande(tableauMelange);
+                } else if (tableauMelange.length >= 3) {
+                    setItemRecommande(tableauMelange.slice(0, 3));
+                }
+            }
+
+        }
         itemRandom(); // Appelle la fonction pour charger les articles recommandés au démarrage
     }, []);
 
@@ -18,30 +35,13 @@ export default function RechercheTrocScreen({ navigation }) {
             .then(response => response.json())
             .then(data => {
                 // Filtre les items où troc est true
-                const filtreTrocTrue = data.filter(item => item.troc === true); 
+                const filtreTrocTrue = data.filter(item => item.troc === true);
                 if (filtreTrocTrue.length > 0) {
                     setResultats(filtreTrocTrue);
                     setMontreResult(true);
                 } else {
                     setMontreResult(true); // Pour afficher le message "Aucun résultat trouvé."
                     setResultats([]);
-                }
-            })
-    }
-
-    const itemRandom = () => {
-        fetch('http://192.168.86.114:3000/item')
-            .then(response => response.json())
-            .then(data => {
-                if (data) {
-                    // Filtre les items où troc est true
-                    const itemsTroc = data.filter(item => item.troc === true);
-                    const tableauMelange = itemsTroc.sort((a, b) => Math.random() - 0.5);
-                    if (tableauMelange.length == 1 || tableauMelange.length == 2) {
-                        setItemRecommande(tableauMelange);
-                    } else if (tableauMelange.length >= 3) {
-                        setItemRecommande(tableauMelange.slice(0, 3));
-                    }
                 }
             })
     }

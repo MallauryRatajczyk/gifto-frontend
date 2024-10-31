@@ -14,6 +14,7 @@ const BACKEND_ADDRESS = "http://192.168.86.114:3000/upload";
 
 
 
+
 export default function AjoutDon({ navigation }) {
   const dispatch = useDispatch();
   const [selectedImages, setSelectedImages] = useState([]);
@@ -28,11 +29,34 @@ export default function AjoutDon({ navigation }) {
     dispatch(addImage(imageUri));
   };
 
-  const handleRemoveImage = (imageUri) => {
-    setSelectedImages(selectedImages.filter(uri => uri !== imageUri));
-    dispatch(removeImage(imageUri));
-  };
+    const handleRemoveImage = (imageUri) => {
+        setSelectedImages(selectedImages.filter(uri => uri !== imageUri));
+        dispatch(removeImage(imageUri));
+    };
 
+    const handleSubmit = () => {
+        fetch(`${BACKEND_ADDRESS}/categorieAndsubcategories`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            categorie: categorie,
+            sousCategorie: sousCategorie
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.result) {
+            Alert.alert('Succès', 'Catégorie ajoutée avec succès');                    //dispatch dans le store?
+          } else {
+            Alert.alert('Erreur', data.error);
+          }
+        })
+        .catch(error => {
+          Alert.alert('Erreur', error.message);
+        });
+  
+    };
+    
   return (
     <SafeAreaProvider style={styles.container}>
       <SafeAreaView style={{ flex: 1 }}>
@@ -91,8 +115,8 @@ export default function AjoutDon({ navigation }) {
               onChangeText={setDescription}
               multiline
             />
-
-            <TouchableOpacity>
+              {/* validation */}
+            <TouchableOpacity onPress={handleSubmit}>
               <SecondaryButton title='Valider!' />
             </TouchableOpacity>
           </ScrollView>
