@@ -36,7 +36,7 @@ export default function Inscription({ navigation }) {
                     setError(data.error)
                 } else {
                     dispatch(toConnectUser({ token: data.token, email, username }));
-                    navigation.navigate('HomePage')
+                    navigation.navigate('TabNavigator')
                 }
             })
     }

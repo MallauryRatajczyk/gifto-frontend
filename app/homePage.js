@@ -8,21 +8,21 @@ import MainButton from '../elements/components/buttons/MainButton';
 import SecondaryButton from '../elements/components/buttons/SecondaryButton';
 import Colors from '../elements/styles/Colors';
 import HeaderMenu from '../elements/components/navigation/HeaderMenu';
-
+import { useSelector } from 'react-redux';
 
 import { SettingsIcon, GiftoLogo } from '../elements/assets/Icons';
 
 
 export default function HomePage() {
   const navigation = useNavigation();
-
+  const username = useSelector((state) => state.user.value.username);
   return (
     <View style={GlobalStyles.screenMainContainer}>
 
 
       <View style={GlobalStyles.WelcomeContainer}>
         <PictureProfile />
-        <Text style={GlobalStyles.titleTextBlack}>Bonjour {'Amir'}</Text>
+        <Text style={GlobalStyles.titleTextBlack}>Bonjour {username}</Text>
       </View>
 
       <BigCardButton />

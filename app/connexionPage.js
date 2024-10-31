@@ -20,8 +20,8 @@ export default function Connection({ navigation }) {
                 if (data.error) {
                     setError(data.error)
                 } else {
-                    dispatch(toConnectUser({ token: data.token, email }));
-                    navigation.navigate('HomePage')
+                    dispatch(toConnectUser({ token: data.token, email, username: data.username }));
+                    navigation.navigate('TabNavigator')
                 }
             })
     }

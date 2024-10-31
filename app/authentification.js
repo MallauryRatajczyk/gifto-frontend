@@ -46,10 +46,6 @@ export default function Authentification({ navigation }) {
                     }} >
                     <Text style={styles.textButtonWithWhiteSquare}>Se connecter avec Google</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.whiteSquare} onPress={() => navigation.navigate('Demandes')} >
-                    <Text style={styles.textButtonWithWhiteSquare}>Demandes</Text>
-                </TouchableOpacity>
-
             </SafeAreaView>
         </SafeAreaProvider >
     );
