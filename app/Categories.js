@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 
 const categories = [
@@ -10,7 +10,13 @@ const categories = [
   { name: "Jouets", subcategories: [{ name: "Jeux de société" }, { name: "Puzzles" }, { name: "Jouets éducatifs" }, { name: "Peluches" }] }
 ];
 
-const Categories = ({ categorie, setCategorie, sousCategorie, setSousCategorie }) => {
+const BACKEND_ADDRESS= 'http://192.168.1.182:3000/';                                           //Adresse à modifier
+
+const Categories = ({ categorie, setCategorie, sousCategorie, setSousCategorie}) => {
+
+    
+
+
   return (
     <View style={styles.pickerContainer}>
       <Text>Catégories</Text>
@@ -34,8 +40,9 @@ const Categories = ({ categorie, setCategorie, sousCategorie, setSousCategorie }
         <Picker.Item label="Sélectionner une sous-catégorie" value="" />
         {categories.find(cat => cat.name === categorie)?.subcategories.map((subcategory) => (
           <Picker.Item key={subcategory.name} label={subcategory.name} value={subcategory.name} />
-        ))}
-      </Picker>
+        ))}                                                                                          
+      </Picker>          
+    
     </View>
   );
 };
