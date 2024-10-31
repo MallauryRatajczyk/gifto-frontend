@@ -18,29 +18,30 @@ export default function HomePage() {
 
   return (
     <View style={GlobalStyles.screenMainContainer}>
-      
+
 
       <View style={GlobalStyles.WelcomeContainer}>
-      <PictureProfile />
-      <Text style={GlobalStyles.titleTextBlack}>Bonjour {'Amir'}</Text>
+        <PictureProfile />
+        <Text style={GlobalStyles.titleTextBlack}>Bonjour {'Amir'}</Text>
       </View>
 
-      <BigCardButton/>
-        <BigCardButton/>
-        <BigCardButton/>
-      <View style={GlobalStyles.container}>
-        <MainButton
-          title="Se connecter" 
-          onPress={() => navigation.navigate('Connection')}
-        />
-      </View>
+      <BigCardButton />
+      <BigCardButton />
+      <BigCardButton />
 
-      <View style={GlobalStyles.container}>
-        <SecondaryButton
-          title="S’inscrire"
-          onPress={() => navigation.navigate('Inscription')}
-        />
-      </View>
     </View>
   );
 }
+/* <View style={GlobalStyles.container}>
+   <MainButton
+     title="Se connecter" 
+     onPress={() => navigation.navigate('Connection')}
+   />
+ </View>
+
+ <View style={GlobalStyles.container}>
+   <SecondaryButton
+     title="S’inscrire"
+     onPress={() => navigation.navigate('Inscription')}
+   />
+ </View>*/

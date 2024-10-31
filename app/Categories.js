@@ -10,7 +10,7 @@ const categories = [
   { name: "Jouets", subcategories: [{ name: "Jeux de société" }, { name: "Puzzles" }, { name: "Jouets éducatifs" }, { name: "Peluches" }] }
 ];
 
-const BACKEND_ADDRESS= 'http://192.168.1.182:3000/';                                           //Adresse à modifier
+const BACKEND_ADDRESS= 'http://192.168.86.114:3000/';                                           //Adresse à modifier
 
 const Categories = ({ categorie, setCategorie, sousCategorie, setSousCategorie}) => {
 

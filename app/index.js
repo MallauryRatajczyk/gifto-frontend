@@ -4,16 +4,6 @@ import { Text, View, Image, StyleSheet } from "react-native";
 import { useFonts } from "expo-font";
 import "@fontsource/baloo-bhaina-2"
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Authentification from "./authentification";
-import Connection from "./connexionPage";
-import Inscription from "./inscriptionPage";
-import RechercheTrocScreen from "./rechercheTroc";
-import CreeTrocScreen from './creationTroc.js';
-import AjoutDon from "./ajoutDonPage.js";
-import UploadImages from '../elements/images/UploadImages';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 import * as Font from 'expo-font';
 import {
   BalooBhaijaan2_400Regular,
@@ -43,12 +33,13 @@ import SettingsPage from './settingsPage';
 import Authentification from './authentification';
 import Connection from './connexionPage';
 import Inscription from './inscriptionPage';
+import Chat from "../components/chat";
+import Demandes from "./demandes";
 
 // Components
 import NavigationBar from '../elements/components/navigation/NavigationBar';
 import Colors from '../elements/styles/Colors';
 import GlobalStyles from '../elements/styles/GlobalStyles';
-import { View } from 'react-native';
 
 // Combine reducers
 const reducers = combineReducers({ user });
@@ -81,6 +72,19 @@ const Tab = createBottomTabNavigator();
 // Main Tab Navigator Component (included directly in index.js)
 function MainTabNavigator() {
   return (
+    /*<SafeAreaProvider>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Authentification" component={Authentification} />
+            <Stack.Screen name="Demandes" component={Demandes} />
+            <Stack.Screen name="Chat" component={Chat} />
+            <Stack.Screen name="Connection" component={Connection} />
+            <Stack.Screen name="Inscription" component={Inscription} />
+          </Stack.Navigator>
+        </PersistGate>
+      </Provider>
+    </SafeAreaProvider>*/
     <Tab.Navigator
       tabBar={(props) => <NavigationBar {...props} />}
       screenOptions={{ headerShown: false, tabBarInactiveTintColor: Colors.redColor, tabBarActiveTintColor: Colors.purpleColor }}
@@ -116,10 +120,13 @@ export default function App() {
       <PersistGate loading={null} persistor={persistor} >
         <View style={GlobalStyles.appStyle}>
 
-        <NavigationContainer independent={true} >
+          <NavigationContainer independent={true} >
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-
-              <Stack.Screen name="TabNavigator" component={MainTabNavigator}  />
+              <Stack.Screen name="Authentification" component={Authentification} />
+              <Stack.Screen name="TabNavigator" component={MainTabNavigator} />
+              <Stack.Screen name="Connection" component={Connection} />
+              <Stack.Screen name="Inscription" component={Inscription} />
+              <Stack.Screen name="HomePage" component={HomePage} />
 
             </Stack.Navigator>
           </NavigationContainer>

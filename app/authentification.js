@@ -46,7 +46,7 @@ export default function Authentification({ navigation }) {
                     }} >
                     <Text style={styles.textButtonWithWhiteSquare}>Se connecter avec Google</Text>
                 </TouchableOpacity>
-
+                
 
             </SafeAreaView>
         </SafeAreaProvider >

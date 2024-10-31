@@ -36,8 +36,11 @@ export default function RechercheTrocScreen({ navigation }) {
             .then(data => {
                 // Filtre les items où troc est true
                 const filtreTrocTrue = data.filter(item => item.troc === true);
-                if (filtreTrocTrue.length > 0) {
-                    setResultats(filtreTrocTrue);
+                const resultatsFiltres = filtreTrocTrue.filter(item => 
+                    item.name.toLowerCase().includes(chercher.toLowerCase()) 
+                );
+                if (resultatsFiltres.length > 0) {
+                    setResultats(resultatsFiltres);
                     setMontreResult(true);
                 } else {
                     setMontreResult(true); // Pour afficher le message "Aucun résultat trouvé."
