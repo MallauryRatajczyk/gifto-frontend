@@ -1,30 +1,48 @@
 import { Text, View, Image, StyleSheet, TouchableOpacity, TextInput } from "react-native";
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { toConnectUser } from '../reducers/user'
+import Chat from "../components/chat";
 
-export default function Connection({ navigation }) {
+export default function Demandes({ navigation }) {
     const dispatch = useDispatch();
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
     const [error, setError] = useState('');
+    const [demandes, setDemandes] = useState([]);
+    const id = "pierre"
 
-    const connect = (userObject) => {
-        fetch('http://192.168.86.114:3000/users/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(userObject)
-        }).then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    setError(data.error)
-                } else {
-                    dispatch(toConnectUser({ token: data.token, email }));
-                    navigation.navigate('HomePage')
-                }
-            })
+    async function redirect(demande) {
+        const fetched = await fetch(`http://192.168.1.81:3000/demande/${demande}`);
+        const response = await fetched.json();
+        console.log("response", response.demande)
+        if (response.result) {
+            navigation.navigate('Chat', { message: response.demande })
+        } else {
+            console.log("erreur redirect")
+        }
+
     }
+
+    useEffect(() => {
+        async function fetchData() {
+            const fetched = await fetch(`http://192.168.1.81:3000/demande/mesdemandes/${id}`);
+            const response = await fetched.json();
+            console.log('a fetch')
+            if (response.error) {
+                setError(response.error)
+            } else {
+                console.log(response)
+                setDemandes(response.demandes)
+            }
+        }
+        fetchData()
+
+    }, []);
+
+    const allDemande = demandes.map((x, i) => {
+
+        return (<TouchableOpacity key={i} style={{ flex: 1, flexDirection: "row" }} onPress={() => redirect(x._id)}><Text>DE {x.expediteur} : {x.message} A {x.destinataire}</Text>
+        </TouchableOpacity>)
+    })
 
     return (
         <SafeAreaProvider style={{ flex: 1 }}>
@@ -38,45 +56,15 @@ export default function Connection({ navigation }) {
                 >
                     <Image source={require('../assets/images/logoGifto.png')} style={styles.logoConnection} />
                 </View>
-                <View style={{
-                    alignItems: "center",
-                    marginBottom: 25
-                }}>
-                    <Text style={styles.textContain}>Connexion</Text>
-                    <TextInput
-                        onChangeText={(value) => setEmail(value)}
-                        value={email}
-                        style={styles.textInput}
-                        placeholder="Adresse email ou nom d'utilisateur"
-                        autoComplete="email"
-                        keyboardType="email-address"
-                        textAlign={'center'}
-                        autoCapitalize="none"
-                        textContentType="emailAddress"
-                    />
-                    <TextInput
-                        onChangeText={(value) => setPassword(value)}
-                        value={password}
-                        style={styles.textInput}
-                        placeholder="Mot de passe"
-                        autoComplete="current-password"
-                        textAlign={'center'}
-                        textContentType="password"
-                        keyboardType="default"
-                        secureTextEntry={true}
-                        autoCapitalize="none"
-                    />
-                    {error && <Text>{error}</Text>}
-                    <TouchableOpacity style={styles.button} >
-                        <Text style={styles.textButton} onPress={() => {
-                            setError('')
-                            connect({ email, password })
-                        }}>Se connecter</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.retourButton} onPress={() => navigation.navigate('Authentification')} >
-                        <Text style={styles.retourButtonText}>Retour</Text>
-                    </TouchableOpacity>
+                <Text>Demande</Text>
+                {allDemande}
+                <View>
+                    <Text>Champ de texte</Text>
                 </View>
+                <TouchableOpacity style={styles.retourButton} onPress={() => navigation.navigate('Authentification')} >
+                    <Text style={styles.retourButtonText}>Retour</Text>
+                </TouchableOpacity>
+
             </SafeAreaView>
         </SafeAreaProvider >
     );
