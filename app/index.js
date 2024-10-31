@@ -8,6 +8,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Authentification from "./authentification";
 import Connection from "./connexionPage";
 import Inscription from "./inscriptionPage";
+import Chat from "../components/chat";
+import Demandes from "./demandes";
 import { Provider } from 'react-redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -41,6 +43,8 @@ export default function Index() {
         <PersistGate loading={null} persistor={persistor}>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Authentification" component={Authentification} />
+            <Stack.Screen name="Demandes" component={Demandes} />
+            <Stack.Screen name="Chat" component={Chat} />
             <Stack.Screen name="Connection" component={Connection} />
             <Stack.Screen name="Inscription" component={Inscription} />
           </Stack.Navigator>
