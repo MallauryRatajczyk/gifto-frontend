@@ -41,7 +41,6 @@ export default function Index() {
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name='RechercheTrocScreen' component={RechercheTrocScreen}/>
             <Stack.Screen name="Authentification" component={Authentification} />
             <Stack.Screen name="Connection" component={Connection} />
             <Stack.Screen name="Inscription" component={Inscription} />
