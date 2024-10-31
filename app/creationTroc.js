@@ -14,7 +14,7 @@ const BACKEND_ADDRESS = "http://192.168.86.114:3000/upload";
 
 
 
-export default function AjoutDon({ navigation }) {
+export default function CreeTrocScreen({ navigation }) {
   const dispatch = useDispatch();
   const [selectedImages, setSelectedImages] = useState([]);
   const [isUploadVisible, setIsUploadVisible] = useState(false);
@@ -37,7 +37,7 @@ export default function AjoutDon({ navigation }) {
     <SafeAreaProvider style={styles.container}>
       <SafeAreaView style={{ flex: 1 }}>
         <View>
-          <Text style={styles.header}>Ajout de don</Text>
+          <Text style={styles.header}>Ajout de troc</Text>
           <_FontAwesome name="arrow-left" size={25} color="#ffffff" />
 
           <ScrollView style={styles.scrollContainer}>

@@ -11,7 +11,7 @@ export default function Connection({ navigation }) {
     const [error, setError] = useState('');
 
     const connect = (userObject) => {
-        fetch('http://192.168.1.81:3000/users/login', {
+        fetch('http://192.168.86.114:3000/users/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(userObject)

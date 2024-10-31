@@ -9,8 +9,9 @@ import Authentification from "./authentification";
 import Connection from "./connexionPage";
 import Inscription from "./inscriptionPage";
 import RechercheTrocScreen from "./rechercheTroc";
-// import AjoutDon from "./AjoutDonPage.js";
-// import UploadImages from '../elements/images/UploadImages';
+import CreeTrocScreen from './creationTroc.js';
+import AjoutDon from "./ajoutDonPage.js";
+import UploadImages from '../elements/images/UploadImages';
 import { Provider } from 'react-redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -47,8 +48,10 @@ export default function Index() {
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
-            {/* <Stack.Screen name="AjoutDon" component={AjoutDon} /> */}
-            {/* <Stack.Screen name="UploadImages" component={UploadImages} /> */}
+            <Stack.Screen name="RechercheTroc" component={RechercheTrocScreen} />
+            <Stack.Screen name="CreationTroc" component={CreeTrocScreen} />
+            <Stack.Screen name="AjoutDon" component={AjoutDon} /> 
+            <Stack.Screen name="UploadImages" component={UploadImages} /> 
             <Stack.Screen name="Authentification" component={Authentification} />
             <Stack.Screen name="Connection" component={Connection} />
             <Stack.Screen name="Inscription" component={Inscription} />

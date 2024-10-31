@@ -14,22 +14,29 @@ export default function RechercheTrocScreen({ navigation }) {
 
     const handleSearch = () => {
         if (chercher.trim() === '') return;
-        fetch(`http://localhost:3000/item/${chercher}`)
+        fetch(`http://192.168.86.114:3000/item/${chercher}`)
             .then(response => response.json())
             .then(data => {
-                if (data) {
-                    setResultats(data);
+                // Filtre les items où troc est true
+                const filtreTrocTrue = data.filter(item => item.troc === true); 
+                if (filtreTrocTrue.length > 0) {
+                    setResultats(filtreTrocTrue);
                     setMontreResult(true);
+                } else {
+                    setMontreResult(true); // Pour afficher le message "Aucun résultat trouvé."
+                    setResultats([]);
                 }
             })
     }
 
     const itemRandom = () => {
-        fetch('http://localhost:3000/item')
+        fetch('http://192.168.86.114:3000/item')
             .then(response => response.json())
             .then(data => {
                 if (data) {
-                    const tableauMelange = data.sort((a, b) => Math.random() - 0.5);
+                    // Filtre les items où troc est true
+                    const itemsTroc = data.filter(item => item.troc === true);
+                    const tableauMelange = itemsTroc.sort((a, b) => Math.random() - 0.5);
                     if (tableauMelange.length == 1 || tableauMelange.length == 2) {
                         setItemRecommande(tableauMelange);
                     } else if (tableauMelange.length >= 3) {
@@ -58,10 +65,10 @@ export default function RechercheTrocScreen({ navigation }) {
                     </TouchableOpacity>
                 </View>
                 <View style={{
-                        paddingTop: 10,
-                        alignItems: "center",
-                        marginBottom: 25
-                    }}>
+                    paddingTop: 10,
+                    alignItems: "center",
+                    marginBottom: 25
+                }}>
                     {montreResult && resultats.length === 0 && (
                         <Text>Aucun résultat trouvé.</Text>
                     )}
@@ -70,11 +77,11 @@ export default function RechercheTrocScreen({ navigation }) {
                             <Text>Résultats de recherche :</Text>
                             <FlatList
                                 data={resultats}
-                                keyExtractor={(item) => item.id.toString()}
+                                keyExtractor={(item) => item._id.toString()}
                                 renderItem={({ item }) => (
                                     <View style={styles.itemContainer}>
                                         <Image
-                                            source={{ uri: item.imageUrl }}
+                                            source={{ uri: item.image }}
                                             style={styles.image}
                                         />
                                         <Text>{item.name}</Text>
@@ -88,12 +95,14 @@ export default function RechercheTrocScreen({ navigation }) {
                             <FlatList
                                 data={itemRecommande}
                                 keyExtractor={(item) => item.id.toString()}
+                                horizontal
                                 renderItem={({ item }) => (
                                     <View style={styles.itemContainer}>
                                         <Image
                                             source={{ uri: item.imageUrl }}
                                             style={styles.image}
                                         />
+                                        <Text>{item.name}</Text>
                                     </View>
                                 )}
                             />
@@ -102,7 +111,7 @@ export default function RechercheTrocScreen({ navigation }) {
                 </View>
                 <View>
                     <Text>Ajouter un item</Text>
-                    <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Authentification')}>
+                    <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('CreationTroc')}>
                         <Text style={styles.buttonText}>Créer</Text>
                     </TouchableOpacity>
                 </View>
