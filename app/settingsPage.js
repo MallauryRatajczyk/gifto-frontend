@@ -13,23 +13,23 @@ export default function SettingsPage() {
   return (
     <View style={GlobalStyles.screenMainContainer}>
 
-      <HeaderMenu/>
+      <HeaderMenu />
       <View>
         <MainButton
-          title="Historique" 
+          title="Historique"
           onPress={() => navigation.navigate('Connection')}
-          normalBackgroundColor={Colors.redColor} 
-          clickedBackgroundColor={Colors.greenColor}    // Clicked state background color
+          normalBackgroundColor={Colors.textColor}
+          clickedBackgroundColor={Colors.purpleColor}    // Clicked state background color
         />
       </View>
 
       <View>
-        <SecondaryButton 
-          title="Se déconnecter" 
-          onPress={() => navigation.navigate('Inscription')}
-          normalBackgroundColor={Colors.backgroundColor} 
+        <SecondaryButton
+          title="Se déconnecter"
+          onPress={() => navigation.navigate('Authentification')}
+          normalBackgroundColor={Colors.backgroundColor}
           clickedBackgroundColor={Colors.textColor}    // Clicked state background color
-          normalStrokeColor={Colors.textColor}        
+          normalStrokeColor={Colors.textColor}
           clickedStrokeColor={Colors.textColor}        // Clicked state stroke color
           normalTextColorStyle={GlobalStyles.buttonTextBlack}
           clickedTextColorStyle={GlobalStyles.buttonTextWhite}  // Clicked state text color
