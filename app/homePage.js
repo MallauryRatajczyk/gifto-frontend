@@ -37,7 +37,7 @@ export default function HomePage({navigation}) {
           icon={DonnerIcon}
           title="Donner"
           bodyText="Donnez vos objets à ceux qui en ont le plus besoin !"
-          onPress={() => navigation.navigate('DonnerPage')}
+          onPress={() => navigation.navigate('AjoutDon')}
           textColor={Colors.redColor}
           iconColor={Colors.redColor}
         />

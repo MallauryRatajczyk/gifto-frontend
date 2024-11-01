@@ -9,7 +9,7 @@ import { useIsFocused } from "@react-navigation/native";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
 
 
-const BACKEND_ADDRESS = "http://192.168.1.182:3000";        
+const BACKEND_ADDRESS = "http://192.168.86.114:3000";        
 
 export default function UploadImages({onImageAdd, onClose}) {
 	const dispatch = useDispatch();

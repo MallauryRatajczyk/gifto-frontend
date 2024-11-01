@@ -11,34 +11,70 @@ import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import ImageHolder from '../elements/components/navigation/ImageHolder';
 import HeaderMenu from '../elements/components/navigation/HeaderMenu';
+import PictureProfile from '../elements/components/buttons/PictureProfileButton';
 
 import SearchBar from '../elements/components/navigation/SearchBar';
 
 const BACKEND_ADDRESS = "http://192.168.86.114:3000"
 
 export default function ItemTrocScreen({ navigation }) {
-    useEffect(() => {
-        async function itemRandom() {
-            const fetched = await fetch(`${BACKEND_ADDRESS}/item`);
-            const response = await fetched.json();
-            if (response) {
-                // Filtre les items où troc est true
-                const itemsTroc = response.item.filter(articl => articl.troc === true);
-                const tableauMelange = itemsTroc.sort((a, b) => Math.random() - 0.5);
-                if (tableauMelange.length == 1 || tableauMelange.length == 2) {
-                    setItemRecommande(tableauMelange);
-                } else if (tableauMelange.length >= 3) {
-                    setItemRecommande(tableauMelange.slice(0, 3));
-                }
-            }
-        }
-        itemRandom(); // Appelle la fonction pour charger les articles recommandés au démarrage
-    }, []);
+    const profileImageUrl = useSelector((state) => state.user.value.imageUrl);
+    const username = useSelector((state) => state.user.username);
+
     return (
         <SafeAreaProvider style={{ padding: 10 }}>
-            <SafeAreaView style={{ flex : 1}}>
-            <Text >item</Text>
+            <SafeAreaView style={{ flex: 1 }}>
+                <View style={GlobalStyles.WelcomeContainer}>
+                    <View style={[styles.coloredHeader, styles.headerTextWhite]} >
+                    <PictureProfile
+                        imageUrl={profileImageUrl}
+                        onPress={() => navigation.navigate('ProfilePage')}
+                    />
+                    {/* <Text style={GlobalStyles.titleTextBlack}>Bonjour {firstName}</Text>*/}
+                    <Text>Bonjour {username}</Text>
+                </View>
+                </View>
+                <Text >item</Text>
             </SafeAreaView>
-            </SafeAreaProvider>
+        </SafeAreaProvider>
     )
 }
+const styles = StyleSheet.create({ //peut être à modifier
+    coloredHeader: {
+        backgroundColor: Colors.purpleColor, // Default color
+        borderBottomRightRadius: 60,
+        paddingTop: 60,
+        marginBottom: 36,
+        alignItems: 'left',
+        flexDirection: 'row',
+        paddingHorizontal: 16,
+        justifyContent: 'left',
+        height: 140,
+    },
+    headerTextWhite: {
+        ...Typography.h1,
+        color: Colors.whiteColor,
+        paddingVertical: 24,
+        marginLeft: 12,
+        marginRight: 12,
+        marginBottom: -30,
+    },
+    titleTextBlack: {
+        ...Typography.h2,
+        color: Colors.textColor,
+        paddingVertical: 12,
+    },
+    searchButton: {
+        marginLeft: 10,
+    },
+    item: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    image: {
+        width: 50,
+        height: 50,
+        borderRadius: 5,
+        marginRight: 10,
+    },
+});    

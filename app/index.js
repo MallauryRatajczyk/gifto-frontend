@@ -28,9 +28,9 @@ import GlobalStyles from '../elements/styles/GlobalStyles';
 import RechercheTrocScreen from './rechercheTroc';
 import ItemTrocScreen from './itemTroc';
 import CreeTrocScreen from './creationTroc';
-// // import AjoutDon from "./AjoutDonPage";
-// import UploadImages from '../elements/images/UploadImages';
-// // import Photos from '../elements/images/Photos';
+import AjoutDon from "./ajoutDonPage";
+//import UploadImages from '../elements/images/UploadImages';
+import Photos from '../elements/images/Photos';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -108,7 +108,10 @@ export default function App() {
               <Stack.Screen name="TabNavigator">
                 {(props) => <MainTabNavigator {...props} activeRoute={activeRoute} />}
               </Stack.Screen>
+              {/*<Stack.Screen name="UploadImages" component={UploadImages} />*/}
+              <Stack.Screen name="Photos" component={Photos} />
               <Stack.Screen name="ProfilePage" component={ProfilePage} />
+              <Stack.Screen name="AjoutDon" component={AjoutDon} />
               <Stack.Screen name="Connection" component={Connection} />
               <Stack.Screen name="Inscription" component={Inscription} />
               <Stack.Screen name="rechercheRecevoir" component={rechercheRecevoir} />

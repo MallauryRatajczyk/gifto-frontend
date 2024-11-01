@@ -5,14 +5,16 @@ import { Picker } from '@react-native-picker/picker';
 import { addImage, removeImage } from '../reducers/imagesArticles';
 import { useDispatch } from 'react-redux';
 import _FontAwesome from 'react-native-vector-icons/FontAwesome';
-import UploadImages from '../elements/images/UploadImages';
+// import UploadImages from '../elements/images/UploadImages';
 import SecondaryButton from '../elements/components/buttons/SecondaryButton';
 import Categories from '../elements/components/navigation/Categories';
+import Photos from '../elements/images/Photos';
 
 export default function AjoutDon({ navigation }) {
   const dispatch = useDispatch();
   const [selectedImages, setSelectedImages] = useState([]);
   const [isUploadVisible, setIsUploadVisible] = useState(false); // Contrôle de l'affichage de la modale
+  const [isCameraVisible, setIsCameraVisible] = useState(false);
   const [nomArticle, setNomArticle] = useState('');
   const [categorie, setCategorie] = useState('');
   const [sousCategorie, setSousCategorie] = useState('');
@@ -32,60 +34,76 @@ export default function AjoutDon({ navigation }) {
   const handleSubmit = () => {
     // logique de soumission ici
   };
-  
+
   return (
     // <SafeAreaProvider style={styles.container}>
-      <SafeAreaView style={styles.container}>
-        <ScrollView style={styles.scrollContainer}>
-            <View style={styles.content}>
-                <View style={styles.headerContainer}>
-                    <Text style={styles.header}>Ajout de don</Text>
-                </View> 
-            
-                {/* Bouton d'affichage de la modale */}
+    <SafeAreaView style={styles.container}>
+      <ScrollView style={styles.scrollContainer}>
+        <View style={styles.content}>
+          <View style={styles.headerContainer}>
+            <Text style={styles.header}>Ajout de don</Text>
+          </View>
+
+          {/* Bouton d'affichage de la modale
                 <TouchableOpacity onPress={() => setIsUploadVisible(true)} style={styles.imagePickerContainer}>
                 <_FontAwesome name="image" size={125} color="#D3D3D3" />
                 <Text style={styles.uploadText}>Ajouter une image</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
-                {/* Affiche UploadImages seulement si `isUploadVisible` est `true` */}
+          {/* Bouton d'affichage de la camera */}
+          <TouchableOpacity onPress={() => setIsCameraVisible(true)} style={styles.imagePickerContainer}>
+            <_FontAwesome name="image" size={125} color="#D3D3D3" />
+            <Text style={styles.uploadText}>Prendre une photo</Text>
+          </TouchableOpacity>
+
+
+
+          {/* Affiche UploadImages seulement si `isUploadVisible` est `true`
                 {isUploadVisible && (
                 <UploadImages
                     onImageAdd={handleImageAdd}                                       // Ajoute une image
                     onClose={() => setIsUploadVisible(false)}                         // Ferme la modale
                 />
-                )}
+                )} */}
 
-                {/* Suppression d'images */}
-                <View style={styles.imagesContainer}>
-                    {selectedImages.map((uri, index) => (
-                    <View key={index} style={styles.imageWrapper}>
-                    <Image source={{ uri }} style={styles.imagePreview} />
-                    <TouchableOpacity style={styles.removeIcon} onPress={() => handleRemoveImage(uri)}>
-                        <_FontAwesome name="trash" size={20} color="red" />
-                    </TouchableOpacity>
-                    </View>
-                    ))}
-                </View>
-                <View style={styles.formContainer}>
-                    {/* Nom de l'article */}
-                    <TextInput style={styles.paragraphMain} placeholder="Nom de l'article" value={nomArticle} onChangeText={setNomArticle}/>
-                    {/* Utilisation du composant Categories */}
-                    <Categories categorie={categorie} setCategorie={setCategorie} sousCategorie={sousCategorie} setSousCategorie={setSousCategorie}/>
+          {/* Affiche le composant Photos seulement si `isCameraVisible` est `true` */}
+          {isCameraVisible && (
+            <Photos
+              onImageAdd={handleImageAdd}                                       // Ajoute une image
+              onClose={() => setIsCameraVisible(false)}                         // Ferme la camera
+            />
+          )}
 
-                    {/* Description */}
-                    <Text style={styles.paragraphMain}>Description de l'article</Text>
-                    <TextInput style={[styles.input, styles.paragraphSmall]} placeholder="Écrivez votre description ici..." value={description} onChangeText={setDescription}multiline/>
+          {/* Affichage et suppression d'images */}
+          <View style={styles.imagesContainer}>
+            {selectedImages.map((uri, index) => (
+              <View key={index} style={styles.imageWrapper}>
+                <Image source={{ uri }} style={styles.imagePreview} />
+                <TouchableOpacity style={styles.removeIcon} onPress={() => handleRemoveImage(uri)}>
+                  <_FontAwesome name="trash" size={20} color="red" />
+                </TouchableOpacity>
+              </View>
+            ))}
+          </View>
+          <View style={styles.formContainer}>
+            {/* Nom de l'article */}
+            <TextInput style={styles.paragraphMain} placeholder="Nom de l'article" value={nomArticle} onChangeText={setNomArticle} />
+            {/* Utilisation du composant Categories */}
+            <Categories categorie={categorie} setCategorie={setCategorie} sousCategorie={sousCategorie} setSousCategorie={setSousCategorie} />
 
-                    {/* Validation */}
-                    <TouchableOpacity onPress={handleSubmit}>
-                    <SecondaryButton title='Valider!' />
-                    </TouchableOpacity>
-                </View>
-            </View>
-        </ScrollView>
-        
-      </SafeAreaView>
+            {/* Description */}
+            <Text style={styles.paragraphMain}>Description de l'article</Text>
+            <TextInput style={[styles.input, styles.paragraphSmall]} placeholder="Écrivez votre description ici..." value={description} onChangeText={setDescription} multiline />
+
+            {/* Validation */}
+            <TouchableOpacity onPress={handleSubmit}>
+              <SecondaryButton title='Valider!' />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView>
+
+    </SafeAreaView>
     // </SafeAreaProvider>
   );
 }
@@ -188,6 +206,10 @@ const styles = StyleSheet.create({
     fontSize: 13,
     lineHeight: 14,
   },
-  
- 
+
+
 });
+
+
+
+
