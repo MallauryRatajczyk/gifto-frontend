@@ -39,8 +39,6 @@ const Tab = createBottomTabNavigator();
 
 function MainTabNavigator({ activeRoute }) {
   return (
-<<<<<<< HEAD
-=======
     /*<SafeAreaProvider>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
@@ -58,7 +56,6 @@ function MainTabNavigator({ activeRoute }) {
         </PersistGate>
       </Provider>
     </SafeAreaProvider>*/
->>>>>>> a4bef04c55464fcee4afd2a4695be1b051d69abb
     <Tab.Navigator
       tabBar={(props) => <NavigationBar {...props} activeRoute={activeRoute} />}
       screenOptions={{
