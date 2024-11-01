@@ -12,11 +12,12 @@ export default function SettingsPage() {
   const navigation = useNavigation();
   const [error, setError] = useState('');
   const [notification, setNotification] = useState([]);
-  const id = "pierre"
+
 
   async function redirect(demande) {
     const fetched = await fetch(`http://192.168.1.81:3000/demande/${demande}`);
     const response = await fetched.json();
+    const fetchedID = await fetch(`http://192.168.1.81:3000/user/${demande}`)
     if (response.result) {
       navigation.navigate('Chat', { message: response.demande })
     } else {
@@ -39,7 +40,7 @@ export default function SettingsPage() {
 
   const allNotifications = notification.map((x, i) => {
 
-    return (<TouchableOpacity key={i} style={{ flex: 1, flexDirection: "row" }} style={styles.container}>
+    return (<TouchableOpacity key={i} style={styles.container}>
       <View style={styles.box}>
         <View style={styles.dot} />
         <Text style={styles.title}>{x.message}</Text>

@@ -29,7 +29,7 @@ import GlobalStyles from '../elements/styles/GlobalStyles';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-function MainTabNavigator({activeRoute}) {
+function MainTabNavigator({ activeRoute }) {
   return (
     /*<SafeAreaProvider>
       <Provider store={store}>
@@ -51,7 +51,7 @@ function MainTabNavigator({activeRoute}) {
         tabBarInactiveTintColor: Colors.redColor,
         tabBarActiveTintColor: Colors.purpleColor,
         tabBarStyle: {
-          backgroundColor: Colors.background, 
+          backgroundColor: Colors.background,
         },
       }}
     >
@@ -84,7 +84,7 @@ export default function App() {
 
   if (!fontsLoaded) return null;
 
-  
+
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
@@ -97,11 +97,11 @@ export default function App() {
             }}
           >
             <Stack.Navigator screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="Authentification" component={Authentification} />
               <Stack.Screen name="TabNavigator">
                 {(props) => <MainTabNavigator {...props} activeRoute={activeRoute} />}
               </Stack.Screen>
               <Stack.Screen name="ProfilePage" component={ProfilePage} />
-              <Stack.Screen name="Authentification" component={Authentification} />
               <Stack.Screen name="Connection" component={Connection} />
               <Stack.Screen name="Inscription" component={Inscription} />
               <Stack.Screen name="rechercheRecevoir" component={rechercheRecevoir} />
