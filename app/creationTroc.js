@@ -10,9 +10,7 @@ import UploadImages from '../elements/images/UploadImages';
 import SecondaryButton from '../elements/components/buttons/SecondaryButton';
 import Categories from './Categories';
 
-const BACKEND_ADDRESS = "http://192.168.86.114:3000/upload";
-
-
+const BACKEND_ADDRESS = "http://192.168.86.114:3000"
 
 export default function CreeTrocScreen({ navigation }) {
   const dispatch = useDispatch();

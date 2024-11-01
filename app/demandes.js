@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Chat from "../components/chat";
 
+const BACKEND_ADDRESS = "http://192.168.86.114:3000"
+
 export default function Demandes({ navigation }) {
     const dispatch = useDispatch();
     const [error, setError] = useState('');
@@ -11,7 +13,7 @@ export default function Demandes({ navigation }) {
     const id = "pierre"
 
     async function redirect(demande) {
-        const fetched = await fetch(`http://192.168.86.114:3000/demande/${demande}`);
+        const fetched = await fetch(`${BACKEND_ADDRESS}/demande/${demande}`);
         const response = await fetched.json();
         console.log("response", response.demande)
         if (response.result) {
@@ -24,7 +26,7 @@ export default function Demandes({ navigation }) {
 
     useEffect(() => {
         async function fetchData() {
-            const fetched = await fetch(`http://192.168.86.114:3000/demande/mesdemandes/${id}`);
+            const fetched = await fetch(`${BACKEND_ADDRESS}/demande/mesdemandes/${id}`);
             const response = await fetched.json();
             console.log('a fetch')
             if (response.error) {

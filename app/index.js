@@ -35,6 +35,8 @@ import Connection from './connexionPage';
 import Inscription from './inscriptionPage';
 import Chat from "../components/chat";
 import Demandes from "./demandes";
+import RechercheTrocScreen from './rechercheTroc';
+import CreeTrocScreen from './creationTroc';
 
 // Components
 import NavigationBar from '../elements/components/navigation/NavigationBar';
@@ -76,6 +78,10 @@ function MainTabNavigator() {
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="RechercheTroc" component={RechercheTrocScreen} />
+            <Stack.Screen name="CreationTroc" component={CreeTrocScreen} />
+            <Stack.Screen name="AjoutDon" component={AjoutDon} /> 
+            <Stack.Screen name="UploadImages" component={UploadImages} /> 
             <Stack.Screen name="Authentification" component={Authentification} />
             <Stack.Screen name="Demandes" component={Demandes} />
             <Stack.Screen name="Chat" component={Chat} />
@@ -122,6 +128,8 @@ export default function App() {
 
           <NavigationContainer independent={true} >
             <Stack.Navigator screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="RechercheTrocScreen" component={RechercheTrocScreen}/>
+              <Stack.Screen name="CreeTrocScreen" component={CreeTrocScreen}/>
               <Stack.Screen name="Authentification" component={Authentification} />
               <Stack.Screen name="TabNavigator" component={MainTabNavigator} />
               <Stack.Screen name="Connection" component={Connection} />
