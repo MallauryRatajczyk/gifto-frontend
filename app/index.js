@@ -30,6 +30,9 @@ import CreeTrocScreen from './creationTroc';
 import NavigationBar from '../elements/components/navigation/NavigationBar';
 import Colors from '../elements/styles/Colors';
 import GlobalStyles from '../elements/styles/GlobalStyles';
+import AjoutDon from "./AjoutDonPage";
+// import UploadImages from '../elements/images/UploadImages';
+// // import Photos from '../elements/images/Photos';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -106,12 +109,15 @@ export default function App() {
             }}
           >
             <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="AjoutDon" component={AjoutDon} />
               <Stack.Screen name="RechercheTrocScreen" component={RechercheTrocScreen}/>
               <Stack.Screen name="CreeTrocScreen" component={CreeTrocScreen}/>
               <Stack.Screen name="Authentification" component={Authentification} />
               <Stack.Screen name="TabNavigator">
                 {(props) => <MainTabNavigator {...props} activeRoute={activeRoute} />}
               </Stack.Screen>
+            {/* <Stack.Screen name="UploadImages" component={UploadImages} /> */}
+            {/* <Stack.Screen name="Photos" component={Photos} /> */}
               <Stack.Screen name="ProfilePage" component={ProfilePage} />
               <Stack.Screen name="Connection" component={Connection} />
               <Stack.Screen name="Inscription" component={Inscription} />
