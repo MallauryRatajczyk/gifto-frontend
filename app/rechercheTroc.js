@@ -150,7 +150,7 @@ export default function RechercheTrocScreen({ navigation }) {
         </SafeAreaProvider>
     )
 }
-const styles = StyleSheet.create({
+const styles = StyleSheet.create({ //peut être à modifier
     coloredHeader: {
         backgroundColor: Colors.purpleColor, // Default color
         borderBottomRightRadius: 60,
