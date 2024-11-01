@@ -7,19 +7,9 @@ import PictureProfile from '../elements/components/buttons/PictureProfileButton'
 import BigCardButton from '../elements/components/buttons/BigCardButton';
 import { TroquerIcon, DonnerIcon, RecevoirIcon } from '../elements/assets/Icons';
 import Colors from '../elements/styles/Colors';
-<<<<<<< HEAD
-=======
-import HeaderMenu from '../elements/components/navigation/HeaderMenu';
-import { useSelector } from 'react-redux';
-
-import { SettingsIcon, GiftoLogo } from '../elements/assets/Icons';
->>>>>>> 97bf45fa69620a5b791e70bbccb7a8062e23a459
-
-import { TouchableOpacity, Image } from 'react-native';
 
 export default function HomePage() {
   const navigation = useNavigation();
-<<<<<<< HEAD
   const profileImageUrl = useSelector((state) => state.user.value.imageUrl);
   const firstName = useSelector((state) => state.user.value.firstName); // Access firstName from Redux
 
@@ -65,21 +55,6 @@ export default function HomePage() {
         />
          
       </View>
-=======
-  const username = useSelector((state) => state.user.value.username);
-  return (
-    <View style={GlobalStyles.screenMainContainer}>
-
-
-      <View style={GlobalStyles.WelcomeContainer}>
-        <PictureProfile />
-        <Text style={GlobalStyles.titleTextBlack}>Bonjour {username}</Text>
-      </View>
-
-      <BigCardButton />
-      <BigCardButton />
-      <BigCardButton />
->>>>>>> 97bf45fa69620a5b791e70bbccb7a8062e23a459
 
     </View>
   );

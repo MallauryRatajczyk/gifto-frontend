@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
 import Colors from '../../styles/Colors';
 import GlobalStyles from '../../styles/GlobalStyles';
 
@@ -9,21 +9,28 @@ const mainButton = ({
   normalBackgroundColor = Colors.purpleColor,
   normalTextColorStyle = GlobalStyles.buttonTextWhite,
   clickedBackgroundColor = Colors.textColor
-  }) => {
-    const [isClicked, setIsClicked] = useState(false);
-    const handlePress = () => {
-        setIsClicked(!isClicked);
-        if (onPress) onPress(); // Call the onPress function passed as a prop
-      };
+}) => {
+  const [isClicked, setIsClicked] = useState(false);
+
+  const handlePressIn = () => {
+    setIsClicked(true); // Set isClicked to true when the button is pressed down
+  };
+
+  const handlePressOut = () => {
+    setIsClicked(false); // Reset isClicked to false when the press is released
+    if (onPress) onPress(); // Call the onPress function after the press is released
+  };
 
   return (
     <TouchableOpacity
-      style={[GlobalStyles.buttonPrimary, 
+      style={[
+        GlobalStyles.buttonPrimary, 
         { 
           backgroundColor: isClicked ? clickedBackgroundColor : normalBackgroundColor
-         } // use prop color if clicked
+        } // Use prop color if clicked
       ]}
-      onPress={handlePress}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
     >
       <Text style={normalTextColorStyle}>
         {title}
@@ -32,7 +39,4 @@ const mainButton = ({
   );
 };
 
-
-
 export default mainButton;
-

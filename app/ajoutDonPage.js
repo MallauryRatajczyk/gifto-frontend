@@ -8,7 +8,8 @@ import { useDispatch } from 'react-redux';
 import _FontAwesome from 'react-native-vector-icons/FontAwesome';
 import UploadImages from '../elements/images/UploadImages';
 import SecondaryButton from '../elements/components/buttons/SecondaryButton';
-import Categories from './Categories';
+import Categories from '../elements/components/navigation/Categories';
+import NavigationBar from '../elements/components/navigation/NavigationBar';
 
 
 
