@@ -35,6 +35,8 @@ import Connection from './connexionPage';
 import Inscription from './inscriptionPage';
 import Chat from "../components/chat";
 import Demandes from "./demandes";
+import RechercheTrocScreen from './rechercheTroc';
+import CreeTrocScreen from './creationTroc';
 
 // Components
 import NavigationBar from '../elements/components/navigation/NavigationBar';
@@ -126,6 +128,8 @@ export default function App() {
 
           <NavigationContainer independent={true} >
             <Stack.Navigator screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="RechercheTrocScreen" component={RechercheTrocScreen}/>
+              <Stack.Screen name="CreeTrocScreen" component={CreeTrocScreen}/>
               <Stack.Screen name="Authentification" component={Authentification} />
               <Stack.Screen name="TabNavigator" component={MainTabNavigator} />
               <Stack.Screen name="Connection" component={Connection} />

@@ -7,6 +7,8 @@ import { toConnectUser } from '../reducers/user'
 
 const { dateRequired } = require('../modules/dateRequirement')
 
+const BACKEND_ADDRESS = "http://192.168.86.114:3000"
+
 export default function Inscription({ navigation }) {
     const dispatch = useDispatch();
     const [email, setEmail] = useState('')
@@ -26,7 +28,7 @@ export default function Inscription({ navigation }) {
     }
 
     const register = (userObject) => {
-        fetch('http://192.168.86.114:3000/users/enregistrer', {
+        fetch(`${BACKEND_ADDRESS}/users/enregistrer`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(userObject)

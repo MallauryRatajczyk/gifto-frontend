@@ -1,6 +1,11 @@
 import { Text, View, Image, StyleSheet, TouchableOpacity, TextInput, FlatList } from "react-native";
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { useState, useEffect } from 'react';
+import MainButton from '../elements/components/buttons/MainButton';
+import Colors from '../elements/styles/Colors';
+import Typography from "../elements/styles/Typography";
+
+const BACKEND_ADDRESS = "http://192.168.86.114:3000"
 
 export default function RechercheTrocScreen({ navigation }) {
     const [chercher, setChercher] = useState('');
@@ -9,51 +14,53 @@ export default function RechercheTrocScreen({ navigation }) {
     const [montreResult, setMontreResult] = useState(false);
 
     useEffect(() => {
+        async function itemRandom() {
+            const fetched = await fetch(`${BACKEND_ADDRESS}/item`);
+            const response = await fetched.json();
+            if (response) {
+                // Filtre les items où troc est true
+                const itemsTroc = response.item.filter(articl => articl.troc === true);
+                const tableauMelange = itemsTroc.sort((a, b) => Math.random() - 0.5);
+                if (tableauMelange.length == 1 || tableauMelange.length == 2) {
+                    setItemRecommande(tableauMelange);
+                } else if (tableauMelange.length >= 3) {
+                    setItemRecommande(tableauMelange.slice(0, 3));
+                }
+            }
+        }
         itemRandom(); // Appelle la fonction pour charger les articles recommandés au démarrage
     }, []);
 
     const handleSearch = () => {
         if (chercher.trim() === '') return;
-        fetch(`http://192.168.86.114:3000/item/${chercher}`)
+        fetch(`${BACKEND_ADDRESS}/item`)
             .then(response => response.json())
             .then(data => {
+                console.log(data);
                 // Filtre les items où troc est true
-                const filtreTrocTrue = data.filter(item => item.troc === true); 
-                if (filtreTrocTrue.length > 0) {
-                    setResultats(filtreTrocTrue);
-                    setMontreResult(true);
-                } else {
-                    setMontreResult(true); // Pour afficher le message "Aucun résultat trouvé."
-                    setResultats([]);
-                }
+                const filtreTrocTrue = data.item.filter(item => item.troc === true);
+                const resultatsFiltres = filtreTrocTrue.filter(item =>
+                    item.name.toLowerCase().includes(chercher.toLowerCase())
+                );
+                setResultats(resultatsFiltres);
+                setMontreResult(true);
             })
+            .catch(error => {
+                console.error(error);
+                setMontreResult(true); // Afficher les résultats même en cas d'erreur
+                setResultats([]);
+            });
     }
 
-    const itemRandom = () => {
-        fetch('http://192.168.86.114:3000/item')
-            .then(response => response.json())
-            .then(data => {
-                if (data) {
-                    // Filtre les items où troc est true
-                    const itemsTroc = data.filter(item => item.troc === true);
-                    const tableauMelange = itemsTroc.sort((a, b) => Math.random() - 0.5);
-                    if (tableauMelange.length == 1 || tableauMelange.length == 2) {
-                        setItemRecommande(tableauMelange);
-                    } else if (tableauMelange.length >= 3) {
-                        setItemRecommande(tableauMelange.slice(0, 3));
-                    }
-                }
-            })
+    const handlePress = () => {
+        navigation.navigate('HomePage');
     }
 
     return (
         <SafeAreaProvider style={{ flex: 1 }}>
-            <SafeAreaView style={{ flex: 1 }}>
-                <Text style={styles.textContain} >Troquer</Text>
-                <View style={{
-                    alignItems: "center",
-                    marginBottom: 25
-                }}>
+            <SafeAreaView style={styles.screenMainContainer}>
+                <Text style={[styles.coloredHeader, styles.headerTextWhite]} >Troquer</Text>
+                <View style={styles.searchContainer}>
                     <TextInput
                         onChangeText={(value) => setChercher(value)}
                         value={chercher}
@@ -80,29 +87,33 @@ export default function RechercheTrocScreen({ navigation }) {
                                 keyExtractor={(item) => item._id.toString()}
                                 renderItem={({ item }) => (
                                     <View style={styles.itemContainer}>
-                                        <Image
-                                            source={{ uri: item.image }}
-                                            style={styles.image}
-                                        />
-                                        <Text>{item.name}</Text>
+                                        <TouchableOpacity style={styles.item} onPress={handlePress}>
+                                            <Image
+                                                source={{ uri: item.image }}
+                                                style={styles.image}
+                                            />
+                                            <Text>{item.name}</Text>
+                                        </TouchableOpacity>
                                     </View>
                                 )}
                             />
                         </>
                     ) : (
                         <>
-                            <Text>Recommandations</Text>
+                            <Text style={styles.titleTextBlack}>Recommandations</Text>
                             <FlatList
                                 data={itemRecommande}
-                                keyExtractor={(item) => item.id.toString()}
+                                keyExtractor={(item) => item._id.toString()}
                                 horizontal
                                 renderItem={({ item }) => (
                                     <View style={styles.itemContainer}>
-                                        <Image
-                                            source={{ uri: item.imageUrl }}
-                                            style={styles.image}
-                                        />
-                                        <Text>{item.name}</Text>
+                                        <TouchableOpacity style={styles.item} onPress={handlePress}>
+                                            <Image
+                                                source={{ uri: item.image }}
+                                                style={styles.image}
+                                            />
+                                            <Text>{item.name}</Text>
+                                        </TouchableOpacity>
                                     </View>
                                 )}
                             />
@@ -110,16 +121,55 @@ export default function RechercheTrocScreen({ navigation }) {
                     )}
                 </View>
                 <View>
-                    <Text>Ajouter un item</Text>
-                    <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('CreationTroc')}>
-                        <Text style={styles.buttonText}>Créer</Text>
-                    </TouchableOpacity>
+                    <Text style={styles.titleTextBlack}>Ajouter un item</Text>
+                    <Text>Vous cherchez à échanger des articles avec quelque chose qui vous plait ?</Text>
+                    <View>
+                        <MainButton
+                            title="Créer !"
+                            onPress={() => navigation.navigate('CreeTrocScreen')}
+                            normalBackgroundColor={Colors.purpleColor}
+                            clickedBackgroundColor={Colors.textColor}    // Clicked state background color
+                        />
+                    </View>
                 </View>
             </SafeAreaView>
         </SafeAreaProvider>
     )
 }
 const styles = StyleSheet.create({
+
+    screenMainContainer: {
+        flex: 1,
+        backgroundColor: Colors.background,
+        paddingHorizontal: 36,
+        justifyContent: 'top', //top alignment for all content
+        align: 'center',
+        display: 'flex',
+    },
+    coloredHeader: {
+        backgroundColor: Colors.purpleColor, // Default color
+        borderBottomRightRadius: 60,
+        paddingTop: 60,
+        marginBottom: 36,
+        alignItems: 'left',
+        flexDirection: 'row',
+        paddingHorizontal: 16,
+        justifyContent: 'left',
+        height: 140,
+    },
+    headerTextWhite: {
+        ...Typography.h1,
+        color: Colors.whiteColor,
+        paddingVertical: 24,
+        marginLeft: 12,
+        marginRight: 12,
+        marginBottom: -30,
+    },
+    titleTextBlack: {
+        ...Typography.h2,
+        color: Colors.textColor,
+        paddingVertical: 12,
+    },
     textContain: {
         fontFamily: 'BalooBhaina2-Regular',
         fontSize: 20,
@@ -147,5 +197,10 @@ const styles = StyleSheet.create({
         fontSize: 15,
         alignItems: "center",
         backgroundColor: "white"
+    },
+    searchContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 25,
     },
 });    

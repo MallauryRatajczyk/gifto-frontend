@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { toConnectUser } from '../reducers/user'
 
+const BACKEND_ADDRESS = "http://192.168.86.114:3000"
+
 export default function Connection({ navigation }) {
     const dispatch = useDispatch();
     const [email, setEmail] = useState('')
@@ -11,7 +13,7 @@ export default function Connection({ navigation }) {
     const [error, setError] = useState('');
 
     const connect = (userObject) => {
-        fetch('http://192.168.86.114:3000/users/login', {
+        fetch(`${BACKEND_ADDRESS}/users/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(userObject)
