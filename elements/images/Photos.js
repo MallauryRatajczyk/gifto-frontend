@@ -10,13 +10,14 @@ import { useIsFocused } from "@react-navigation/native";
 
 const BACKEND_ADDRESS = "http://192.168.1.182:3000";        
 
-export default function Photos(onImageAdd, onClose) {
+export default function Photos() {
     const dispatch = useDispatch();
 	const isFocused = useIsFocused();
 
 	const [hasPermission, setHasPermission] = useState(false);
 	const [type, setType] = useState(CameraType.back);
 	const [flashMode, setFlashMode] = useState(FlashMode.off);
+	const [isCameraVisible, setIsCameraVisible] = useState(false);
 
     let cameraRef = useRef(null);
 
@@ -50,6 +51,14 @@ export default function Photos(onImageAdd, onClose) {
 			});
 	};
 
+	
+
+	const closeCamera = () => {
+		if (cameraRef.current) {
+			cameraRef.current.stopPreview();
+		}
+		setIsCameraVisible(false);
+	};
 	if (!hasPermission || !isFocused) {
 		return <View />;
 	}
@@ -57,23 +66,33 @@ export default function Photos(onImageAdd, onClose) {
 
 
     return (
-		<Camera type={type} flashMode={flashMode} ref={(ref) => (cameraRef = ref)} style={styles.camera}>
-			<View style={styles.buttonsContainer}>
-				<TouchableOpacity onPress={() => setType(type === CameraType.back ? CameraType.front : CameraType.back)} style={styles.button}>
-					<FontAwesome name="rotate-right" size={25} color="#ffffff" />
-				</TouchableOpacity>
+		<Modal  animationType="slide" transparent={false}>
+		<Camera style={styles.fullScreenCamera} type={type} flashMode={flashMode} ref={(ref) => (cameraRef = ref)} >
+			<View style={styles.cameraOverlay}>
+				<View style={styles.topButtonsContainer}>
+					<TouchableOpacity onPress={() => setType(type === CameraType.back ? CameraType.front : CameraType.back)} style={styles.button}>
+						<FontAwesome name="rotate-right" size={25} color="#ffffff" />
+					</TouchableOpacity>
 
-				<TouchableOpacity onPress={() => setFlashMode(flashMode === FlashMode.off ? FlashMode.torch : FlashMode.off)} style={styles.button}>
-					<FontAwesome name="flash" size={25} color={flashMode === FlashMode.off ? "#ffffff" : "#e8be4b"} />
-				</TouchableOpacity>
-			</View>
+					<TouchableOpacity onPress={() => setFlashMode(flashMode === FlashMode.off ? FlashMode.torch : FlashMode.off)} style={styles.button}>
+						<FontAwesome name="flash" size={25} color={flashMode === FlashMode.off ? "#ffffff" : "#e8be4b"} />
+					</TouchableOpacity>
+					<TouchableOpacity onPress={closeCamera} style={styles.cameraControlButton}>
+                        <FontAwesome name="close" size={25} color="#ffffff" />
+                    </TouchableOpacity>
+					
+				</View>
 
-			<View style={styles.snapContainer}>
-				<TouchableOpacity onPress={() => cameraRef && takePicture()}>
-					<FontAwesome name="circle-thin" size={95} color="#ffffff" />
-				</TouchableOpacity>
-			</View>
+				<View style={styles.snapContainer}>
+					<TouchableOpacity onPress={() => cameraRef && takePicture()}>
+						<FontAwesome name="circle-thin" size={95} color="#ffffff" />
+					</TouchableOpacity>
+					</View>
+				</View>
+
+			
 		</Camera>
+		</Modal>
 
 
 
@@ -107,4 +126,24 @@ const styles = StyleSheet.create({
 		justifyContent: "flex-end",
 		paddingBottom: 25,
 	},
+	fullScreenCamera: {
+        flex: 1,
+    },
+    cameraOverlay: {
+        flex: 1,
+        justifyContent: 'space-between',
+    },
+	topButtonsContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        padding: 20,
+    },
+	cameraControlButton: {
+        width: 44,
+        height: 44,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "rgba(0, 0, 0, 0.2)",
+        borderRadius: 50,
+    },
 });

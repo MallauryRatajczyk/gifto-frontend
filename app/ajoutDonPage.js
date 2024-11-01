@@ -5,14 +5,16 @@ import { Picker } from '@react-native-picker/picker';
 import { addImage, removeImage } from '../reducers/imagesArticles';
 import { useDispatch } from 'react-redux';
 import _FontAwesome from 'react-native-vector-icons/FontAwesome';
-import UploadImages from '../elements/images/UploadImages';
+// import UploadImages from '../elements/images/UploadImages';
 import SecondaryButton from '../elements/components/buttons/SecondaryButton';
 import Categories from '../elements/components/navigation/Categories';
+import Photos from '../elements/images/Photos';
 
 export default function AjoutDon({ navigation }) {
   const dispatch = useDispatch();
   const [selectedImages, setSelectedImages] = useState([]);
   const [isUploadVisible, setIsUploadVisible] = useState(false); // Contrôle de l'affichage de la modale
+  const [isCameraVisible, setIsCameraVisible] = useState(false);
   const [nomArticle, setNomArticle] = useState('');
   const [categorie, setCategorie] = useState('');
   const [sousCategorie, setSousCategorie] = useState('');
@@ -28,7 +30,7 @@ export default function AjoutDon({ navigation }) {
     setSelectedImages(selectedImages.filter(uri => uri !== imageUri));
     dispatch(removeImage(imageUri));
   };
-
+  
   const handleSubmit = () => {
     // logique de soumission ici
   };
@@ -42,21 +44,37 @@ export default function AjoutDon({ navigation }) {
                     <Text style={styles.header}>Ajout de don</Text>
                 </View> 
             
-                {/* Bouton d'affichage de la modale */}
+                {/* Bouton d'affichage de la modale
                 <TouchableOpacity onPress={() => setIsUploadVisible(true)} style={styles.imagePickerContainer}>
                 <_FontAwesome name="image" size={125} color="#D3D3D3" />
                 <Text style={styles.uploadText}>Ajouter une image</Text>
+                </TouchableOpacity> */}
+
+              {/* Bouton d'affichage de la camera */}
+                <TouchableOpacity onPress={() => setIsCameraVisible(true)} style={styles.imagePickerContainer}>
+                <_FontAwesome name="image" size={125} color="#D3D3D3" />
+                <Text style={styles.uploadText}>Prendre une photo</Text>
                 </TouchableOpacity>
 
-                {/* Affiche UploadImages seulement si `isUploadVisible` est `true` */}
+
+
+                {/* Affiche UploadImages seulement si `isUploadVisible` est `true`
                 {isUploadVisible && (
                 <UploadImages
                     onImageAdd={handleImageAdd}                                       // Ajoute une image
                     onClose={() => setIsUploadVisible(false)}                         // Ferme la modale
                 />
+                )} */}
+
+                  {/* Affiche le composant Photos seulement si `isCameraVisible` est `true` */}
+                  {isCameraVisible && (
+                <Photos
+                    onImageAdd={handleImageAdd}                                       // Ajoute une image
+                    onClose={() => setIsCameraVisible(false)}                         // Ferme la camera
+                />
                 )}
 
-                {/* Suppression d'images */}
+                {/* Affichage et suppression d'images */}
                 <View style={styles.imagesContainer}>
                     {selectedImages.map((uri, index) => (
                     <View key={index} style={styles.imageWrapper}>
@@ -191,3 +209,7 @@ const styles = StyleSheet.create({
   
  
 });
+
+
+
+
