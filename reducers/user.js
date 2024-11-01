@@ -4,7 +4,9 @@ const initialState = {
     value: {
         email: null,
         token: null,
-        username: null
+        username: null,
+        firstName: null, // Add firstName to the initial state
+        imageUrl: null,
     },
 };
 
@@ -16,6 +18,11 @@ export const connectUser = createSlice({
             state.value.email = action.payload.email;
             state.value.token = action.payload.token;
             state.value.username = action.payload.username;
+            state.value.firstName = action.payload.firstName; // Store firstName
+            state.value.imageUrl = action.payload.imageUrl; // Store image URL
+        },
+        updateProfileImage: (state, action) => {
+            state.value.imageUrl = action.payload.imageUrl; // Separate action to update only imageUrl
         },
     },
 });

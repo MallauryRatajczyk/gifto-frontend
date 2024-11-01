@@ -15,7 +15,6 @@ export default function Demandes({ navigation }) {
     async function redirect(demande) {
         const fetched = await fetch(`${BACKEND_ADDRESS}/demande/${demande}`);
         const response = await fetched.json();
-        console.log("response", response.demande)
         if (response.result) {
             navigation.navigate('Chat', { message: response.demande })
         } else {
@@ -28,11 +27,9 @@ export default function Demandes({ navigation }) {
         async function fetchData() {
             const fetched = await fetch(`${BACKEND_ADDRESS}/demande/mesdemandes/${id}`);
             const response = await fetched.json();
-            console.log('a fetch')
             if (response.error) {
                 setError(response.error)
             } else {
-                console.log(response)
                 setDemandes(response.demandes)
             }
         }

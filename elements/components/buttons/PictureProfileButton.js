@@ -1,17 +1,21 @@
 import React from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, Image } from 'react-native';
 import Colors from '../../styles/Colors';
 import GlobalStyles from '../../styles/GlobalStyles';
 import { ProfileIcon } from '../../assets/Icons';
 
-
-export default function PictureProfile() {
+export default function PictureProfile({ imageUrl, onPress }) {
   return (
-    <View style={GlobalStyles.PictureProfileContainer}>
-      <ProfileIcon width={50} height={50} color={Colors.textColor} />
-      <TouchableOpacity style={GlobalStyles.GreyCircleButton}/>
-    </View>    
+    <TouchableOpacity style={GlobalStyles.PictureProfileContainer} onPress={onPress}>
+      {imageUrl ? (
+        <Image 
+          source={{ uri: imageUrl }} 
+          style={{ width: 50, height: 50, borderRadius: 25 }} 
+        />
+      ) : (
+        <ProfileIcon width={50} height={50} color={Colors.textColor} />
+      )}
+      <View style={GlobalStyles.GreyCircleButton} />
+    </TouchableOpacity>
   );
-  
 }
-

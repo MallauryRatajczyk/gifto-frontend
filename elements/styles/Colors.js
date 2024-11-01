@@ -8,6 +8,9 @@ export default {
     purpleColor: '#8B85EF',
     greenColor: '#00BA88',
     yellowColor: '#E0BB26',
+
+    lightGreyColor: '#EAEAEB', //for image icon template
+    superLightGreyColor: '#F3F3F4', //for image holder template
     
   };
   
