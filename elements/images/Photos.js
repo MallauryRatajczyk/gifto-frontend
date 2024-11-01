@@ -10,14 +10,14 @@ import { useIsFocused } from "@react-navigation/native";
 
 const BACKEND_ADDRESS = "http://192.168.1.182:3000";        
 
-export default function Photos() {
+export default function Photos({navigation, isCameraVisible, onClose }) {
     const dispatch = useDispatch();
 	const isFocused = useIsFocused();
 
 	const [hasPermission, setHasPermission] = useState(false);
 	const [type, setType] = useState(CameraType.back);
 	const [flashMode, setFlashMode] = useState(FlashMode.off);
-	const [isCameraVisible, setIsCameraVisible] = useState(false);
+	// const [isCameraVisible, setIsCameraVisible] = useState(false);
 
     let cameraRef = useRef(null);
 
@@ -48,17 +48,19 @@ export default function Photos() {
 			.then((response) => response.json())
 			.then((data) => {
 				data.result && dispatch(addPhoto(data.url));
+				onClose();
 			});
 	};
 
-	
+	// const changeTab = () => navigation.navigate('AjoutDonPage');
+	// console.log(changeTab);
 
-	const closeCamera = () => {
-		if (cameraRef.current) {
-			cameraRef.current.stopPreview();
-		}
-		setIsCameraVisible(false);
-	};
+	// const closeCamera = () => {
+	// 	if (cameraRef.current) {
+	// 		cameraRef.current.stopPreview();
+	// 	}
+	// 	setIsCameraVisible(false);
+	// };
 	if (!hasPermission || !isFocused) {
 		return <View />;
 	}
@@ -66,7 +68,7 @@ export default function Photos() {
 
 
     return (
-		<Modal  animationType="slide" transparent={false}>
+		<Modal onRequestClose={onClose}  visible={isCameraVisible} animationType="slide" transparent={false}>
 		<Camera style={styles.fullScreenCamera} type={type} flashMode={flashMode} ref={(ref) => (cameraRef = ref)} >
 			<View style={styles.cameraOverlay}>
 				<View style={styles.topButtonsContainer}>
@@ -77,7 +79,7 @@ export default function Photos() {
 					<TouchableOpacity onPress={() => setFlashMode(flashMode === FlashMode.off ? FlashMode.torch : FlashMode.off)} style={styles.button}>
 						<FontAwesome name="flash" size={25} color={flashMode === FlashMode.off ? "#ffffff" : "#e8be4b"} />
 					</TouchableOpacity>
-					<TouchableOpacity onPress={closeCamera} style={styles.cameraControlButton}>
+					<TouchableOpacity onPress= {() => onClose()} style={styles.cameraControlButton}>
                         <FontAwesome name="close" size={25} color="#ffffff" />
                     </TouchableOpacity>
 					

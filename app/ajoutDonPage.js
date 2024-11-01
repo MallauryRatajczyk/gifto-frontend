@@ -31,6 +31,10 @@ export default function AjoutDon({ navigation }) {
     dispatch(removeImage(imageUri));
   };
   
+const closeCamera = () => {
+  setIsCameraVisible(false);
+}
+
   const handleSubmit = () => {
     // logique de soumission ici
   };
@@ -67,12 +71,14 @@ export default function AjoutDon({ navigation }) {
                 )} */}
 
                   {/* Affiche le composant Photos seulement si `isCameraVisible` est `true` */}
-                  {isCameraVisible && (
+                 
                 <Photos
+                    navigation={navigation}
                     onImageAdd={handleImageAdd}                                       // Ajoute une image
-                    onClose={() => setIsCameraVisible(false)}                         // Ferme la camera
+                    onClose={closeCamera} 
+                    isCameraVisible={isCameraVisible}                        // Ferme la camera
                 />
-                )}
+                
 
                 {/* Affichage et suppression d'images */}
                 <View style={styles.imagesContainer}>
