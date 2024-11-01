@@ -8,6 +8,8 @@ import { useState, useEffect } from 'react';
 import NotificationHeader from '../elements/components/navigation/NotificationHeader';
 import Notification from '../components/notification'
 
+const BACKEND_ADDRESS = "http://192.168.86.114:3000";
+
 export default function SettingsPage() {
   const navigation = useNavigation();
   const [error, setError] = useState('');
@@ -15,9 +17,9 @@ export default function SettingsPage() {
 
 
   async function redirect(demande) {
-    const fetched = await fetch(`http://192.168.1.81:3000/demande/${demande}`);
+    const fetched = await fetch(`${BACKEND_ADDRESS}/demande/${demande}`);
     const response = await fetched.json();
-    const fetchedID = await fetch(`http://192.168.1.81:3000/user/${demande}`)
+    const fetchedID = await fetch(`${BACKEND_ADDRESS}/user/${demande}`)
     if (response.result) {
       navigation.navigate('Chat', { message: response.demande })
     } else {
@@ -27,7 +29,7 @@ export default function SettingsPage() {
 
   useEffect(() => {
     async function fetchData() {
-      const fetched = await fetch(`http://192.168.1.81:3000/demande/mesdemandes/${id}`);
+      const fetched = await fetch(`${BACKEND_ADDRESS}/demande/mesdemandes/${id}`);
       const response = await fetched.json();
       if (response.error) {
         setError(response.error)

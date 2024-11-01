@@ -23,7 +23,7 @@ export default function Connection({ navigation }) {
                     setError(data.error)
                 } else {
                     dispatch(toConnectUser({ token: data.token, email, username: data.username }));
-                    navigation.navigate('TabNavigator')
+                    navigation.navigate('Home')
                 }
             })
     }
@@ -49,7 +49,7 @@ export default function Connection({ navigation }) {
                         onChangeText={(value) => setEmail(value)}
                         value={email}
                         style={styles.textInput}
-                        placeholder="Adresse email ou nom d'utilisateur"
+                        placeholder="Adresse email"
                         autoComplete="email"
                         keyboardType="email-address"
                         textAlign={'center'}
