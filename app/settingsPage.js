@@ -18,8 +18,8 @@ export default function SettingsPage() {
         <MainButton
           title="Historique" 
           onPress={() => navigation.navigate('Connection')}
-          normalBackgroundColor={Colors.textColor} 
-          clickedBackgroundColor={Colors.purpleColor}    // Clicked state background color
+          normalBackgroundColor={Colors.redColor} 
+          clickedBackgroundColor={Colors.greenColor}    // Clicked state background color
         />
       </View>
 
