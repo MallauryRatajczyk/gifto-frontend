@@ -1,24 +1,24 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import Colors from '../../styles/Colors';
-import Typography from '../../styles/Typography';
 import GlobalStyles from '../../styles/GlobalStyles';
-import { DonnerIcon, TroquerIcon, RecevoirIcon } from '../../assets/Icons';
+import Typography from '../../styles/Typography';
+import Icon from '../../assets/Icons';
 
 
-export default function BigCardButton() {
+export default function BigCardButton({icon: Icon, iconColor, title, bodyText, onPress, textColor = Colors.blackColor}) {
   return (
-    <View style={GlobalStyles.whiteCardContainer}>
 
+    <TouchableOpacity style={GlobalStyles.whiteCardContainer} onPress={onPress}>
+      
       <View style={GlobalStyles.CardTextContainer}>
-        <Text style={GlobalStyles.headerTextRed}>Donner</Text>
-        <Text style={GlobalStyles.bodyTextBlack}>Donnez vos objets à ceux qui en ont le plus besoin !</Text>
+        <Text style={[GlobalStyles.headerTextRed, { color: textColor }]}>{title}</Text>
+        <Text style={GlobalStyles.bodyTextBlack}>{bodyText}</Text>
       </View>
 
-      <DonnerIcon width={70} height={70} color={Colors.redColor}/>
+      {Icon && <Icon width={58} height={58} color={iconColor} />}
+    </TouchableOpacity>   
 
-    </View>    
   );
   
 }
-

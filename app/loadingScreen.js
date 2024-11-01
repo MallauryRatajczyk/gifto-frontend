@@ -1,4 +1,6 @@
 import { Text, View, Image, StyleSheet } from "react-native";
+import { Provider as PaperProvider } from 'react-native-paper';
+import Chat from '../components/message';
 
 export default function loadingScreen() {
     return (
@@ -10,6 +12,9 @@ export default function loadingScreen() {
             }}
         >
             <Image source={require('../assets/images/logoGifto.png')} style={styles.logo} />
+            <PaperProvider>
+                <Chat />
+            </PaperProvider>
         </View>
     );
 }

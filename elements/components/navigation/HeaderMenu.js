@@ -1,16 +1,32 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import Colors from '../../styles/Colors';
-import Typography from '../../styles/Typography';
 import GlobalStyles from '../../styles/GlobalStyles';
-import { SettingsIcon } from '../../assets/Icons';
+import { RetourArrowIcon } from '../../assets/Icons';
 
+export default function HeaderMenu({
+  icon: Icon,
+  title,
+  backgroundColor = Colors.primaryColor,
+  textColor = Colors.whiteColor,
+  iconColor = Colors.whiteColor,
+  showBackButton = false,
+}) {
+  const navigation = useNavigation();
 
-export default function HeaderMenu() {
   return (
-    <View style={GlobalStyles.coloredHeader}>
-      <SettingsIcon width={40} height={40} color={Colors.whiteColor}/>
-      <Text style={GlobalStyles.headerTextWhite}>Paramètres</Text>
+    <View style={[GlobalStyles.coloredHeader, { backgroundColor }]}>
+      {showBackButton && (
+        <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginRight: 10 }}>
+          <RetourArrowIcon width={24} height={24} color={iconColor} />
+        </TouchableOpacity>
+      )}
+      
+      {/* Render the icon directly */}
+      {Icon && <Icon width={40} height={40} color={iconColor} style={{ marginRight: 10 }} />}
+      
+      <Text style={[GlobalStyles.headerTextWhite, { color: textColor }]}>{title}</Text>
     </View>
   );
 }

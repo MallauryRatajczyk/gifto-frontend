@@ -1,5 +1,5 @@
 //yarn add react-native-shadow-2
-import { StyleSheet, Platform, Dimensions } from 'react-native';
+import { StyleSheet, Platform, Dimensions, scroll, start } from 'react-native';
 import Colors from './Colors';
 import Typography from './Typography';
 
@@ -9,8 +9,10 @@ export default StyleSheet.create({
     appStyle: {
         flex: 1,
         backgroundColor: Colors.background,
-        justifyContent: 'center', 
+        justifyContent: 'top', 
         align: 'center',
+        
+
     },
 
 //_________________CONTAINERS_________________
@@ -21,10 +23,17 @@ export default StyleSheet.create({
   screenMainContainer: {
     flex: 1,
     backgroundColor: Colors.background,
-    paddingHorizontal: 36,  
-    justifyContent: 'top', //top alignment for all content
+    
     align: 'center',
     display: 'flex',
+    scroll: 'true',
+    
+  },
+
+  screenHomeContainer: {
+    paddingTop: 60,  
+    paddingHorizontal: 36,  
+    justifyContent: 'top', //top alignment for all content
     
   },
 
@@ -53,7 +62,7 @@ whiteCardContainer: {
     backgroundColor: Colors.whiteColor,
     borderRadius: 16,
     
-        
+    
     //spaces
     paddingHorizontal: 36,
     paddingVertical: 24,
@@ -74,7 +83,7 @@ whiteCardContainer: {
 },
 
 CardTextContainer: {
-    width: '60%',
+    width: '65%',
     margin: -4,
         
 },
@@ -99,11 +108,50 @@ PictureProfileContainer: {
     height: 70,
 },
 
+whiteSearchContainer: {
+    backgroundColor: Colors.whiteColor,
+    borderRadius: 40,
+    //spaces
+    paddingHorizontal: 36,
+    paddingVertical: 24,
+    marginBottom: 24,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+
+}, 
+
 GreyCircleButton: {
     borderRadius: 35,
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 4, 
+},
+
+RecommendationContainer: {
+    flexDirection: 'row',
+    marginVertical: 20,
+    paddingVertical: 20,
+},
+
+ImageHolderContainer: {
+    backgroundColor: Colors.whiteColor,
+    borderRadius: 16,
+    marginLeft: 36,
+    width: 300,
+    height: 300,
+    
+    //positions for icon
+    alignItems: 'center',
+    justifyContent: 'center',
+
+    // iOS Shadow
+    shadowColor: Colors.shadow,
+    shadowOpacity: 100,
+    shadowRadius: 80,
+    // Android Shadow
+    elevation: Platform.OS === 'android' ? 20 : 0,
+    shadowColor: Platform.OS === 'android' ? Colors.shadowAndroid : Colors.shadow,
 },
 
     //TabNavigator container with shadow 
@@ -116,6 +164,10 @@ GreyCircleButton: {
         //spaces
         marginBottom: 24,
         alignItems: 'center',
+        position: 'absolute',
+        bottom: 20,
+        left: 20,
+        right: 20,
 
         
         // iOS Shadow
@@ -129,17 +181,22 @@ GreyCircleButton: {
         shadowColor: Platform.OS === 'android' ? Colors.shadowAndroid : Colors.shadow,
     },
 
-        //TabNavigator inside container with shadow 
-        navigatorInnerContainer: {
+    //TabNavigator inside container with shadow 
+    navigatorInnerContainer: {
             width: '90%',
             //spaces
             padding: 12,
             flexDirection: 'row',
             justifyContent: 'space-around',
             alignItems: 'center',
+    },
 
-            
+    //image holder full screen
+    imageHolderImage: {
+            width: '100%',
+            height: '100%',
         },
+
 
     //For forms (signin/signup/etc...)
     whiteFormContainer: {
@@ -533,6 +590,12 @@ GreyCircleButton: {
     ...Typography.paragraphSmallGrey,
     color: Colors.textColor,
     marginTop: 2,
+  },
+
+//for navigation bar
+  iconContainer: {
+    alignItems: 'center',
+    paddingTop: 4,
   },
 
 
