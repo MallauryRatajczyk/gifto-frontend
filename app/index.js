@@ -27,6 +27,7 @@ import Colors from '../elements/styles/Colors';
 import GlobalStyles from '../elements/styles/GlobalStyles';
 import RechercheTrocScreen from './rechercheTroc';
 import ItemTrocScreen from './itemTroc';
+import CreeTrocScreen from './creationTroc';
 // // import AjoutDon from "./AjoutDonPage";
 // import UploadImages from '../elements/images/UploadImages';
 // // import Photos from '../elements/images/Photos';
@@ -113,6 +114,7 @@ export default function App() {
               <Stack.Screen name="rechercheRecevoir" component={rechercheRecevoir} />
               <Stack.Screen name="RechercheTrocScreen" component={RechercheTrocScreen} />
               <Stack.Screen name="ItemTrocScreen" component={ItemTrocScreen} />
+              <Stack.Screen name="CreeTrocScreen" component={CreeTrocScreen} />
             </Stack.Navigator>
           </NavigationContainer>
         </View>

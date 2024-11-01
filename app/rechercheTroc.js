@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import MainButton from '../elements/components/buttons/MainButton';
 import Typography from "../elements/styles/Typography";
 import Colors from '../elements/styles/Colors';
 import GlobalStyles from '../elements/styles/GlobalStyles';
 import { SearchIcon } from '../elements/assets/Icons';
+import React from 'react';
 
 const BACKEND_ADDRESS = "http://192.168.86.114:3000"
 
@@ -14,9 +15,10 @@ export default function RechercheTrocScreen({ navigation }) {
     const [resultats, setResultats] = useState([]);
     const [itemRecommande, setItemRecommande] = useState([]);
     const [montreResult, setMontreResult] = useState(false);
-    textColor = Colors.textColor,
-    iconColor = Colors.purpleColor,
-    placeholder = "Rechercher",
+    const [loading, setLoading] = useState(false);
+
+    const textColor = Colors.textColor;
+    const iconColor = Colors.purpleColor;
 
     useEffect(() => {
         async function itemRandom() {
@@ -38,10 +40,10 @@ export default function RechercheTrocScreen({ navigation }) {
 
     const handleSearch = () => {
         if (chercher.trim() === '') return;
+        setLoading(true);
         fetch(`${BACKEND_ADDRESS}/item`)
             .then(response => response.json())
             .then(data => {
-                console.log(data);
                 // Filtre les items où troc est true
                 const filtreTrocTrue = data.item.filter(item => item.troc === true);
                 const resultatsFiltres = filtreTrocTrue.filter(item =>
@@ -49,11 +51,13 @@ export default function RechercheTrocScreen({ navigation }) {
                 );
                 setResultats(resultatsFiltres);
                 setMontreResult(true);
+                setLoading(false);
             })
             .catch(error => {
                 console.error(error);
                 setMontreResult(true); // Afficher les résultats même en cas d'erreur
                 setResultats([]);
+                setLoading(false);
             });
     }
 
@@ -63,24 +67,21 @@ export default function RechercheTrocScreen({ navigation }) {
 
     return (
         <SafeAreaProvider style={{ padding: 10 }}>
-            <SafeAreaView style={{ flex : 1}}>
-            <Text style={[styles.coloredHeader, styles.headerTextWhite]} >Troquer</Text>
-            <View style={[GlobalStyles.whiteSearchContainer, { flexDirection: 'row', alignItems: 'center', padding: 10 }]}>
-            
-
-                <View style={styles.searchContainer}>
+            <SafeAreaView style={{ flex: 1 }}>
+                <Text style={[styles.coloredHeader, styles.headerTextWhite]} >Troquer</Text>
+                <View style={[GlobalStyles.whiteSearchContainer, { flexDirection: 'row', alignItems: 'center', padding: 10 }]}>
                     <TextInput
                         onChangeText={(value) => setChercher(value)}
                         value={chercher}
                         style={{ flex: 1, color: textColor, fontSize: 16 }}
-                        placeholder={placeholder}
+                        placeholder="Rechercher"
                         placeholderTextColor={Colors.shadow}
                     />
                     <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
-                    <SearchIcon width={24} height={24} color={iconColor} style={{ marginRight: 10 }} />
+                        <SearchIcon width={24} height={24} color={iconColor} style={{ marginRight: 10 }} />
                     </TouchableOpacity>
                 </View>
-                </View>
+                {loading && <ActivityIndicator size="small" color={Colors.shadow} style={{ marginTop: 10 }} />}
                 <View style={{
                     paddingTop: 10,
                     alignItems: "center",
@@ -110,11 +111,14 @@ export default function RechercheTrocScreen({ navigation }) {
                         </>
                     ) : (
                         <>
-                            <Text style={styles.titleTextBlack}>Recommandations</Text>
+                            <View style={GlobalStyles.screenHomeContainer}>
+                                <Text style={GlobalStyles.titleTextBlack}>Recommandations</Text>
+                            </View>
                             <FlatList
                                 data={itemRecommande}
                                 keyExtractor={(item) => item._id.toString()}
                                 horizontal
+                                style={GlobalStyles.RecommendationContainer}
                                 renderItem={({ item }) => (
                                     <View style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: Colors.shadow }}>
                                         <TouchableOpacity style={styles.item} onPress={handlePressItem}>
@@ -147,15 +151,6 @@ export default function RechercheTrocScreen({ navigation }) {
     )
 }
 const styles = StyleSheet.create({
-
-    screenMainContainer: {
-        flex: 1,
-        backgroundColor: Colors.background,
-        paddingHorizontal: 36,
-        justifyContent: 'top', //top alignment for all content
-        align: 'center',
-        display: 'flex',
-    },
     coloredHeader: {
         backgroundColor: Colors.purpleColor, // Default color
         borderBottomRightRadius: 60,
@@ -180,37 +175,17 @@ const styles = StyleSheet.create({
         color: Colors.textColor,
         paddingVertical: 12,
     },
-    textContain: {
-        fontFamily: 'BalooBhaina2-Regular',
-        fontSize: 20,
+    searchButton: {
+        marginLeft: 10,
     },
-    button: {
-        backgroundColor: "#8B85EF",
-        padding: 10,
-        width: 320,
-        height: 40,
-        borderRadius: 50,
-        margin: 5
-    },
-    textButton: {
-        fontFamily: 'BalooBhaina2-Regular',
-        color: 'white',
-        textAlign: 'center'
-    },
-    textInput: {
-        borderWidth: 1,
-        borderRadius: 50,
-        width: 320,
-        height: 40,
-        margin: 10,
-        fontFamily: 'BalooBhaina2-Regular',
-        fontSize: 15,
-        alignItems: "center",
-        backgroundColor: "white"
-    },
-    searchContainer: {
+    item: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 25,
+    },
+    image: {
+        width: 50,
+        height: 50,
+        borderRadius: 5,
+        marginRight: 10,
     },
 });    

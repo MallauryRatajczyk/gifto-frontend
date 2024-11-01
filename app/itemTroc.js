@@ -1,11 +1,20 @@
-import { Text, View, Image, StyleSheet, TouchableOpacity, TextInput, FlatList } from "react-native";
-import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { useState, useEffect } from 'react';
+import { ActivityIndicator, FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import MainButton from '../elements/components/buttons/MainButton';
 import Typography from "../elements/styles/Typography";
 import Colors from '../elements/styles/Colors';
 import GlobalStyles from '../elements/styles/GlobalStyles';
 import { SearchIcon } from '../elements/assets/Icons';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
+import ImageHolder from '../elements/components/navigation/ImageHolder';
+import HeaderMenu from '../elements/components/navigation/HeaderMenu';
+
+import SearchBar from '../elements/components/navigation/SearchBar';
+
+const BACKEND_ADDRESS = "http://192.168.86.114:3000"
 
 export default function ItemTrocScreen({ navigation }) {
     useEffect(() => {

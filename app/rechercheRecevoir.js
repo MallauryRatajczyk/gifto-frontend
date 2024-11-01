@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import GlobalStyles from '../elements/styles/GlobalStyles';
@@ -9,7 +10,7 @@ import HeaderMenu from '../elements/components/navigation/HeaderMenu';
 
 import SearchBar from '../elements/components/navigation/SearchBar';
 
-
+const BACKEND_ADDRESS = "http://192.168.86.114:3000"
 
 export default function RechercheRecevoir() {
   const navigation = useNavigation();
@@ -21,13 +22,13 @@ export default function RechercheRecevoir() {
 
 
       <View style={GlobalStyles.screenHomeContainer}>  
-        <Text style={GlobalStyles.titleTextBlack}>Recommendation</Text>
+        <Text style={GlobalStyles.titleTextBlack}>Recommandation</Text>
       </View>
 
       <ScrollView
       horizontal
       showsHorizontalScrollIndicator={false}
-      style={GlobalStyles.RecommendationContainer}>
+      style={GlobalStyles.RecommandationContainer}>
         <ImageHolder onPress={() => console.log('Image holder clicked!')} />
         <ImageHolder onPress={() => console.log('Image holder clicked!')} />
         <ImageHolder onPress={() => console.log('Image holder clicked!')} />
@@ -39,7 +40,7 @@ export default function RechercheRecevoir() {
         </ScrollView>
           
         <View style={GlobalStyles.screenHomeContainer}>  
-        <Text style={GlobalStyles.titleTextBlack}>Recommendation</Text>
+        <Text style={GlobalStyles.titleTextBlack}>Recommandation</Text>
       </View>
 
 
