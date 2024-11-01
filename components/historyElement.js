@@ -2,7 +2,7 @@ import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { useState, useEffect } from 'react';
 const { formatDateToUserReadable } = require('../modules/getDate');
 
-export default function Notification(props) {
+export default function HistoryElement(props) {
     const [itemName, setItemName] = useState("");
     const [isPending, setIsPending] = useState(props.statut === "pending");
     const [interlocuteur, setInterlocuteur] = useState("");

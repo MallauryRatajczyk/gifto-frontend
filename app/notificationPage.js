@@ -3,52 +3,72 @@ import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import GlobalStyles from '../elements/styles/GlobalStyles';
 import MainButton from '../elements/components/buttons/MainButton';
-import SecondaryButton from '../elements/components/buttons/SecondaryButton';
-import { useState, useEffect } from 'react';
 import NotificationHeader from '../elements/components/navigation/NotificationHeader';
-import Notification from '../components/notification'
+import Notification from '../components/notification';
+import { useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
+
+const { getId } = require('../modules/verifUser');
 
 export default function SettingsPage() {
   const navigation = useNavigation();
-  const [error, setError] = useState('');
-  const [notification, setNotification] = useState([]);
-
-
-  async function redirect(demande) {
-    const fetched = await fetch(`http://192.168.1.81:3000/demande/${demande}`);
-    const response = await fetched.json();
-    const fetchedID = await fetch(`http://192.168.1.81:3000/user/${demande}`)
-    if (response.result) {
-      navigation.navigate('Chat', { message: response.demande })
-    } else {
-      console.log("erreur redirect")
-    }
-  }
+  const [id, setId] = useState('');
+  const [notifications, setNotifications] = useState([]);
+  const user = useSelector((state) => state.user.value);
+  const [error, setError] = useState();
 
   useEffect(() => {
     async function fetchData() {
-      const fetched = await fetch(`http://192.168.1.81:3000/demande/mesdemandes/${id}`);
-      const response = await fetched.json();
-      if (response.error) {
-        setError(response.error)
-      } else {
-        setNotification(response.demandes)
+      try {
+        const fetchedID = await fetch(`http://192.168.1.81:3000/users/token/${user.token}`);
+        const responseId = await fetchedID.json();
+        setId(responseId.user.id);
+
+        const fetched = await fetch(`http://192.168.1.81:3000/demande/mesdemandes/${responseId.user.id}`);
+        const response = await fetched.json();
+
+        if (response.error) {
+          setError(response.error);
+        } else {
+          setNotifications(response.demandes);
+        }
+      } catch (error) {
+        console.error("Erreur lors de la récupération des données:", error);
+        setError("Une erreur s'est produite.");
       }
     }
-    fetchData()
-  }, [])
+    fetchData();
+  }, [user.token]); // Ajouter user.token comme dépendance
 
-  const allNotifications = notification.map((x, i) => {
+  const allNotifications = notifications.map((x, i) => {
+    let interlocuteur = '';
+    let drt = 'Troquer'; // Valeur par défaut
 
-    return (<TouchableOpacity key={i} style={styles.container}>
-      <View style={styles.box}>
-        <View style={styles.dot} />
-        <Text style={styles.title}>{x.message}</Text>
-        <Text style={styles.id}>{x.dateCreation}</Text>
-        <Text style={styles.date}>{x.expediteur}</Text>
-      </View>
-    </TouchableOpacity>)
-  })
+    if (!x.type.troc) {
+      if (id === x.possesseur) {
+        interlocuteur = x.demandeur;
+        drt = "Donner";
+      } else {
+        interlocuteur = x.possesseur;
+        drt = "Recevoir";
+      }
+    }
+
+    return (
+      <Notification
+        key={i}
+        item={x.item}
+        message={x.message[x.message.length - 1].message}
+        interlocuteur={interlocuteur}
+        statut={x.statut}
+        type={drt}
+        objProp={x.type.objetPropose}
+        de={x.message[x.message.length - 1].de}
+        a={x.message[x.message.length - 1].a}
+        date={x.message[x.message.length - 1].date}
+      />
+    );
+  });
 
   return (
     <View style={GlobalStyles.screenMainContainer}>
@@ -60,7 +80,6 @@ export default function SettingsPage() {
         />
       </View>
       {allNotifications}
-      <Notification />
     </View>
   );
 }
@@ -128,3 +147,4 @@ const styles = StyleSheet.create({
     lineHeight: 14,
   },
 });
+
