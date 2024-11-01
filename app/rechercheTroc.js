@@ -1,9 +1,11 @@
-import { Text, View, Image, StyleSheet, TouchableOpacity, TextInput, FlatList } from "react-native";
-import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { useState, useEffect } from 'react';
+import { FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import MainButton from '../elements/components/buttons/MainButton';
-import Colors from '../elements/styles/Colors';
 import Typography from "../elements/styles/Typography";
+import Colors from '../elements/styles/Colors';
+import GlobalStyles from '../elements/styles/GlobalStyles';
+import { SearchIcon } from '../elements/assets/Icons';
 
 const BACKEND_ADDRESS = "http://192.168.86.114:3000"
 
@@ -12,6 +14,9 @@ export default function RechercheTrocScreen({ navigation }) {
     const [resultats, setResultats] = useState([]);
     const [itemRecommande, setItemRecommande] = useState([]);
     const [montreResult, setMontreResult] = useState(false);
+    textColor = Colors.textColor,
+    iconColor = Colors.purpleColor,
+    placeholder = "Rechercher",
 
     useEffect(() => {
         async function itemRandom() {
@@ -52,24 +57,29 @@ export default function RechercheTrocScreen({ navigation }) {
             });
     }
 
-    const handlePress = () => {
-        navigation.navigate('HomePage');
+    const handlePressItem = () => {
+        navigation.navigate('ItemTrocScreen');
     }
 
     return (
-        <SafeAreaProvider style={{ flex: 1 }}>
-            <SafeAreaView style={styles.screenMainContainer}>
-                <Text style={[styles.coloredHeader, styles.headerTextWhite]} >Troquer</Text>
+        <SafeAreaProvider style={{ padding: 10 }}>
+            <SafeAreaView style={{ flex : 1}}>
+            <Text style={[styles.coloredHeader, styles.headerTextWhite]} >Troquer</Text>
+            <View style={[GlobalStyles.whiteSearchContainer, { flexDirection: 'row', alignItems: 'center', padding: 10 }]}>
+            
+
                 <View style={styles.searchContainer}>
                     <TextInput
                         onChangeText={(value) => setChercher(value)}
                         value={chercher}
-                        style={styles.textInput}
-                        placeholder="Rechercher"
+                        style={{ flex: 1, color: textColor, fontSize: 16 }}
+                        placeholder={placeholder}
+                        placeholderTextColor={Colors.shadow}
                     />
                     <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
-                        <Text style={styles.buttonText}>🔍</Text>
+                    <SearchIcon width={24} height={24} color={iconColor} style={{ marginRight: 10 }} />
                     </TouchableOpacity>
+                </View>
                 </View>
                 <View style={{
                     paddingTop: 10,
@@ -86,16 +96,16 @@ export default function RechercheTrocScreen({ navigation }) {
                                 data={resultats}
                                 keyExtractor={(item) => item._id.toString()}
                                 renderItem={({ item }) => (
-                                    <View style={styles.itemContainer}>
-                                        <TouchableOpacity style={styles.item} onPress={handlePress}>
+                                    <View style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: Colors.shadow }}>
+                                        <TouchableOpacity style={styles.item} onPress={handlePressItem}>
                                             <Image
                                                 source={{ uri: item.image }}
                                                 style={styles.image}
                                             />
-                                            <Text>{item.name}</Text>
+                                            <Text style={{ color: Colors.textColor }}>{item.name}</Text>
                                         </TouchableOpacity>
                                     </View>
-                                )}
+                                )} style={{ marginTop: 10 }}
                             />
                         </>
                     ) : (
@@ -106,13 +116,13 @@ export default function RechercheTrocScreen({ navigation }) {
                                 keyExtractor={(item) => item._id.toString()}
                                 horizontal
                                 renderItem={({ item }) => (
-                                    <View style={styles.itemContainer}>
-                                        <TouchableOpacity style={styles.item} onPress={handlePress}>
+                                    <View style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: Colors.shadow }}>
+                                        <TouchableOpacity style={styles.item} onPress={handlePressItem}>
                                             <Image
                                                 source={{ uri: item.image }}
                                                 style={styles.image}
                                             />
-                                            <Text>{item.name}</Text>
+                                            <Text style={{ color: Colors.textColor }}>{item.name}</Text>
                                         </TouchableOpacity>
                                     </View>
                                 )}

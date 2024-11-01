@@ -23,7 +23,7 @@ export default function Connection({ navigation }) {
                     setError(data.error)
                 } else {
                     dispatch(toConnectUser({ token: data.token, email, username: data.username }));
-                    navigation.navigate('Home')
+                    navigation.navigate('TabNavigator')
                 }
             })
     }
