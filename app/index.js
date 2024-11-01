@@ -36,6 +36,9 @@ import NavigationBar from '../elements/components/navigation/NavigationBar';
 import Colors from '../elements/styles/Colors';
 import GlobalStyles from '../elements/styles/GlobalStyles';
 import { View } from 'react-native';
+// import AjoutDon from "./AjoutDonPage";
+import UploadImages from '../elements/images/UploadImages';
+// import Photos from '../elements/images/Photos';
 
 // Combine reducers
 const reducers = combineReducers({ user });
@@ -105,7 +108,9 @@ export default function App() {
 
         <NavigationContainer independent={true} >
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-
+              {/* <Stack.Screen name="AjoutDon" component={AjoutDon} />  */}
+             <Stack.Screen name="UploadImages" component={UploadImages} />
+             {/* <Stack.Screen name="Photos" component={Photos} /> */}
               <Stack.Screen name="TabNavigator" component={MainTabNavigator}  />
 
             </Stack.Navigator>
