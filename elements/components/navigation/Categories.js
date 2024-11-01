@@ -18,42 +18,50 @@ const Categories = ({ categorie, setCategorie, sousCategorie, setSousCategorie})
 
 
   return (
-    <View style={styles.pickerContainer}>
-      <Text>Catégories</Text>
-      <Picker
-        selectedValue={categorie}
-        onValueChange={(itemValue) => setCategorie(itemValue)}
-        style={styles.picker}
-      >
-        <Picker.Item label="Sélectionner une catégorie" value="" />
-        {categories.map((category) => (
-          <Picker.Item key={category.name} label={category.name} value={category.name} />
-        ))}
-      </Picker>
-
-      <Text>Sous-catégories</Text>
-      <Picker
-        selectedValue={sousCategorie}
-        onValueChange={(itemValue) => setSousCategorie(itemValue)}
-        style={styles.picker}
-      >
-        <Picker.Item label="Sélectionner une sous-catégorie" value="" />
-        {categories.find(cat => cat.name === categorie)?.subcategories.map((subcategory) => (
-          <Picker.Item key={subcategory.name} label={subcategory.name} value={subcategory.name} />
-        ))}                                                                                          
-      </Picker>          
-    
+    <View style={styles.container}>
+        <View style={styles.pickerContainer}>
+            <Text style={styles.h4}>Catégories</Text>
+            <Picker
+                selectedValue={categorie}
+                onValueChange={(itemValue) => setCategorie(itemValue)}
+                style={styles.picker}
+            >
+                <Picker.Item label="Sélectionner une catégorie" value="" />
+                {categories.map((category) => (
+                <Picker.Item key={category.name} label={category.name} value={category.name} />
+                ))}
+            </Picker>
+      </View>
+      <View style={styles.pickerContainer}>
+        <Text style={styles.h4}>Sous-catégories</Text>
+        <Picker
+            selectedValue={sousCategorie}
+            onValueChange={(itemValue) => setSousCategorie(itemValue)}
+            style={styles.picker}
+        >
+            <Picker.Item label="Sélectionner une sous-catégorie" value="" />
+            {categories.find(cat => cat.name === categorie)?.subcategories.map((subcategory) => (
+            <Picker.Item key={subcategory.name} label={subcategory.name} value={subcategory.name} />
+            ))}                                                                                          
+        </Picker>          
+    </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   pickerContainer: {
-    marginVertical: 10,
+    position: 'relative',
   },
   picker: {
     height: 50,
     width: '100%',
+  },
+  paragraphMain: { 
+    paddingTop: 20,
+    fontFamily: 'BalooBhaijaan2_400Regular',
+    fontSize: 13,
+    lineHeight: 14,
   },
 });
 

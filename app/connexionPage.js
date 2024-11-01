@@ -22,7 +22,7 @@ export default function Connection({ navigation }) {
 
     // Function to handle user login
     const connect = (userObject) => {
-        fetch('http://192.168.1.81:3000/users/login', {
+        fetch(`${BACKEND_ADDRESS}/users/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(userObject)
