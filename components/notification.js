@@ -30,8 +30,11 @@ export default function Notification(props) {
         }
     }, []);
 
+
+    //arret vendredi
     const isRead = () => {
         setIsPending(!isPending);
+        fetch(`http://192.168.1.81:3000/demandes/${props.id}`)
     }
 
 

@@ -10,8 +10,7 @@ import { useState, useEffect } from 'react';
 
 const { getId } = require('../modules/verifUser');
 
-export default function SettingsPage() {
-  const navigation = useNavigation();
+export default function NotificationPage({ navigation }) {
   const [id, setId] = useState('');
   const [notifications, setNotifications] = useState([]);
   const user = useSelector((state) => state.user.value);
@@ -56,6 +55,7 @@ export default function SettingsPage() {
 
     return (
       <Notification
+        id={x._id}
         key={i}
         item={x.item}
         message={x.message[x.message.length - 1].message}
@@ -76,7 +76,7 @@ export default function SettingsPage() {
       <View style={GlobalStyles.container}>
         <MainButton
           title="Historique"
-          onPress={() => navigation.navigate('Connection')}
+          onPress={() => navigation.navigate('HistoryPage')}
         />
       </View>
       {allNotifications}

@@ -16,6 +16,7 @@ import {
 import { store, persistor } from '../reducers/store'; // Import from store.js
 import HomePage from './homePage';
 import NotificationPage from './notificationPage';
+import HistoryPage from './historyPage';
 import SettingsPage from './settingsPage';
 import ProfilePage from './profilePage';
 import Authentification from './authentification';
@@ -102,6 +103,7 @@ export default function App() {
                 {(props) => <MainTabNavigator {...props} activeRoute={activeRoute} />}
               </Stack.Screen>
               <Stack.Screen name="ProfilePage" component={ProfilePage} />
+              <Stack.Screen name="HistoryPage" component={HistoryPage} />
               <Stack.Screen name="Connection" component={Connection} />
               <Stack.Screen name="Inscription" component={Inscription} />
               <Stack.Screen name="rechercheRecevoir" component={rechercheRecevoir} />
