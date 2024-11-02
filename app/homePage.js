@@ -23,15 +23,14 @@ export default function HomePage() {
             imageUrl={profileImageUrl}
             onPress={() => navigation.navigate('ProfilePage')}
           />
-          {/* <Text style={GlobalStyles.titleTextBlack}>Bonjour {firstName}</Text>*/}
-          <Text style={GlobalStyles.titleTextBlack}>Bonjour {username}</Text>
+          <Text style={GlobalStyles.titleTextBlack}>Bonjour {username}!</Text>
         </View>
 
         <BigCardButton
           icon={DonnerIcon}
           title="Donner"
           bodyText="Donnez vos objets à ceux qui en ont le plus besoin !"
-          onPress={() => navigation.navigate('DonnerPage')}
+          onPress={() => navigation.navigate('AjoutDon')}
           textColor={Colors.redColor}
           iconColor={Colors.redColor}
         />
@@ -39,8 +38,8 @@ export default function HomePage() {
         <BigCardButton
           icon={TroquerIcon}
           title="Troquer"
-          bodyText="Échangez vos objets pour ce dont vous avez besoin !"
-          onPress={() => navigation.navigate('TroquerPage')}
+          bodyText="Échangez vos objets pour ce qu'il vous faut !"
+          onPress={() => navigation.navigate('RechercheTroc')}
           textColor={Colors.purpleColor}
           iconColor={Colors.purpleColor}
         />
@@ -49,7 +48,7 @@ export default function HomePage() {
           icon={RecevoirIcon}
           title="Recevoir"
           bodyText="Recevez des objets gratuitement ou en troc !"
-          onPress={() => navigation.navigate('rechercheRecevoir')}
+          onPress={() => navigation.navigate('RechercheRecevoir')}
           textColor={Colors.greenColor}
           iconColor={Colors.greenColor}
         />

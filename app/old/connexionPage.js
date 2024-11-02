@@ -1,15 +1,14 @@
 //WE DON'T NEED THIS FILE ANYMORE
 
-
 import { Text, View, Image, StyleSheet, TouchableOpacity, TextInput } from "react-native";
-import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { toConnectUser } from '../reducers/user'
+//import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
+//import { useState } from 'react';
+//import { useDispatch } from 'react-redux';
+//import { toConnectUser } from '../../reducers/user'
 
-import { GiftoSymbol } from '../elements/assets/Icons';
-import Colors from '../elements/styles/Colors';
-import GlobalStyles from '../elements/styles/GlobalStyles';
+//import { GiftoSymbol } from '../../elements/assets/Icons';
+//import Colors from '../../elements/styles/Colors';
+//import GlobalStyles from '../../elements/styles/GlobalStyles';
 
 export default function Connection({ navigation }) {
     // Initialize the dispatch function for Redux actions
@@ -42,7 +41,7 @@ export default function Connection({ navigation }) {
             <SafeAreaView style={{ flex: 1 }}>
 
                 {/* Logo Section */}
-                <View
+                {/*   <View
                     style={{
                         paddingTop: 10,
                         alignItems: "center",
@@ -50,7 +49,7 @@ export default function Connection({ navigation }) {
                     }}
                 >
                     <Image source={require('../assets/images/logoGifto.png')} style={styles.logoConnection} />
-                </View>
+                </View> */}
 
                 {/* Login Form Section */}
                 <View style={{

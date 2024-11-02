@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import GlobalStyles from '../elements/styles/GlobalStyles';
@@ -9,7 +8,8 @@ import { ShareIcon, MuteIcon, StarIcon } from '../elements/assets/Icons';
 import Colors from '../elements/styles/Colors';
 import HeaderMenu from '../elements/components/navigation/HeaderMenu';
 import ItemCard from '../elements/components/cards/ItemCard';
-import CompletionCard  from '../elements/components/cards/CompletionCard';
+
+
 
 
 
@@ -20,6 +20,7 @@ import CompletionCard  from '../elements/components/cards/CompletionCard';
 export default function SettingsPage() {
   const navigation = useNavigation();
 
+
   return (
     <View style={GlobalStyles.screenMainContainer}>
 
@@ -27,6 +28,13 @@ export default function SettingsPage() {
       <HeaderMenu />
 
 
+      <ItemCard
+        imageSource={{ uri: '-' }}
+        title="Sac de Lacoste"
+        description="This is a description of the item."
+        subcategory="Lorem ipsum dolor sit amet"
+        showSubcategory={true}
+      />
 
     {/* TESTING FINISHED */}
 

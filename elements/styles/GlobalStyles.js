@@ -33,6 +33,7 @@ screenHomeContainer: {
     paddingTop: 60,  
     paddingHorizontal: 36,  
     justifyContent: 'top', //top alignment for all content
+    overflow: 'visible',
     
 },
 
@@ -86,6 +87,24 @@ CardTextContainer: {
     margin: -4,
         
 },
+
+//white main container with shadow
+CompletionContainer: {
+    backgroundColor: Colors.whiteColor,
+    width: Dimensions.get('window').width*0.85,
+    height: Dimensions.get('window').height*0.38,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 200,
+},
+
+CompletionOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', 
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 
 WelcomeContainer: {
     marginBottom: 36,
@@ -153,6 +172,8 @@ ImageHolderContainer: {
     shadowColor: Platform.OS === 'android' ? Colors.shadowAndroid : Colors.shadow,
 },
 
+
+
     //TabNavigator container with shadow 
     navigatorContainer: {
         backgroundColor: Colors.whiteColor,
@@ -205,6 +226,26 @@ ImageHolderContainer: {
         //spaces
         padding: 24,
         marginBottom: 24,
+    
+        // iOS Shadow
+        shadowColor: Colors.shadow,
+        shadowOpacity: 100,
+        shadowRadius: 40,
+        
+        // Android Shadow
+        shadowColor: Colors.shadow,
+        elevation: Platform.OS === 'android' ? 20 : 0,
+        shadowColor: Platform.OS === 'android' ? Colors.shadowAndroid : Colors.shadow,
+    },
+
+    //For description forms
+    descriptionFormContainer: {
+        backgroundColor: Colors.whiteColor,
+        borderRadius: 16,
+        height: 200,
+        
+        //spaces
+        padding: 24,
     
         // iOS Shadow
         shadowColor: Colors.shadow,
@@ -649,8 +690,8 @@ ImageHolderContainer: {
 
   scrollViewContent: {
     flexGrow: 1,
-    justifyContent: 'center',
     paddingBottom: 50,
+    
   },
-  
+
 });

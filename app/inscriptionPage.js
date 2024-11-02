@@ -1,5 +1,3 @@
-//Amir will retouch it in the future
-
 import React, { useState } from 'react';
 import { Text, View, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
@@ -49,132 +47,139 @@ export default function Inscription({ navigation }) {
 
   return (
     <SafeAreaProvider style={GlobalStyles.appStyle}>
-      <SafeAreaView style={GlobalStyles.screenHomeContainer}>
+      <SafeAreaView>
 
         <ScrollView
-          contentContainerStyle={GlobalStyles.scrollViewContent}
+          Style={GlobalStyles.scrollViewContent}
           keyboardShouldPersistTaps="handled"
         >
-          {/* Header section */}
-          <View style={GlobalStyles.IntroLogoContainer}>
-            <GiftoSymbol width={100} height={100} />
-            <Text style={GlobalStyles.headerTextPurple} marginTop={-24}>
-              Inscription
-            </Text>
-          </View>
+          {/* Add a wrapper for shadow spacing */}
+          <View style={GlobalStyles.screenHomeContainer}>
 
-          {/* Registration Form Section */}
-          <View>
-            {/* Email Input Field */}
-            <InputCard
-              title="Adresse Email"
-              onChangeText={(value) => setEmail(value)}
-              value={email}
-              placeholder="johndoe@gmail.com"
-              autoComplete="email"
-              keyboardType="email-address"
-              textContentType="emailAddress"
-            />
-
-            {/* Last Name Input */}
-            <InputCard
-              title="Nom"
-              onChangeText={(value) => setNom(value)}
-              value={nom}
-              placeholder="NOM"
-              autoComplete="name-family"
-              autoCapitalize="characters"
-            />
-
-            {/* First Name Input */}
-            <InputCard
-              title="Prénom"
-              onChangeText={(value) => setPrenom(value)}
-              value={prenom}
-              placeholder="Prénom"
-              autoComplete="name-given"
-              autoCapitalize="words"
-            />
-
-            {/* Username Input */}
-            <InputCard
-              title="Nom d'utilisateur"
-              onChangeText={(value) => setUsername(value)}
-              value={username}
-              placeholder="Nom d'utilisateur"
-              autoComplete="username"
-              autoCapitalize="none"
-            />
-
-            {/* Date of Birth Input */}
-            <DateInputCard
-              title="Date de naissance"
-              value={date}
-              onChange={(selectedDate) => setDate(selectedDate)}
-              placeholder="Date de naissance"
-            />
-
-            {/* Password Input Fields */}
-            <PasswordInputCard
-              title="Mot de passe"
-              onChangeText={(value) => setPassword(value)}
-              value={password}
-              placeholder="Mot de passe"
-            />
-
-            <PasswordInputCard
-              title="Confirmer le mot de passe"
-              onChangeText={(value) => setVerifPassword(value)}
-              value={verifPassword}
-              placeholder="Confirmer le mot de passe"
-            />
-
-            {/* Display error messages if any */}
-            {wrongPassword && (
-              <Text style={GlobalStyles.errorText}>
-                Les mots de passe ne correspondent pas.
+            {/* Header section */}
+            <View style={GlobalStyles.IntroLogoContainer}>
+              <GiftoSymbol width={100} height={100} />
+              <Text style={GlobalStyles.headerTextPurple} marginTop={-24}>
+                Inscription
               </Text>
-            )}
-            {error && <Text style={GlobalStyles.errorText}>{error}</Text>}
+            </View>
+
+            {/* Registration Form Section */}
+            <View>
+              {/* Email Input Field */}
+              <InputCard
+                title="Adresse Email"
+                onChangeText={(value) => setEmail(value)}
+                value={email}
+                placeholder="johndoe@gmail.com"
+                autoComplete="email"
+                keyboardType="email-address"
+                textContentType="emailAddress"
+              />
+
+              {/* Last Name Input */}
+              <InputCard
+                title="Nom"
+                onChangeText={(value) => setNom(value)}
+                value={nom}
+                placeholder="NOM"
+                autoComplete="name-family"
+                autoCapitalize="characters"
+              />
+
+              {/* First Name Input */}
+              <InputCard
+                title="Prénom"
+                onChangeText={(value) => setPrenom(value)}
+                value={prenom}
+                placeholder="Prénom"
+                autoComplete="name-given"
+                autoCapitalize="words"
+              />
+
+              {/* Username Input */}
+              <InputCard
+                title="Nom d'utilisateur"
+                onChangeText={(value) => setUsername(value)}
+                value={username}
+                placeholder="Nom d'utilisateur"
+                autoComplete="username"
+                autoCapitalize="none"
+              />
+
+              {/* Date of Birth Input */}
+              <DateInputCard
+                title="Date de naissance"
+                value={date}
+                onChange={(selectedDate) => setDate(selectedDate)}
+                placeholder="Date de naissance"
+              />
+
+              {/* Password Input Fields */}
+              <PasswordInputCard
+                title="Mot de passe"
+                onChangeText={(value) => setPassword(value)}
+                value={password}
+                placeholder="Mot de passe"
+              />
+
+              <PasswordInputCard
+                title="Confirmer le mot de passe"
+                onChangeText={(value) => setVerifPassword(value)}
+                value={verifPassword}
+                placeholder="Confirmer le mot de passe"
+              />
+
+              {/* Display error messages if any */}
+              {wrongPassword && (
+                <Text style={GlobalStyles.errorText}>
+                  Les mots de passe ne correspondent pas.
+                </Text>
+              )}
+              {error && <Text style={GlobalStyles.errorText}>{error}</Text>}
+            </View>
+
+            {/* Registration Button */}
+            <MainButton
+              title="S'inscrire"
+              onPress={() => {
+                setWrongPassword(false);
+                setError('');
+                if (password === verifPassword) {
+                  register({
+                    email,
+                    nom,
+                    prenom,
+                    username,
+                    password,
+                    age: date,
+                  });
+                } else {
+                  setWrongPassword(true);
+                }
+              }}
+              normalBackgroundColor={Colors.purpleColor}
+              clickedBackgroundColor={Colors.redColor}
+            />
+
+            {/* Back Button */}
+            <SecondaryButton
+              title="Retour"
+              onPress={() => navigation.navigate('Authentification')}
+              normalBackgroundColor={Colors.backgroundColor}
+              clickedBackgroundColor={Colors.redColor}
+              normalStrokeColor={Colors.redColor}
+              clickedStrokeColor={Colors.redColor}
+              normalTextColorStyle={GlobalStyles.buttonTextRed}
+              clickedTextColorStyle={GlobalStyles.buttonTextWhite}
+            />
+
+              {/* Spacing */}
+              <View style={{ marginVertical: 140 }} />
+
           </View>
 
-          {/* Registration Button */}
-          <MainButton
-            title="S'inscrire"
-            onPress={() => {
-              setWrongPassword(false);
-              setError('');
-              if (password === verifPassword) {
-                register({
-                  email,
-                  nom,
-                  prenom,
-                  username,
-                  password,
-                  age: date,
-                });
-              } else {
-                setWrongPassword(true);
-              }
-            }}
-            normalBackgroundColor={Colors.purpleColor}
-            clickedBackgroundColor={Colors.redColor}
-          />
 
-          {/* Back Button */}
-          <SecondaryButton
-            title="Retour"
-            onPress={() => navigation.navigate('Authentification')}
-            normalBackgroundColor={Colors.backgroundColor}
-            clickedBackgroundColor={Colors.redColor}
-            normalStrokeColor={Colors.redColor}
-            clickedStrokeColor={Colors.redColor}
-            normalTextColorStyle={GlobalStyles.buttonTextRed}
-            clickedTextColorStyle={GlobalStyles.buttonTextWhite}
-          />
-
-            {/* Spacing */}
-            <View style={{ marginVertical: 140 }} />
 
                     
         </ScrollView>
