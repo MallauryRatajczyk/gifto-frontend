@@ -30,7 +30,7 @@ import CreeTrocScreen from './creationTroc';
 import NavigationBar from '../elements/components/navigation/NavigationBar';
 import Colors from '../elements/styles/Colors';
 import GlobalStyles from '../elements/styles/GlobalStyles';
-import AjoutDon from "./AjoutDonPage";
+// import AjoutDon from "./AjoutDonPage";
 // import UploadImages from '../elements/images/UploadImages';
 // // import Photos from '../elements/images/Photos';
 
@@ -71,7 +71,7 @@ function MainTabNavigator({ activeRoute }) {
       <Tab.Screen name="Notification" component={NotificationPage} />
       <Tab.Screen name="Settings" component={SettingsPage} />
       {/* screens that will have the NavigationBar */}
-      <Tab.Screen name="rechercheRecevoir" component={rechercheRecevoir} options={{ tabBarButton: () => null }} />
+      {/* <Tab.Screen name="rechercheRecevoir" component={rechercheRecevoir} options={{ tabBarButton: () => null }} /> */}
 
     </Tab.Navigator>
   );
@@ -109,7 +109,7 @@ export default function App() {
             }}
           >
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="AjoutDon" component={AjoutDon} />
+            {/* <Stack.Screen name="AjoutDon" component={AjoutDon} /> */}
               <Stack.Screen name="RechercheTrocScreen" component={RechercheTrocScreen}/>
               <Stack.Screen name="CreeTrocScreen" component={CreeTrocScreen}/>
               <Stack.Screen name="Authentification" component={Authentification} />
@@ -121,7 +121,7 @@ export default function App() {
               <Stack.Screen name="ProfilePage" component={ProfilePage} />
               <Stack.Screen name="Connection" component={Connection} />
               <Stack.Screen name="Inscription" component={Inscription} />
-              <Stack.Screen name="rechercheRecevoir" component={rechercheRecevoir} />
+              {/* <Stack.Screen name="rechercheRecevoir" component={rechercheRecevoir} /> */}
             </Stack.Navigator>
           </NavigationContainer>
         </View>

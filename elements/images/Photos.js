@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { StyleSheet, TouchableOpacity, View, Modal, Text, Alert } from "react-native";
 import { Camera, CameraType, FlashMode } from "expo-camera/legacy";
 import { useDispatch } from "react-redux";
-import { addPhoto } from "../../reducers/imagesArticles";
+import { addImage, removeImage } from "../../reducers/imagesArticles";
 // import * as ImagePicker from "expo-image-picker";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useIsFocused } from "@react-navigation/native";
@@ -10,7 +10,7 @@ import { useIsFocused } from "@react-navigation/native";
 
 const BACKEND_ADDRESS = "http://192.168.1.182:3000";        
 
-export default function Photos({navigation, isCameraVisible, onClose }) {
+export default function Photos({navigation, isCameraVisible, onClose, onImageAdd }) {
     const dispatch = useDispatch();
 	const isFocused = useIsFocused();
 
@@ -47,9 +47,18 @@ export default function Photos({navigation, isCameraVisible, onClose }) {
 		})
 			.then((response) => response.json())
 			.then((data) => {
-				data.result && dispatch(addPhoto(data.url));
-				onClose();
+				if (data.result) {
+					dispatch(addImage(data.url)); // Mise à jour du Redux
+					onImageAdd(data.url); // Envoi de l'image au composant parent
+					onClose(); // Fermeture de la caméra
+				} else {
+					console.error("Erreur : le serveur n'a pas retourné un résultat valide.");
+				}
+			})
+			.catch((error) => {
+				console.error("Erreur lors de la prise ou de l'envoi de la photo :", error);
 			});
+
 	};
 
 	// const changeTab = () => navigation.navigate('AjoutDonPage');
@@ -84,9 +93,9 @@ export default function Photos({navigation, isCameraVisible, onClose }) {
                     </TouchableOpacity>
 					
 				</View>
-
+						{/* ajout des fonctions : onImageAdd, onClose */}
 				<View style={styles.snapContainer}>
-					<TouchableOpacity onPress={() => cameraRef && takePicture()}>
+					<TouchableOpacity onPress={() => cameraRef && takePicture()}>    
 						<FontAwesome name="circle-thin" size={95} color="#ffffff" />
 					</TouchableOpacity>
 					</View>
