@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import GlobalStyles from '../../styles/GlobalStyles';
 import Colors from '../../styles/Colors';
+import { ImageHolderIcon } from '../../assets/Icons';
 
 const ItemCard = ({
   imageSource,
@@ -9,63 +10,63 @@ const ItemCard = ({
   description,
   subcategory,
   showSubcategory = false,
+  onPress,
 }) => {
+  const hasImage =
+  imageSource &&
+  (
+    (typeof imageSource === 'number') || // Local image (require)
+    (imageSource.uri && imageSource.uri !== '-' && imageSource.uri !== '') // URI-based image
+    
+  );
+
+
   return (
-    <View style={[GlobalStyles.whiteContainer, styles.cardContainer]}>
+    <View style={GlobalStyles.ItemCardContainer}>
+
       {/* Image Container */}
-      <View style={styles.imageContainer}>
-        <Image source={imageSource} style={styles.imageStyle} />
+      <View style={GlobalStyles.ImageTagContainer}>
+        <View
+          style={[
+            GlobalStyles.MiniImageHolderContainer,
+            { backgroundColor: hasImage ? 'transparent' : Colors.superLightGreyColor },
+          ]}
+        >
+          {hasImage ? (
+            <Image
+              source={imageSource}
+              style={GlobalStyles.ImageStyle} 
+              resizeMode="cover"
+            />
+          ) : (
+            <ImageHolderIcon width={35} height={35} color={Colors.lightGreyColor} />
+          )}
+        </View>
+
         {/* Optional Subcategory Tag */}
-        {showSubcategory && (
-          <View style={styles.tagContainer}>
-            <Text style={styles.tagText}>{subcategory}</Text>
+        {showSubcategory && subcategory ? (
+          <View style={GlobalStyles.TagContainer}>
+            <Text style={[GlobalStyles.whiteTinyText, { marginBottom: -8 }, { marginTop: 1}]}>{subcategory}</Text>
           </View>
-        )}
+        ) : null}
       </View>
 
+
       {/* Text Container */}
-      <View style={styles.textContainer}>
+      <View style={GlobalStyles.ItemTextContainer}>
         {/* Title */}
-        <Text style={GlobalStyles.subtitleTextBlack}>{title}</Text>
+        <Text style={[GlobalStyles.subtitleTextBlack, { marginBottom: -8 }]}>{title}</Text>
+
         {/* Description */}
-        <Text style={GlobalStyles.smallTextGrey}>{description}</Text>
+        <Text style={GlobalStyles.smallTextGrey}
+          numberOfLines={4}
+          ellipsizeMode="tail"
+        >
+          {description}
+        </Text>
       </View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  cardContainer: {
-    // Adjust as needed
-    marginVertical: 10,
-    borderRadius: 10,
-    overflow: 'hidden',
-  },
-  imageContainer: {
-    position: 'relative',
-  },
-  imageStyle: {
-    width: '100%',
-    height: 200, // Adjust height as needed
-    resizeMode: 'cover',
-  },
-  tagContainer: {
-    position: 'absolute',
-    top: 10,
-    left: 10,
-    backgroundColor: Colors.purpleColor,
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-  },
-  tagText: {
-    color: Colors.whiteColor,
-    fontFamily: 'BalooBhaina2-Regular',
-    fontSize: 14,
-  },
-  textContainer: {
-    padding: 15,
-  },
-});
 
 export default ItemCard;

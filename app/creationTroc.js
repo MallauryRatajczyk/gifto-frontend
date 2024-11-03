@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Picker, ScrollView } from "react-native";
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
+import Colors from '../elements/styles/Colors';
+import MainButton from '../elements/components/buttons/MainButton'; //validation button
+import CompletionCard  from '../elements/components/cards/CompletionCard'; //popup completion page
+
 // import * as ImagePicker from 'expo-image-picker';
 //import { Picker } from '@react-native-picker/picker';
 import { addImage, removeImage } from '../reducers/imagesArticles';
 import { useDispatch } from 'react-redux';
 import _FontAwesome from 'react-native-vector-icons/FontAwesome';
-import UploadImages from '../elements/images/UploadImages';
+//import UploadImages from '../elements/imageHandlers/UploadImages';
 import SecondaryButton from '../elements/components/buttons/SecondaryButton';
-//import Categories from './Categories';
+
+// import Categories from './Categories';
 
 const BACKEND_ADDRESS = "http://192.168.86.114:3000"
 
@@ -20,6 +25,7 @@ export default function CreeTrocScreen({ navigation }) {
   const [categorie, setCategorie] = useState('');
   const [sousCategorie, setSousCategorie] = useState('');
   const [description, setDescription] = useState('');
+  const [popupVisible, setPopupVisible] = useState(false); //popup page state
 
   const handleImageAdd = (imageUri) => {
     setSelectedImages([...selectedImages, imageUri]);
@@ -29,6 +35,15 @@ export default function CreeTrocScreen({ navigation }) {
   const handleRemoveImage = (imageUri) => {
     setSelectedImages(selectedImages.filter(uri => uri !== imageUri));
     dispatch(removeImage(imageUri));
+  };
+
+  const handleSubmit = () => {
+    // logique de soumission ici
+    setPopupVisible(true); //to activate the popup
+  };
+
+  const closePopup = () => {
+    setPopupVisible(false);
   };
 
   return (
@@ -90,9 +105,28 @@ export default function CreeTrocScreen({ navigation }) {
               multiline
             />
 
-            <TouchableOpacity>
-              <SecondaryButton title='Valider!' />
-            </TouchableOpacity>
+                {/* Validation Button */}
+                <MainButton
+                  title="Valider!"
+                  onPress={handleSubmit}
+                  normalBackgroundColor={Colors.purpleColor}
+                  clickedBackgroundColor={Colors.textColor} 
+                />
+
+                {/* Completion Popup (With Rocket Icon) */}
+                <CompletionCard
+                  visible={popupVisible}
+                  onClose={closePopup}
+                  iconColor={Colors.purpleColor} // Customize icon color
+                  title="Opération Validée." // Customize title
+                  navigation={navigation}
+                  navigateTo="RechercheTroc" 
+                  duration={2000} 
+                />
+
+            {/* Spacing */}
+            <View style={{ marginVertical: 160 }} />
+            
           </ScrollView>
         </View>
       </SafeAreaView>

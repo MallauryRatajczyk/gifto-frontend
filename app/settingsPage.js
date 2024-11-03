@@ -10,6 +10,7 @@ import HeaderMenu from '../elements/components/navigation/HeaderMenu';
 import ItemCard from '../elements/components/cards/ItemCard';
 
 
+import TestImage from '../elements/assets/images/TestImage.jpg';
 
 
 
@@ -22,24 +23,40 @@ export default function SettingsPage() {
 
 
   return (
-    <View style={GlobalStyles.screenMainContainer}>
+    <View style={GlobalStyles.appStyle}>
 
-    {/* AMIR IS TESTING HERE */}
       <HeaderMenu />
 
 
-      <ItemCard
+
+      <View style={GlobalStyles.screenHomeContainer}>
+
+    {/* AMIR IS TESTING HERE */}
+
+       {/* ItemCard without an image */}
+       <ItemCard
         imageSource={{ uri: '-' }}
-        title="Sac de Lacoste"
-        description="This is a description of the item."
-        subcategory="Lorem ipsum dolor sit amet"
+        subcategory="Sac"
         showSubcategory={true}
+        title="Sac de Lacoste"
+        description="This is a description of the item. It is a description of the item. This is a description of the item. This is a description of the item. This is a description of the item. This is a description of the item."
+        onPress={() => handleItemPress(1)} 
+      />
+
+      {/* Spacer */}
+      <View style={{ height: 20 }} />
+
+      {/* ItemCard with an image */}
+      <ItemCard
+        imageSource={TestImage} // Using a local image
+        subcategory="Accessoires"
+        showSubcategory={true}
+        title="Accessoire de Mode"
+        description="This is another description of the item. It has an image to display. This should show the image correctly in the card. Make sure the image style is applied as expected."
+        onPress={() => handleItemPress(2)} 
       />
 
     {/* TESTING FINISHED */}
-
-
-      <View style={GlobalStyles.screenHomeContainer}>
 
         <MainButton
             title="Historique"
