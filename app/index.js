@@ -22,6 +22,7 @@ import Authentification from './authentification';
 import Inscription from './inscriptionPage';
 import HomePage from './homePage';
 import NotificationPage from './notificationPage';
+import HistoryPage from './historyPage';
 import SettingsPage from './settingsPage';
 import ProfilePage from './profilePage';
 import AjoutDon from './ajoutDonPage';
