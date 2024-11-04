@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import GlobalStyles from '../elements/styles/GlobalStyles';
 import MainButton from '../elements/components/buttons/MainButton';
 import NotificationHeader from '../elements/components/navigation/NotificationHeader';
@@ -42,7 +41,6 @@ export default function NotificationPage({ navigation }) {
   const allNotifications = notifications.map((x, i) => {
     let interlocuteur = '';
     let drt = 'Troquer'; // Valeur par défaut
-
     if (!x.type.troc) {
       if (id === x.possesseur) {
         interlocuteur = x.demandeur;
@@ -52,7 +50,6 @@ export default function NotificationPage({ navigation }) {
         drt = "Recevoir";
       }
     }
-
     return (
       <Notification
         id={x._id}
@@ -60,6 +57,8 @@ export default function NotificationPage({ navigation }) {
         item={x.item}
         message={x.message[x.message.length - 1].message}
         interlocuteur={interlocuteur}
+        possesseur={x.possesseur}
+        demandeur={x.demandeur}
         statut={x.statut}
         type={drt}
         objProp={x.type.objetPropose}

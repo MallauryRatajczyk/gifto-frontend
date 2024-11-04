@@ -28,7 +28,7 @@ import AjoutDon from './ajoutDonPage';
 import CreationTroc from './creationTroc';
 import RechercheTroc from './rechercheTroc';
 import RechercheRecevoir from './rechercheRecevoir';
-
+import ItemPage from './itemPage';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -54,6 +54,8 @@ function MainTabNavigator({activeRoute}) {
       <Tab.Screen name="RechercheTroc" component={RechercheTroc} options={{ tabBarButton: () => null }} />
       <Tab.Screen name="RechercheRecevoir" component={RechercheRecevoir} options={{ tabBarButton: () => null }} />
       <Tab.Screen name="CreationTroc" component={CreationTroc} options={{ tabBarButton: () => null }} />
+      <Tab.Screen name="ItemPage" component={CreationTroc} options={{ tabBarButton: () => null }} />
+
 
     </Tab.Navigator>
   );
@@ -101,6 +103,7 @@ export default function App() {
               <Stack.Screen name="RechercheTroc" component={RechercheTroc} />
               <Stack.Screen name="RechercheRecevoir" component={RechercheRecevoir} />
               <Stack.Screen name="CreationTroc" component={CreationTroc} />
+              <Stack.Screen name="ItemPage" component={ItemPage} />
             </Stack.Navigator>
           </NavigationContainer>
         </View>
