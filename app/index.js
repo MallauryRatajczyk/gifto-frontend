@@ -110,15 +110,17 @@ export default function App() {
             }}
           >
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-            {/* <Stack.Screen name="AjoutDon" component={AjoutDon} /> */}
-              <Stack.Screen name="RechercheTrocScreen" component={RechercheTrocScreen}/>
-              <Stack.Screen name="CreeTrocScreen" component={CreeTrocScreen}/>
+              {/* <Stack.Screen name="AjoutDon" component={AjoutDon} /> */}
               <Stack.Screen name="Authentification" component={Authentification} />
               <Stack.Screen name="TabNavigator">
                 {(props) => <MainTabNavigator {...props} activeRoute={activeRoute} />}
               </Stack.Screen>
-            {/* <Stack.Screen name="UploadImages" component={UploadImages} /> */}
-            {/* <Stack.Screen name="Photos" component={Photos} /> */}
+              <Stack.Screen name="RechercheTrocScreen" component={RechercheTrocScreen} />
+              <Stack.Screen name="CreeTrocScreen" component={CreeTrocScreen} />
+
+
+              {/* <Stack.Screen name="UploadImages" component={UploadImages} /> */}
+              {/* <Stack.Screen name="Photos" component={Photos} /> */}
               <Stack.Screen name="ProfilePage" component={ProfilePage} />
               <Stack.Screen name="HistoryPage" component={HistoryPage} />
               <Stack.Screen name="Connection" component={Connection} />
