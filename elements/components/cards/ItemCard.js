@@ -70,3 +70,32 @@ const ItemCard = ({
 };
 
 export default ItemCard;
+
+
+/*
+USAGE EXAMPLE:
+
+       {/* ItemCard without an image *///}
+       //<ItemCard
+       // imageSource={{ uri: '-' }}
+       // subcategory="Sac"
+       // showSubcategory={true}
+        //title="Sac de Lacoste"
+       // description="This is a description of the item. It is a description of the item. This is a description of the item. This is a description of the item. This is a description of the item. This is a description of the item."
+      //  onPress={() => handleItemPress(1)} 
+     // />
+
+    //  {/* Spacer */}
+     // <View style={{ height: 20 }} />
+
+    //  {/* ItemCard with an image */}
+      //<ItemCard
+      //  imageSource={TestImage} // Using a local image
+      //  subcategory="Accessoires"
+    //    showSubcategory={false}
+     //   title="Accessoire de Mode"
+      //  description="This is another description of the item. It has an image to display. This should show the image correctly in the card. Make sure the image style is applied as expected."
+     //   onPress={() => handleItemPress(2)} 
+     // />
+
+

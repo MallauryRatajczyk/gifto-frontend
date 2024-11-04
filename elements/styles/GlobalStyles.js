@@ -795,11 +795,37 @@ TagContainer: {
     marginTop: 2,
   },
 
+
+
+  editIcon: {
+    position: 'absolute',
+    top: 10,
+    right: 10, 
+    zIndex: 1,
+  },
+
 //for navigation bar
   iconContainer: {
     alignItems: 'center',
     paddingTop: 4,
   },
+
+  editCardContainer: {
+    position: 'relative', 
+    padding: 10, 
+  },
+
+  bottomUpdateContainer: {
+    position: 'absolute',
+    bottom: 10, 
+    right: 10, 
+  },
+
+  titleText: {
+    marginBottom: -8,
+  },
+
+
 
   circleButton: {
     width: 78, 
