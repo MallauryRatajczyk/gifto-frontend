@@ -57,6 +57,8 @@ export default function NotificationPage({ navigation }) {
         item={x.item}
         message={x.message[x.message.length - 1].message}
         interlocuteur={interlocuteur}
+        possesseur={x.possesseur}
+        demandeur={x.demandeur}
         statut={x.statut}
         type={drt}
         objProp={x.type.objetPropose}
