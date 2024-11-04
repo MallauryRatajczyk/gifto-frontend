@@ -126,7 +126,7 @@ export default function RechercheTrocScreen({ navigation }) {
                     <View>
                         <MainButton
                             title="Créer !"
-                            onPress={() => navigation.navigate('CreeTrocScreen')}
+                            onPress={() => navigation.navigate('CreationTroc')}
                             normalBackgroundColor={Colors.purpleColor}
                             clickedBackgroundColor={Colors.textColor}    // Clicked state background color
                         />
