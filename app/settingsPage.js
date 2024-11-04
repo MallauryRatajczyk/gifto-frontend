@@ -8,8 +8,10 @@ import { ShareIcon, MuteIcon, StarIcon } from '../elements/assets/Icons';
 import Colors from '../elements/styles/Colors';
 import HeaderMenu from '../elements/components/navigation/HeaderMenu';
 import ItemCard from '../elements/components/cards/ItemCard';
+import EditableCard from '../elements/components/cards/ItemCard';
 
 
+import TestImage from '../elements/assets/images/TestImage.jpg';
 
 
 
@@ -20,26 +22,19 @@ import ItemCard from '../elements/components/cards/ItemCard';
 export default function SettingsPage() {
   const navigation = useNavigation();
 
+  
 
   return (
-    <View style={GlobalStyles.screenMainContainer}>
+    <View style={GlobalStyles.appStyle}>
 
-    {/* AMIR IS TESTING HERE */}
       <HeaderMenu />
 
 
-      <ItemCard
-        imageSource={{ uri: '-' }}
-        title="Sac de Lacoste"
-        description="This is a description of the item."
-        subcategory="Lorem ipsum dolor sit amet"
-        showSubcategory={true}
-      />
-
-    {/* TESTING FINISHED */}
-
 
       <View style={GlobalStyles.screenHomeContainer}>
+
+    {/* AMIR IS TESTING HERE */}
+
 
         <MainButton
             title="Historique"
