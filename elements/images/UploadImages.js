@@ -8,9 +8,10 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useIsFocused } from "@react-navigation/native";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
 
+
 const BACKEND_ADDRESS = "http://192.168.1.182:3000";        
 
-export default function UploadImages(onImageAdd, onClose) {
+export default function UploadImages({onImageAdd, onClose}) {
 	const dispatch = useDispatch();
 	const isFocused = useIsFocused();
 
@@ -18,19 +19,29 @@ export default function UploadImages(onImageAdd, onClose) {
 	const [type, setType] = useState(CameraType.back);
 	const [flashMode, setFlashMode] = useState(FlashMode.off);
 	const [modalVisible, setModalVisible] = useState(true);
+	const [isCameraActive, setIsCameraActive] = useState(false);
 	const [selectedImage, setSelectedImage] = useState(null);                      
 
 	let cameraRef = useRef(null);                                                   // ref de la camera pour la prise de photo
+	
+	// useEffect(() => {
+	// 	setModalVisible(true);
+	//   }, []);
+	  
+	const requestPermissionAndTakePicture = async () => {                         // Demande la permission pour la caméra seulement quand l'utilisateur clique pour prendre une photo	
+    const result = await Camera.requestCameraPermissionsAsync();
+    setHasPermission(result.status === "granted");
 
-	useEffect(() => {                                                               // demande d'autorisation d'accès à la camera
-		(async () => {
-			const result = await Camera.requestCameraPermissionsAsync();
-			setHasPermission(result.status === "granted");
-		})();
-	}, []);
+	if (result.status === "granted") {
+		takePicture();                                                             // Lance la prise de photo
+	  } else {
+		Alert.alert("Permission de la caméra refusée");
+	  }
+	};
 
-	const takePicture = async () => {                                                // fonction pour prise de photo avec la caméra
-		const photo = await ImagePicker.launchCameraAsync({ quality: 0.3 });
+	const takePicture = async () => {   
+		setIsCameraActive(true);                                                       // Activer la caméra                                             
+		const photo = await ImagePicker.launchCameraAsync({ quality: 0.3 });          // fonction pour prise de photo avec la caméra
 		uploadImage(photo.uri);
 	};
 
@@ -45,6 +56,7 @@ export default function UploadImages(onImageAdd, onClose) {
 			uploadImage(result.assets[0].uri);                                       // envoi de l'image au serveur
 		} else {
 			Alert.alert("Vous n'avez pas sélectionné d'image.");
+			
 		}
 	};
 
@@ -55,7 +67,7 @@ export default function UploadImages(onImageAdd, onClose) {
 			name: "upload.jpg",
 			type: "image/jpeg",
 		});
-		console.log(data);
+		
 		 fetch(`${BACKEND_ADDRESS}/upload`, {
 			method: "POST",
 			body: data,
@@ -67,6 +79,7 @@ export default function UploadImages(onImageAdd, onClose) {
                     onClose();                                                        // l'UploadImages de l'image est fermé après chargement                                
 				} else {
 					Alert.alert("Échec du téléchargement de l'image.");
+					
 				}
 			})
 			.catch((error) => {
@@ -74,9 +87,14 @@ export default function UploadImages(onImageAdd, onClose) {
 			});
 	};
 
-	if (!hasPermission || !isFocused) {                                           //Ne rien retourner  si pas de permission ou si l'écran n'est pas focus
+	if (!isFocused) {                                         // modif  //Ne rien retourner  si pas de permission ou si l'écran n'est pas focus
 		return <View />;
 	}
+
+	const showModal = () =>{ setModalVisible(true)
+		console.log(modalVisible);
+	};
+	
 
 	return (
 		<View style={{ flex: 1 }}>
@@ -86,22 +104,22 @@ export default function UploadImages(onImageAdd, onClose) {
 				transparent={true}
 				visible={modalVisible}
 				onRequestClose={() => setModalVisible(false)}
+				
 			>
-				<View style={styles.modalOverlay}>
+				<View style={styles.modalOverlay}>                                                     
 					<View style={styles.modalContainer}>
 						<Text style={styles.modalText}>Choisir une option :</Text>
-						<TouchableOpacity style={styles.modalButton} onPress={takePicture}>
-							<Text style={styles.buttonText}>Prendre une photo</Text>
-						</TouchableOpacity>
+						<TouchableOpacity style={styles.modalButton} onPress={() => {
+        					requestPermissionAndTakePicture();                                      // Appelle takePicture si la permission est accordée
+        						setModalVisible(false);                                             // Ferme la modal
+    						}}>
+  						<Text style={styles.buttonText}>Prendre une photo</Text>
+  						</TouchableOpacity>
 						<TouchableOpacity style={styles.modalButton} onPress={pickImage}>
 							<Text style={styles.buttonText}>Choisir depuis la galerie</Text>
 						</TouchableOpacity>
-						<TouchableOpacity
-							style={[styles.modalButton, { backgroundColor: "#ccc" }]}
-							onPress={() => setModalVisible(false)}
-						>
-							<Text style={styles.buttonText}>Annuler</Text>
-						</TouchableOpacity>
+						<Text style={styles.buttonText}>Annuler</Text>
+							
 					</View>
 				</View>
 			</Modal>
@@ -129,7 +147,7 @@ export default function UploadImages(onImageAdd, onClose) {
 					</TouchableOpacity>
 				</View>
                 <View style={styles.snapContainer}>               
-					<TouchableOpacity onPress={() => setModalVisible(true)}>                                                         
+					<TouchableOpacity onPress={showModal}>                                                         
 						<FontAwesome name="upload" size={45} color="#ffffff" />
 					</TouchableOpacity>
 				</View>
@@ -181,10 +199,13 @@ const styles = StyleSheet.create({
 		padding: 20,
 		alignItems: "center",
 	},
-	modalText: {
+	modalText: {                                       //
 		fontSize: 18,
 		fontWeight: "bold",
 		marginBottom: 20,
+		fontFamily: 'BalooBhaijaan2_600SemiBold',
+		fontSize: 16,
+		lineHeight: 16,
 	},
 	modalButton: {
 		backgroundColor: "#4CAF50",

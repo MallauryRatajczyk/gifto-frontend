@@ -5,7 +5,7 @@ import Typography from './Typography';
 
 export default StyleSheet.create({
 
-    //app general style
+//app general style
     appStyle: {
         flex: 1,
         backgroundColor: Colors.background,
@@ -13,14 +13,13 @@ export default StyleSheet.create({
         align: 'center',
         
 
-    },
+},
 
 //_________________CONTAINERS_________________
 
 
-
-  // Global container for all screens with consistent padding
-  screenMainContainer: {
+// Global container for all screens with consistent padding
+screenMainContainer: {
     flex: 1,
     backgroundColor: Colors.background,
     
@@ -28,14 +27,14 @@ export default StyleSheet.create({
     display: 'flex',
     scroll: 'true',
     
-  },
+},
 
-  screenHomeContainer: {
+screenHomeContainer: {
     paddingTop: 60,  
     paddingHorizontal: 36,  
     justifyContent: 'top', //top alignment for all content
     
-  },
+},
 
 //white main container with shadow
 whiteContainer: {
@@ -57,7 +56,7 @@ whiteContainer: {
     shadowColor: Platform.OS === 'android' ? Colors.shadowAndroid : Colors.shadow,
 },
 
-    //white card container with shadow (for information cards mainly for items)
+//white card container with shadow (for information cards mainly for items)
 whiteCardContainer: {
     backgroundColor: Colors.whiteColor,
     borderRadius: 16,
@@ -195,30 +194,50 @@ ImageHolderContainer: {
     imageHolderImage: {
             width: '100%',
             height: '100%',
-        },
+    },
 
 
     //For forms (signin/signup/etc...)
     whiteFormContainer: {
         backgroundColor: Colors.whiteColor,
-        borderRadius: 12,
+        borderRadius: 16,
         
         //spaces
-        padding: 12,
-        paddingTop: 24,
-        paddingLeft: 24,
+        padding: 24,
         marginBottom: 24,
     
         // iOS Shadow
         shadowColor: Colors.shadow,
         shadowOpacity: 100,
-        shadowRadius: 80,
+        shadowRadius: 40,
         
         // Android Shadow
         shadowColor: Colors.shadow,
         elevation: Platform.OS === 'android' ? 20 : 0,
         shadowColor: Platform.OS === 'android' ? Colors.shadowAndroid : Colors.shadow,
     },
+
+    //Login Icons Container
+    LoginIconsContainer: {
+        flexDirection: 'row',
+        marginVertical: 24,
+        justifyContent: 'center',
+        
+    },
+
+    //Circle button with text Container
+    CircleButtonTextContainer: {
+        alignItems: 'center',
+        marginVertical: 44,
+        marginHorizontal: -12,  
+    },
+
+    //Intro Logo Container
+    IntroLogoContainer: {
+        alignItems: 'center',
+        marginVertical: 10,
+    },
+
 
     //white card container with RED stroke (pour le demende en cours)
     requestContainerRedStoke: {
@@ -314,6 +333,8 @@ ImageHolderContainer: {
     elevation: Platform.OS === 'android' ? 20 : 0,
     shadowColor: Platform.OS === 'android' ? Colors.shadowAndroid : Colors.shadow,
   },
+
+  
 
     //_________________HEADERS WITH BACKGROUND COLOR & ICONS_________________
 
@@ -458,6 +479,17 @@ ImageHolderContainer: {
         color: Colors.textColor,
         opacity: 0.2,
         paddingVertical: 4,
+        alignContent: 'center',
+    },
+
+    bodyTextComments: {
+        ...Typography.paragraphMain,
+        color: Colors.textColor,
+        opacity: 0.2,
+        padding: 4,
+        marginTop: 12,
+        width: '70%',
+        textAlign: 'center',
     },
 
     //for subcategories
@@ -535,10 +567,11 @@ ImageHolderContainer: {
     backgroundColor: Colors.purpleColor, // Default color
     borderRadius: 60,
     paddingVertical: 4,
-    marginVertical: 24,
+    marginVertical: 12,
     alignItems: 'center',
 
   },
+  
 
   buttonTextWhite: {
     ...Typography.cta,
@@ -548,8 +581,8 @@ ImageHolderContainer: {
 
   buttonSecondary: {
     borderRadius: 60,
-    paddingVertical: 4,
-    marginVertical: 24,
+    paddingVertical: 2,
+    marginVertical: 12,
     alignItems: 'center',
     //stoke color
     borderWidth: 1.5,
@@ -598,5 +631,26 @@ ImageHolderContainer: {
     paddingTop: 4,
   },
 
+  circleButton: {
+    width: 78, 
+    height: 78,
+    borderRadius: 50, 
+    marginHorizontal: 14,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+  },
 
+  errorText: {
+    ...Typography.paragraphSmallRed,
+    color: Colors.textColor,
+    marginBottom: 10,
+  },
+
+  scrollViewContent: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    paddingBottom: 50,
+  },
+  
 });
