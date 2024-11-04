@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 import _FontAwesome from 'react-native-vector-icons/FontAwesome';
 import UploadImages from '../elements/images/UploadImages';
 import SecondaryButton from '../elements/components/buttons/SecondaryButton';
-//import Categories from './Categories';
+// import Categories from './Categories';
 
 const BACKEND_ADDRESS = "http://192.168.86.114:3000"
 

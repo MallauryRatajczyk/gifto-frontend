@@ -22,6 +22,7 @@ import Authentification from './authentification';
 import Inscription from './inscriptionPage';
 import HomePage from './homePage';
 import NotificationPage from './notificationPage';
+import HistoryPage from './historyPage';
 import SettingsPage from './settingsPage';
 import ProfilePage from './profilePage';
 import AjoutDon from './ajoutDonPage';
@@ -29,12 +30,36 @@ import RechercheTroc from './rechercheTroc';
 import RechercheRecevoir from './rechercheRecevoir';
 
 
+// Components
+import NavigationBar from '../elements/components/navigation/NavigationBar';
+import Colors from '../elements/styles/Colors';
+import GlobalStyles from '../elements/styles/GlobalStyles';
+// import AjoutDon from "./AjoutDonPage";
+// import UploadImages from '../elements/images/UploadImages';
+// // import Photos from '../elements/images/Photos';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function MainTabNavigator({activeRoute}) {
   return (
+    /*<SafeAreaProvider>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="RechercheTroc" component={RechercheTrocScreen} />
+            <Stack.Screen name="CreationTroc" component={CreeTrocScreen} />
+            <Stack.Screen name="AjoutDon" component={AjoutDon} /> 
+            <Stack.Screen name="UploadImages" component={UploadImages} /> 
+            <Stack.Screen name="Authentification" component={Authentification} />
+            <Stack.Screen name="Demandes" component={Demandes} />
+            <Stack.Screen name="Chat" component={Chat} />
+            <Stack.Screen name="Connection" component={Connection} />
+            <Stack.Screen name="Inscription" component={Inscription} />
+          </Stack.Navigator>
+        </PersistGate>
+      </Provider>
+    </SafeAreaProvider>*/
     <Tab.Navigator
       tabBar={(props) => <NavigationBar {...props} activeRoute={activeRoute} />}
       screenOptions={{
@@ -50,9 +75,7 @@ function MainTabNavigator({activeRoute}) {
       <Tab.Screen name="Notification" component={NotificationPage} />
       <Tab.Screen name="Settings" component={SettingsPage} />
       {/* screens that will have the NavigationBar */}
-      <Tab.Screen name="AjoutDon" component={AjoutDon} options={{ tabBarButton: () => null }} />
-      <Tab.Screen name="RechercheTroc" component={RechercheTroc} options={{ tabBarButton: () => null }} />
-      <Tab.Screen name="RechercheRecevoir" component={RechercheRecevoir} options={{ tabBarButton: () => null }} />
+      {/* <Tab.Screen name="rechercheRecevoir" component={rechercheRecevoir} options={{ tabBarButton: () => null }} /> */}
 
     </Tab.Navigator>
   );
@@ -99,6 +122,22 @@ export default function App() {
               <Stack.Screen name="AjoutDon" component={AjoutDon} />
               <Stack.Screen name="RechercheTroc" component={RechercheTroc} />
               <Stack.Screen name="RechercheRecevoir" component={RechercheRecevoir} />
+              {/* <Stack.Screen name="AjoutDon" component={AjoutDon} /> */}
+              <Stack.Screen name="Authentification" component={Authentification} />
+              <Stack.Screen name="TabNavigator">
+                {(props) => <MainTabNavigator {...props} activeRoute={activeRoute} />}
+              </Stack.Screen>
+              <Stack.Screen name="RechercheTrocScreen" component={RechercheTrocScreen} />
+              <Stack.Screen name="CreeTrocScreen" component={CreeTrocScreen} />
+
+
+              {/* <Stack.Screen name="UploadImages" component={UploadImages} /> */}
+              {/* <Stack.Screen name="Photos" component={Photos} /> */}
+              <Stack.Screen name="ProfilePage" component={ProfilePage} />
+              <Stack.Screen name="HistoryPage" component={HistoryPage} />
+              <Stack.Screen name="Connection" component={Connection} />
+              <Stack.Screen name="Inscription" component={Inscription} />
+              {/* <Stack.Screen name="rechercheRecevoir" component={rechercheRecevoir} /> */}
             </Stack.Navigator>
           </NavigationContainer>
         </View>
