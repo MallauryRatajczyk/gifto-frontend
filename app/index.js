@@ -28,7 +28,7 @@ import AjoutDon from './ajoutDonPage';
 import CreationTroc from './creationTroc';
 import RechercheTroc from './rechercheTroc';
 import RechercheRecevoir from './rechercheRecevoir';
-
+import HistoryPage from './historyPage';
 
 // Components
 // import AjoutDon from "./AjoutDonPage";
@@ -59,6 +59,7 @@ function MainTabNavigator({ activeRoute }) {
       <Tab.Screen name="RechercheTroc" component={RechercheTroc} options={{ tabBarButton: () => null }} />
       <Tab.Screen name="RechercheRecevoir" component={RechercheRecevoir} options={{ tabBarButton: () => null }} />
       <Tab.Screen name="CreationTroc" component={CreationTroc} options={{ tabBarButton: () => null }} />
+      <Tab.Screen name="HistoryPage" component={HistoryPage} options={{ tabBarButton: () => null }} />
 
     </Tab.Navigator>
   );
