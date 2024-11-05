@@ -29,6 +29,8 @@ import CreationTroc from './creationTroc';
 import RechercheTroc from './rechercheTroc';
 import RechercheRecevoir from './rechercheRecevoir';
 import HistoryPage from './historyPage';
+import ItemTroc from './itemTroc';
+import ItemPage from './itemPage';
 
 // Components
 // import AjoutDon from "./AjoutDonPage";
@@ -107,6 +109,7 @@ export default function App() {
               <Stack.Screen name="ProfilePage" component={ProfilePage} />
               <Stack.Screen name="Inscription" component={Inscription} />
               <Stack.Screen name="RechercheRecevoir" component={RechercheRecevoir} />
+              <Stack.Screen name='ItemTroc' component={ItemTroc} />
 
 
               {/* <Stack.Screen name="UploadImages" component={UploadImages} /> */}

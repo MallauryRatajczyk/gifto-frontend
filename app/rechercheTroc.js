@@ -72,13 +72,16 @@ export default function RechercheTroc({ navigation }) {
                 <View style={GlobalStyles.screenMainContainer}>
                     <Text style={[styles.coloredHeader, styles.headerTextWhite]} >Troquer</Text>
                     <View style={[GlobalStyles.whiteSearchContainer, { flexDirection: 'row', alignItems: 'center', padding: 10 }]}>
-                        <SearchIcon width={24} height={24} color={iconColor} style={{ marginRight: 10 }} onPress={handleSearch}/>
+                        <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
+                            <SearchIcon width={24} height={24} color={iconColor} style={{ marginRight: 10 }} />
+                        </TouchableOpacity>
                         <TextInput
                             onChangeText={(value) => setChercher(value)}
                             value={chercher}
                             style={{ flex: 1, color: textColor, fontSize: 16 }}
                             placeholder="Rechercher"
                             placeholderTextColor={Colors.shadow}
+                            onPress={handleSearch}
                         />
                     </View>
                     {loading && <ActivityIndicator size="small" color={Colors.shadow} style={{ marginTop: 10 }} />}
@@ -87,22 +90,23 @@ export default function RechercheTroc({ navigation }) {
                         alignItems: "center",
                         marginBottom: 25
                     }}>
-                        {montreResult ? (
-                            resultats.length === 0 ? (
-                                <Text>Aucun résultat trouvé.</Text>
-                            ) : (
+                        {montreResult && resultats.length === 0 && (
+                            <Text>Aucun résultat trouvé.</Text>
+                        )}
+                        {montreResult && resultats.length > 0 ? (
+                            <>
+                                <Text>Résultats de recherche :</Text>
                                 <FlatList
                                     data={resultats}
                                     keyExtractor={(item) => item._id.toString()}
                                     renderItem={({ item }) => (
                                         <View style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: Colors.shadow }}>
-                                            
                                             <Text style={{ color: Colors.textColor }} onPress={handlePressItem}>{item.name}</Text>
                                         </View>
                                     )}
                                     style={{ marginTop: 10 }}
                                 />
-                            )
+                            </>
                         ) : (
                             <>
                                 <View style={GlobalStyles.screenHomeContainer}>
@@ -115,7 +119,6 @@ export default function RechercheTroc({ navigation }) {
                                     style={GlobalStyles.RecommendationContainer}
                                     renderItem={({ item }) => (
                                         <View style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: Colors.shadow }}>
-                                            
                                             <Text style={{ color: Colors.textColor }} onPress={handlePressItem}>{item.name}</Text>
                                         </View>
                                     )}
