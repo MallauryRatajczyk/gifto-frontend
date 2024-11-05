@@ -65,17 +65,17 @@ export default function RechercheTroc({ navigation }) {
             });
     }
 
-    const handlePressItem = () => {
-        navigation.navigate('ItemTroc');
+    const handlePressItem = (itemId) => {
+        navigation.navigate('ItemTroquerPage', {itemId : itemId});
     }
 
     return (
         <SafeAreaProvider style={{ flex: 1 }}>
             <SafeAreaView style={{ flex: 1 }}>
                 <View style={GlobalStyles.screenMainContainer}>
-                    <View icon={TroquerIcon}>
+
                         <Text style={[styles.coloredHeader, styles.headerTextWhite]}>Troquer</Text>
-                    </View>
+
                     <View style={[GlobalStyles.whiteSearchContainer, { flexDirection: 'row', alignItems: 'center', padding: 10 }]}>
                         <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
                             <SearchIcon width={24} height={24} color={iconColor} style={{ marginRight: 10 }} />

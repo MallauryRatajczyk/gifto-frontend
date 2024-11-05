@@ -106,7 +106,7 @@ export default function App() {
               <Stack.Screen name="CreationTroc" component={CreationTroc} />
               <Stack.Screen name="ItemTroquerPage" component={ItemTroquerPage} />
               <Stack.Screen name="ItemRecevoirPage" component={ItemRecevoirPage} />
-
+              <Tab.Screen name="RechercheTroc" component={RechercheTroc} />
             </Stack.Navigator>
           </NavigationContainer>
         </View>
