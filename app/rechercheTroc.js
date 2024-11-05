@@ -8,6 +8,7 @@ import GlobalStyles from '../elements/styles/GlobalStyles';
 import { SearchIcon } from '../elements/assets/Icons';
 import React from 'react';
 import ImageHolder from '../elements/components/navigation/ImageHolder';
+import { TroquerIcon } from '../elements/assets/Icons';
 
 const BACKEND_ADDRESS = "http://192.168.86.114:3000"
 
@@ -53,12 +54,14 @@ export default function RechercheTroc({ navigation }) {
                 setResultats(resultatsFiltres);
                 setMontreResult(true);
                 setLoading(false);
+                setChercher('');
             })
             .catch(error => {
                 console.error(error);
                 setMontreResult(true); // Afficher les résultats même en cas d'erreur
                 setResultats([]);
                 setLoading(false);
+                setChercher('');
             });
     }
 
@@ -70,7 +73,9 @@ export default function RechercheTroc({ navigation }) {
         <SafeAreaProvider style={{ flex: 1 }}>
             <SafeAreaView style={{ flex: 1 }}>
                 <View style={GlobalStyles.screenMainContainer}>
-                    <Text style={[styles.coloredHeader, styles.headerTextWhite]} >Troquer</Text>
+                    <View icon={TroquerIcon}>
+                        <Text style={[styles.coloredHeader, styles.headerTextWhite]}>Troquer</Text>
+                    </View>
                     <View style={[GlobalStyles.whiteSearchContainer, { flexDirection: 'row', alignItems: 'center', padding: 10 }]}>
                         <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
                             <SearchIcon width={24} height={24} color={iconColor} style={{ marginRight: 10 }} />
@@ -101,7 +106,7 @@ export default function RechercheTroc({ navigation }) {
                                     keyExtractor={(item) => item._id.toString()}
                                     renderItem={({ item }) => (
                                         <View style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: Colors.shadow }}>
-                                            <Text style={{ color: Colors.textColor }} onPress={handlePressItem}>{item.name}</Text>
+                                            <ImageHolder onPress={handlePressItem}/>
                                         </View>
                                     )}
                                     style={{ marginTop: 10 }}
@@ -119,7 +124,7 @@ export default function RechercheTroc({ navigation }) {
                                     style={GlobalStyles.RecommendationContainer}
                                     renderItem={({ item }) => (
                                         <View style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: Colors.shadow }}>
-                                            <Text style={{ color: Colors.textColor }} onPress={handlePressItem}>{item.name}</Text>
+                                            <ImageHolder onPress={handlePressItem}/>
                                         </View>
                                     )}
                                 />
