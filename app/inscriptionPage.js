@@ -16,8 +16,6 @@ import DateInputCard from '../elements/components/cards/DateInputCard';
 
 const BACKEND_ADDRESS = "http://192.168.86.114:3000"
 
-const BACKEND_ADDRESS = "http://192.168.86.114:3000"
-
 export default function Inscription({ navigation }) {
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');

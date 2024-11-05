@@ -9,7 +9,7 @@ import BackButton from '../buttons/BackButton';
 
 export default function ItemHeader({
     title,
-    subtitle,
+    subtitle = 'Paris, France',
     backgroundColor = Colors.purpleColor,
     textColor = Colors.whiteColor,
     iconColor = Colors.whiteColor,
