@@ -43,7 +43,7 @@ export default function HomePage({navigation}) {
           icon={TroquerIcon}
           title="Troquer"
           bodyText="Échangez vos objets pour ce qu'il vous faut !"
-          onPress={() => navigation.navigate('RechercheTroc')}
+          onPress={() => navigation.navigate('ItemTroquerPage')}
           textColor={Colors.purpleColor}
           iconColor={Colors.purpleColor}
         />
@@ -52,7 +52,7 @@ export default function HomePage({navigation}) {
           icon={RecevoirIcon}
           title="Recevoir"
           bodyText="Recevez des objets gratuitement ou en troc !"
-          onPress={() => navigation.navigate('RechercheRecevoir')}
+          onPress={() => navigation.navigate('ItemRecevoirPage')}
           textColor={Colors.greenColor}
           iconColor={Colors.greenColor}
         />
