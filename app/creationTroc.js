@@ -10,7 +10,7 @@ import CompletionCard  from '../elements/components/cards/CompletionCard'; //pop
 import { addImage, removeImage } from '../reducers/imagesArticles';
 import { useDispatch } from 'react-redux';
 import _FontAwesome from 'react-native-vector-icons/FontAwesome';
-//import UploadImages from '../elements/imageHandlers/UploadImages';
+import UploadImages from '../elements/components/imageHandlers/UploadImages';
 import SecondaryButton from '../elements/components/buttons/SecondaryButton';
 //import Categories from './Categories';
 
