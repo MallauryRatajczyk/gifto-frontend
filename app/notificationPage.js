@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import GlobalStyles from '../elements/styles/GlobalStyles';
 import MainButton from '../elements/components/buttons/MainButton';
 import NotificationHeader from '../elements/components/navigation/NotificationHeader';
@@ -7,13 +7,12 @@ import Notification from '../components/notification';
 import { useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
 
-const { getId } = require('../modules/verifUser');
 
 export default function NotificationPage({ navigation }) {
   const [id, setId] = useState('');
   const [notifications, setNotifications] = useState([]);
+  const [error, setError] = useState('')
   const user = useSelector((state) => state.user.value);
-  const [error, setError] = useState();
 
   useEffect(() => {
     async function fetchData() {
@@ -24,7 +23,7 @@ export default function NotificationPage({ navigation }) {
 
         const fetched = await fetch(`http://192.168.1.81:3000/demande/mesdemandes/${responseId.user.id}`);
         const response = await fetched.json();
-
+        console.log(responseId, response)
         if (response.error) {
           setError(response.error);
         } else {
@@ -39,6 +38,7 @@ export default function NotificationPage({ navigation }) {
   }, [user.token]); // Ajouter user.token comme dépendance
 
   const allNotifications = notifications.map((x, i) => {
+    console.log(x)
     let interlocuteur = '';
     let drt = 'Troquer'; // Valeur par défaut
     if (!x.type.troc) {
@@ -55,7 +55,8 @@ export default function NotificationPage({ navigation }) {
         id={x._id}
         key={i}
         item={x.item}
-        message={x.message[x.message.length - 1].message}
+        lastMessage={x.message[x.message.length - 1].message}
+        message={x.message}
         interlocuteur={interlocuteur}
         possesseur={x.possesseur}
         demandeur={x.demandeur}
@@ -83,67 +84,4 @@ export default function NotificationPage({ navigation }) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    height: '100%',
-    position: 'relative',
-    flex: 1
-  },
-  box: {
-    width: 324,
-    height: 54,
-    position: 'absolute',
-    backgroundColor: 'white',
-    shadowColor: '#DCE5F2',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.5,
-    shadowRadius: 54,
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-  },
-  dot: {
-    width: 10.25,
-    height: 10,
-    backgroundColor: '#8B85EF',
-    borderRadius: 9999,
-    position: 'absolute',
-    left: 22.55,
-    top: 21,
-  },
-  title: {
-    position: 'absolute',
-    left: 48.60,
-    top: 16,
-    color: '#262B37',
-    fontSize: 16,
-    fontFamily: 'Baloo Bhaina 2',
-    fontWeight: '500',
-    lineHeight: 16,
-  },
-  id: {
-    position: 'absolute',
-    left: 48.60,
-    top: 32,
-    opacity: 0.5,
-    color: '#262B37',
-    fontSize: 8,
-    fontFamily: 'Baloo Bhaina 2',
-    fontWeight: '400',
-    lineHeight: 9,
-  },
-  date: {
-    position: 'absolute',
-    left: 241,
-    top: 18,
-    opacity: 0.5,
-    textAlign: 'right',
-    color: '#262B37',
-    fontSize: 12,
-    fontFamily: 'Baloo Bhaina 2',
-    fontWeight: '400',
-    lineHeight: 14,
-  },
-});
 

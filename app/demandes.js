@@ -2,7 +2,6 @@ import { Text, View, Image, StyleSheet, TouchableOpacity, TextInput } from "reac
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import Chat from "../components/chat";
 
 const BACKEND_ADDRESS = "http://192.168.86.114:3000"
 

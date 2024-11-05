@@ -29,7 +29,8 @@ import CreationTroc from './creationTroc';
 import RechercheTroc from './rechercheTroc';
 import RechercheRecevoir from './rechercheRecevoir';
 import HistoryPage from './historyPage';
-
+import Chat from './chat'
+import Demande from './demandePage'
 // Components
 // import AjoutDon from "./AjoutDonPage";
 // import UploadImages from '../elements/images/UploadImages';
@@ -60,7 +61,7 @@ function MainTabNavigator({ activeRoute }) {
       <Tab.Screen name="RechercheRecevoir" component={RechercheRecevoir} options={{ tabBarButton: () => null }} />
       <Tab.Screen name="CreationTroc" component={CreationTroc} options={{ tabBarButton: () => null }} />
       <Tab.Screen name="HistoryPage" component={HistoryPage} options={{ tabBarButton: () => null }} />
-
+      <Tab.Screen name="Demande" component={Demande} options={{ tabBarButton: () => null }} />
     </Tab.Navigator>
   );
 }
@@ -107,8 +108,8 @@ export default function App() {
               <Stack.Screen name="AjoutDon" component={AjoutDon} />
               <Stack.Screen name="RechercheTroc" component={RechercheTroc} />
               <Stack.Screen name="RechercheRecevoir" component={RechercheRecevoir} />
-
-
+              <Stack.Screen name="Chat" component={Chat} />
+              <Stack.Screen name="Demande" component={Demande} />
               {/* <Stack.Screen name="UploadImages" component={UploadImages} /> */}
               {/* <Stack.Screen name="Photos" component={Photos} /> */}
               <Stack.Screen name="HistoryPage" component={HistoryPage} />

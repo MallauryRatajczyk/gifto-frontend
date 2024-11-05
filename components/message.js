@@ -2,16 +2,15 @@ import React, { useState } from 'react';
 import { GiftedChat, Bubble } from 'react-native-gifted-chat';
 
 const Message = (props) => {
-    const [messages, setMessages] = useState([props.message]);
+    const [messages, setMessages] = useState([]);
 
     const onSend = (newMessages = []) => {
         setMessages((previousMessages) => GiftedChat.append(previousMessages, newMessages));
     };
 
-    const renderBubble = (props) => {
+    const renderBubble = () => {
         return (
             <Bubble
-                {...props}
                 wrapperStyle={{
                     right: { backgroundColor: '#8B85EF', padding: 10, margin: 10 }, // Couleur de fond des messages envoyés
                     left: { backgroundColor: '#E0BB26', padding: 10, margin: 10, }, // Couleur de fond des messages reçus
