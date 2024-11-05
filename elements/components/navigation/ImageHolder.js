@@ -22,7 +22,7 @@ export default function ImageHolder({ onPress }) {
         // Render the first image in the array
         <Image 
           source={{ uri: images[0] }} 
-          style={{ width: '100%', height: '100%', borderRadius: 10 }} 
+          style={{ width: '60%', height: '60%', borderRadius: 10 }} 
           resizeMode="cover" 
         />
       ) : (

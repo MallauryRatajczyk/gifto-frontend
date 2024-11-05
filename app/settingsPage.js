@@ -8,13 +8,6 @@ import { ShareIcon, MuteIcon, StarIcon } from '../elements/assets/Icons';
 import Colors from '../elements/styles/Colors';
 import HeaderMenu from '../elements/components/navigation/HeaderMenu';
 import ItemCard from '../elements/components/cards/ItemCard';
-import EditableCard from '../elements/components/cards/ItemCard';
-
-
-import TestImage from '../elements/assets/images/TestImage.jpg';
-
-
-
 
 //REMARQUE : NOUS DEVONS METTRE À JOUR LES LIENS DU BOUTON CERCLE !!!!!!!
 //Changer la direction du point de terminaison du bouton Historique
@@ -23,36 +16,22 @@ export default function SettingsPage() {
   const navigation = useNavigation();
 
 
-
   return (
-    <View style={GlobalStyles.appStyle}>
+    <View style={GlobalStyles.screenMainContainer}>
 
       {/* AMIR IS TESTING HERE */}
       <HeaderMenu />
 
 
-      <ItemCard
-        imageSource={{ uri: '-' }}
-        title="Sac de Lacoste"
-        description="This is a description of the item."
-        subcategory="Lorem ipsum dolor sit amet"
-        showSubcategory={true}
-      />
 
       {/* TESTING FINISHED */}
-
-      <HeaderMenu />
-
 
 
       <View style={GlobalStyles.screenHomeContainer}>
 
-        {/* AMIR IS TESTING HERE */}
-
-
         <MainButton
           title="Historique"
-          onPress={() => navigation.navigate('HistoryPage')}
+          onPress={() => navigation.navigate('Connection')}
           normalBackgroundColor={Colors.textColor}
           clickedBackgroundColor={Colors.purpleColor}    // Clicked state background color
         />

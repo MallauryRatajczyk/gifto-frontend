@@ -35,6 +35,9 @@ import Demande from './demandePage'
 // import AjoutDon from "./AjoutDonPage";
 // import UploadImages from '../elements/images/UploadImages';
 // // import Photos from '../elements/images/Photos';
+import ItemTroquerPage from './itemTroquerPage';
+import ItemRecevoirPage from './itemRecevoirPage';
+
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -62,6 +65,8 @@ function MainTabNavigator({ activeRoute }) {
       <Tab.Screen name="CreationTroc" component={CreationTroc} options={{ tabBarButton: () => null }} />
       <Tab.Screen name="HistoryPage" component={HistoryPage} options={{ tabBarButton: () => null }} />
       <Tab.Screen name="Demande" component={Demande} options={{ tabBarButton: () => null }} />
+      <Tab.Screen name="ItemTroquerPage" component={ItemTroquerPage} options={{ tabBarButton: () => null }} />
+      <Tab.Screen name="ItemRecevoirPage" component={ItemRecevoirPage} options={{ tabBarButton: () => null }} />
     </Tab.Navigator>
   );
 }
@@ -97,16 +102,14 @@ export default function App() {
               setActiveRoute(currentTab || 'Home');
             }}
           >
+            <Stack.Screen name="Authentification" component={Authentification} />
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="Authentification" component={Authentification} />
               <Stack.Screen name="TabNavigator">
                 {(props) => <MainTabNavigator {...props} activeRoute={activeRoute} />}
               </Stack.Screen>
               <Stack.Screen name="ProfilePage" component={ProfilePage} />
 
               <Stack.Screen name="Inscription" component={Inscription} />
-              <Stack.Screen name="AjoutDon" component={AjoutDon} />
-              <Stack.Screen name="RechercheTroc" component={RechercheTroc} />
               <Stack.Screen name="RechercheRecevoir" component={RechercheRecevoir} />
               <Stack.Screen name="Chat" component={Chat} />
               <Stack.Screen name="Demande" component={Demande} />
@@ -115,6 +118,9 @@ export default function App() {
               <Stack.Screen name="HistoryPage" component={HistoryPage} />
               {/* <Stack.Screen name="rechercheRecevoir" component={rechercheRecevoir} /> */}
               <Stack.Screen name="CreationTroc" component={CreationTroc} />
+              <Stack.Screen name="ItemTroquerPage" component={ItemTroquerPage} />
+              <Stack.Screen name="ItemRecevoirPage" component={ItemRecevoirPage} />
+
             </Stack.Navigator>
           </NavigationContainer>
         </View>

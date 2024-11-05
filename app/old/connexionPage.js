@@ -10,6 +10,8 @@ import { Text, View, Image, StyleSheet, TouchableOpacity, TextInput } from "reac
 //import Colors from '../../elements/styles/Colors';
 //import GlobalStyles from '../../elements/styles/GlobalStyles';
 
+const BACKEND_ADDRESS = "http://192.168.86.114:3000"
+
 export default function Connection({ navigation }) {
     // Initialize the dispatch function for Redux actions
     const dispatch = useDispatch(); 
@@ -63,7 +65,7 @@ export default function Connection({ navigation }) {
                         onChangeText={(value) => setEmail(value)}
                         value={email}
                         style={styles.textInput}
-                        placeholder="Adresse email ou nom d'utilisateur"
+                        placeholder="Adresse email"
                         autoComplete="email"
                         keyboardType="email-address"
                         textAlign={'center'}

@@ -1,10 +1,12 @@
 import React from 'react';
-import { TouchableOpacity, StyleSheet } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { RetourArrowIcon } from '../../assets/Icons';
+import Colors from '../../styles/Colors';
+import GlobalStyles from '../../styles/GlobalStyles';
 
 const BackButton = ({
-  iconColor = '#000',
+  iconColor = Colors.purpleColor,
   iconSize = 24,
   style = {},
   onPress,
@@ -13,23 +15,22 @@ const BackButton = ({
 
   const handlePress = () => {
     if (onPress) {
-      onPress(); // Custom onPress function if provided
+      onPress();
     } else {
-      navigation.goBack(); // Default back action
+      navigation.goBack(); 
     }
   };
 
   return (
-    <TouchableOpacity onPress={handlePress} style={[styles.button, style]}>
+    <TouchableOpacity 
+      onPress={handlePress} 
+      style={[GlobalStyles.backButtonContainer, style]}
+      accessible={true}
+      accessibilityLabel="Go back"
+    >
       <RetourArrowIcon width={iconSize} height={iconSize} color={iconColor} />
     </TouchableOpacity>
   );
 };
-
-const styles = StyleSheet.create({
-  button: {
-    padding: 5, // Adjust padding as needed
-  },
-});
 
 export default BackButton;

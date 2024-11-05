@@ -104,6 +104,18 @@ CompletionContainer: {
     marginBottom: 200,
 },
 
+//white main container 
+TroquerContainer: {
+    backgroundColor: Colors.whiteColor,
+    width: Dimensions.get('window').width*0.85,
+    borderRadius: 12,
+    justifyContent: 'center',
+    marginBottom: 100,
+    paddingVertical: 24,
+    paddingHorizontal: 24,
+
+},
+
 CompletionOverlay: { //darkened background
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)', 
@@ -160,6 +172,39 @@ whiteSearchContainer: {
     alignItems: 'center',
 
 }, 
+
+SelectArticleContainer: {
+    backgroundColor: Colors.whiteColor,
+    borderRadius: 14,
+    padding: 6,
+    height: 70,
+    
+    //borderWidth: 2,
+    //borderColor: Colors.purpleColor,
+    marginBottom: 12,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+
+}, 
+
+ImageSelectContainer: {
+    backgroundColor: Colors.redColor,
+    borderRadius: 8,
+    width: "28%",
+    height: "100%",
+},
+
+CheckBox: {
+    backgroundColor: Colors.whiteColor,
+    borderColor: Colors.purpleColor,
+    borderWidth: 2,
+    borderRadius: 6,
+    width: 24,
+    height: 24,
+    marginRight: 14,
+},
+
 
 GreyCircleButton: {
     borderRadius: 35,
@@ -233,11 +278,23 @@ MiniImageHolderContainer: {
     width: '100%',
 },
 
+ImageItemContainer: {
+    backgroundColor: Colors.whiteColor,
+    borderRadius: 16,
+    width: '100%',
+    height: 200,
+    marginBottom: 24,
+    marginTop: 12,
+
+},
+
+
 ImageStyle: {
     width: '100%',
     height: '100%',
     borderRadius: 8,
   },
+
 
 //Tiny Tag container
 TagContainer: {
@@ -481,15 +538,27 @@ TagContainer: {
     shadowColor: Platform.OS === 'android' ? Colors.shadowAndroid : Colors.shadow,
   },
 
-  
+  locationContainer: {
+    alignItems: 'left',
+    flexDirection: 'row',
+    justifyContent: 'left',
+
+},
+
+profileHeaderContainer: {
+    alignItems: 'left',
+    flexDirection: 'row',
+    justifyContent: 'left',
+    paddingHorizontal: 24,
+},
+
 
     //_________________HEADERS WITH BACKGROUND COLOR & ICONS_________________
 
     coloredHeader: {
-        backgroundColor: Colors.purpleColor, // Default color
+        backgroundColor: Colors.purpleColor, 
         borderBottomRightRadius: 60,
-        paddingTop: 60,
-        marginBottom: 36,
+        paddingTop: 40,
         alignItems: 'left',
         flexDirection: 'row',
         paddingHorizontal: 16,
@@ -614,14 +683,20 @@ TagContainer: {
         paddingVertical: 4,
     },
 
-       //H4 light grey color
-       miniTitleTextLightGrey: {
+    //H4 light grey color
+    miniTitleTextLightGrey: {
         ...Typography.h4,
         color: Colors.textColor,
         paddingVertical: 6,
         opacity: 0.2,
     },
 
+    //H4 white color
+    miniTitleTextWhite: {
+        ...Typography.h4,
+        color: Colors.whiteColor,
+        paddingVertical: 4,
+    },
 
     //_________________BODYCOPY_________________
     bodyTextBlack: {
@@ -848,5 +923,28 @@ TagContainer: {
     paddingBottom: 50,
     
   },
+
+// BackButton Styles
+    backButtonContainer: {
+    backgroundColor: Colors.whiteColor,
+    borderRadius: 100,
+    width: 48,
+    padding: 2,
+    paddingTop: -1,
+    alignItems: 'center',
+    justifyContent: 'center',
+},
+
+backContainer: {
+    position: 'absolute',
+    bottom: 24,
+    right: 36, 
+    zIndex: 1,
+},
+
+
+
+
+
 
 });

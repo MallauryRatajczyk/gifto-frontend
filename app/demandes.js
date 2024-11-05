@@ -3,7 +3,7 @@ import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-const BACKEND_ADDRESS = "http://192.168.86.114:3000"
+const BACKEND_ADDRESS = "http://192.168.1.81:3000"
 
 export default function Demandes({ navigation }) {
     const dispatch = useDispatch();
