@@ -1,56 +1,75 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import GlobalStyles from '../elements/styles/GlobalStyles';
 import MainButton from '../elements/components/buttons/MainButton';
-import SecondaryButton from '../elements/components/buttons/SecondaryButton';
-import { useState, useEffect } from 'react';
 import NotificationHeader from '../elements/components/navigation/NotificationHeader';
-import Notification from '../components/notification'
+import Notification from '../components/notification';
+import { useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
 
-const BACKEND_ADDRESS = "http://192.168.86.114:3000";
+const { getId } = require('../modules/verifUser');
 
-export default function SettingsPage() {
-  const navigation = useNavigation();
-  const [error, setError] = useState('');
-  const [notification, setNotification] = useState([]);
+const BACKEND_ADDRESS = "http://192.168.86.114:3000"
 
-
-  async function redirect(demande) {
-    const fetched = await fetch(`${BACKEND_ADDRESS}/demande/${demande}`);
-    const response = await fetched.json();
-    const fetchedID = await fetch(`${BACKEND_ADDRESS}/user/${demande}`)
-    if (response.result) {
-      navigation.navigate('Chat', { message: response.demande })
-    } else {
-      console.log("erreur redirect")
-    }
-  }
+export default function NotificationPage({ navigation }) {
+  const [id, setId] = useState('');
+  const [notifications, setNotifications] = useState([]);
+  const user = useSelector((state) => state.user.value);
+  const [error, setError] = useState();
 
   useEffect(() => {
     async function fetchData() {
-      const fetched = await fetch(`${BACKEND_ADDRESS}/demande/mesdemandes/${id}`);
-      const response = await fetched.json();
-      if (response.error) {
-        setError(response.error)
-      } else {
-        setNotification(response.demandes)
+      try {
+        const fetchedID = await fetch(`${BACKEND_ADDRESS}/users/token/${user.token}`);
+        const responseId = await fetchedID.json();
+        setId(responseId.user.id);
+
+        const fetched = await fetch(`${BACKEND_ADDRESS}/demande/mesdemandes/${responseId.user.id}`);
+        const response = await fetched.json();
+
+        if (response.error) {
+          setError(response.error);
+        } else {
+          setNotifications(response.demandes);
+        }
+      } catch (error) {
+        console.error("Erreur lors de la récupération des données:", error);
+        setError("Une erreur s'est produite.");
       }
     }
-    fetchData()
-  }, [])
+    fetchData();
+  }, [user.token]); // Ajouter user.token comme dépendance
 
-  const allNotifications = notification.map((x, i) => {
-
-    return (<TouchableOpacity key={i} style={styles.container}>
-      <View style={styles.box}>
-        <View style={styles.dot} />
-        <Text style={styles.title}>{x.message}</Text>
-        <Text style={styles.id}>{x.dateCreation}</Text>
-        <Text style={styles.date}>{x.expediteur}</Text>
-      </View>
-    </TouchableOpacity>)
-  })
+  const allNotifications = notifications.map((x, i) => {
+    let interlocuteur = '';
+    let drt = 'Troquer'; // Valeur par défaut
+    if (!x.type.troc) {
+      if (id === x.possesseur) {
+        interlocuteur = x.demandeur;
+        drt = "Donner";
+      } else {
+        interlocuteur = x.possesseur;
+        drt = "Recevoir";
+      }
+    }
+    return (
+      <Notification
+        id={x._id}
+        key={i}
+        item={x.item}
+        message={x.message[x.message.length - 1].message}
+        interlocuteur={interlocuteur}
+        possesseur={x.possesseur}
+        demandeur={x.demandeur}
+        statut={x.statut}
+        type={drt}
+        objProp={x.type.objetPropose}
+        de={x.message[x.message.length - 1].de}
+        a={x.message[x.message.length - 1].a}
+        date={x.message[x.message.length - 1].date}
+      />
+    );
+  });
 
   return (
     <View style={GlobalStyles.screenMainContainer}>
@@ -58,11 +77,10 @@ export default function SettingsPage() {
       <View style={GlobalStyles.container}>
         <MainButton
           title="Historique"
-          onPress={() => navigation.navigate('Connection')}
+          onPress={() => navigation.navigate('HistoryPage')}
         />
       </View>
       {allNotifications}
-      <Notification />
     </View>
   );
 }
@@ -130,3 +148,4 @@ const styles = StyleSheet.create({
     lineHeight: 14,
   },
 });
+

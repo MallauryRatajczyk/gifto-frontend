@@ -7,10 +7,11 @@ import Colors from '../elements/styles/Colors';
 import GlobalStyles from '../elements/styles/GlobalStyles';
 import { SearchIcon } from '../elements/assets/Icons';
 import React from 'react';
+import ImageHolder from '../elements/components/navigation/ImageHolder';
 
 const BACKEND_ADDRESS = "http://192.168.86.114:3000"
 
-export default function RechercheTrocScreen({ navigation }) {
+export default function RechercheTroc({ navigation }) {
     const [chercher, setChercher] = useState('');
     const [resultats, setResultats] = useState([]);
     const [itemRecommande, setItemRecommande] = useState([]);
@@ -62,94 +63,86 @@ export default function RechercheTrocScreen({ navigation }) {
     }
 
     const handlePressItem = () => {
-        navigation.navigate('ItemTrocScreen');
+        navigation.navigate('ItemTroc');
     }
 
     return (
-        <SafeAreaProvider style={{ padding: 10 }}>
+        <SafeAreaProvider style={{ flex: 1 }}>
             <SafeAreaView style={{ flex: 1 }}>
-                <Text style={[styles.coloredHeader, styles.headerTextWhite]} >Troquer</Text>
-                <View style={[GlobalStyles.whiteSearchContainer, { flexDirection: 'row', alignItems: 'center', padding: 10 }]}>
-                    <TextInput
-                        onChangeText={(value) => setChercher(value)}
-                        value={chercher}
-                        style={{ flex: 1, color: textColor, fontSize: 16 }}
-                        placeholder="Rechercher"
-                        placeholderTextColor={Colors.shadow}
-                    />
-                    <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
-                        <SearchIcon width={24} height={24} color={iconColor} style={{ marginRight: 10 }} />
-                    </TouchableOpacity>
-                </View>
-                {loading && <ActivityIndicator size="small" color={Colors.shadow} style={{ marginTop: 10 }} />}
-                <View style={{
-                    paddingTop: 10,
-                    alignItems: "center",
-                    marginBottom: 25
-                }}>
-                    {montreResult && resultats.length === 0 && (
-                        <Text>Aucun résultat trouvé.</Text>
-                    )}
-                    {montreResult && resultats.length > 0 ? (
-                        <>
-                            <Text>Résultats de recherche :</Text>
-                            <FlatList
-                                data={resultats}
-                                keyExtractor={(item) => item._id.toString()}
-                                renderItem={({ item }) => (
-                                    <View style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: Colors.shadow }}>
-                                        <TouchableOpacity style={styles.item} onPress={handlePressItem}>
-                                            <Image
-                                                source={{ uri: item.image }}
-                                                style={styles.image}
-                                            />
-                                            <Text style={{ color: Colors.textColor }}>{item.name}</Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                )} style={{ marginTop: 10 }}
-                            />
-                        </>
-                    ) : (
-                        <>
-                            <View style={GlobalStyles.screenHomeContainer}>
-                                <Text style={GlobalStyles.titleTextBlack}>Recommandations</Text>
-                            </View>
-                            <FlatList
-                                data={itemRecommande}
-                                keyExtractor={(item) => item._id.toString()}
-                                horizontal
-                                style={GlobalStyles.RecommendationContainer}
-                                renderItem={({ item }) => (
-                                    <View style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: Colors.shadow }}>
-                                        <TouchableOpacity style={styles.item} onPress={handlePressItem}>
-                                            <Image
-                                                source={{ uri: item.image }}
-                                                style={styles.image}
-                                            />
-                                            <Text style={{ color: Colors.textColor }}>{item.name}</Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                )}
-                            />
-                        </>
-                    )}
-                </View>
-                <View>
-                    <Text style={styles.titleTextBlack}>Ajouter un item</Text>
-                    <Text>Vous cherchez à échanger des articles avec quelque chose qui vous plait ?</Text>
-                    <View>
-                        <MainButton
-                            title="Créer !"
-                            onPress={() => navigation.navigate('CreeTrocScreen')}
-                            normalBackgroundColor={Colors.purpleColor}
-                            clickedBackgroundColor={Colors.textColor}    // Clicked state background color
+                <View style={GlobalStyles.screenMainContainer}>
+                    <Text style={[styles.coloredHeader, styles.headerTextWhite]} >Troquer</Text>
+                    <View style={[GlobalStyles.whiteSearchContainer, { flexDirection: 'row', alignItems: 'center', padding: 10 }]}>
+                        <SearchIcon width={24} height={24} color={iconColor} style={{ marginRight: 10 }} onPress={handleSearch}/>
+                        <TextInput
+                            onChangeText={(value) => setChercher(value)}
+                            value={chercher}
+                            style={{ flex: 1, color: textColor, fontSize: 16 }}
+                            placeholder="Rechercher"
+                            placeholderTextColor={Colors.shadow}
                         />
+                    </View>
+                    {loading && <ActivityIndicator size="small" color={Colors.shadow} style={{ marginTop: 10 }} />}
+                    <View style={{
+                        paddingTop: 10,
+                        alignItems: "center",
+                        marginBottom: 25
+                    }}>
+                        {montreResult ? (
+                            resultats.length === 0 ? (
+                                <Text>Aucun résultat trouvé.</Text>
+                            ) : (
+                                <FlatList
+                                    data={resultats}
+                                    keyExtractor={(item) => item._id.toString()}
+                                    renderItem={({ item }) => (
+                                        <View style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: Colors.shadow }}>
+                                            
+                                            <Text style={{ color: Colors.textColor }} onPress={handlePressItem}>{item.name}</Text>
+                                        </View>
+                                    )}
+                                    style={{ marginTop: 10 }}
+                                />
+                            )
+                        ) : (
+                            <>
+                                <View style={GlobalStyles.screenHomeContainer}>
+                                    <Text style={GlobalStyles.titleTextBlack}>Recommandations</Text>
+                                </View>
+                                <FlatList
+                                    data={itemRecommande}
+                                    keyExtractor={(item) => item._id.toString()}
+                                    horizontal
+                                    style={GlobalStyles.RecommendationContainer}
+                                    renderItem={({ item }) => (
+                                        <View style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: Colors.shadow }}>
+                                            
+                                            <Text style={{ color: Colors.textColor }} onPress={handlePressItem}>{item.name}</Text>
+                                        </View>
+                                    )}
+                                />
+                            </>
+                        )}
+                    </View>
+                    <View style={GlobalStyles.screenHomeContainer}>
+                        <View>
+                            <Text style={styles.titleTextBlack}>Ajouter un item</Text>
+                            <Text>Vous cherchez à échanger des articles avec quelque chose qui vous plait ?</Text>
+                            <View>
+                                <MainButton
+                                    title="Créer !"
+                                    onPress={() => navigation.navigate('CreationTroc')}
+                                    normalBackgroundColor={Colors.purpleColor}
+                                    clickedBackgroundColor={Colors.textColor}    // Clicked state background color
+                                />
+                            </View>
+                        </View>
                     </View>
                 </View>
             </SafeAreaView>
         </SafeAreaProvider>
-    )
-}
+    );
+};
+
 const styles = StyleSheet.create({ //peut être à modifier
     coloredHeader: {
         backgroundColor: Colors.purpleColor, // Default color

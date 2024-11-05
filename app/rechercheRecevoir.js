@@ -28,14 +28,14 @@ export default function RechercheRecevoir() {
       <ScrollView
       horizontal
       showsHorizontalScrollIndicator={false}
-      style={GlobalStyles.RecommandationContainer}>
-        <ImageHolder onPress={() => console.log('Image holder clicked!')} />
-        <ImageHolder onPress={() => console.log('Image holder clicked!')} />
-        <ImageHolder onPress={() => console.log('Image holder clicked!')} />
-        <ImageHolder onPress={() => console.log('Image holder clicked!')} />
+      style={GlobalStyles.RecommendationContainer}>
+        <ImageHolder />
+        <ImageHolder />
+        <ImageHolder />
+        <ImageHolder />
+        <ImageHolder />
+        <ImageHolder />
 
-        <ImageHolder onPress={() => console.log('Image holder clicked!')} />
-        <ImageHolder onPress={() => console.log('Image holder clicked!')} />
           
         </ScrollView>
           
@@ -49,3 +49,4 @@ export default function RechercheRecevoir() {
 }
 
 
+//        <ImageHolder onPress={() => console.log('Image holder clicked!')} />

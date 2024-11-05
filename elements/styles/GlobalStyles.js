@@ -5,7 +5,7 @@ import Typography from './Typography';
 
 export default StyleSheet.create({
 
-    //app general style
+//app general style
     appStyle: {
         flex: 1,
         backgroundColor: Colors.background,
@@ -13,14 +13,13 @@ export default StyleSheet.create({
         align: 'center',
         
 
-    },
+},
 
 //_________________CONTAINERS_________________
 
 
-
-  // Global container for all screens with consistent padding
-  screenMainContainer: {
+// Global container for all screens with consistent padding
+screenMainContainer: {
     flex: 1,
     backgroundColor: Colors.background,
     
@@ -28,14 +27,15 @@ export default StyleSheet.create({
     display: 'flex',
     scroll: 'true',
     
-  },
+},
 
-  screenHomeContainer: {
+screenHomeContainer: {
     paddingTop: 60,  
     paddingHorizontal: 36,  
     justifyContent: 'top', //top alignment for all content
+    overflow: 'visible',
     
-  },
+},
 
 //white main container with shadow
 whiteContainer: {
@@ -57,7 +57,7 @@ whiteContainer: {
     shadowColor: Platform.OS === 'android' ? Colors.shadowAndroid : Colors.shadow,
 },
 
-    //white card container with shadow (for information cards mainly for items)
+//white card container with shadow (for information cards mainly for items)
 whiteCardContainer: {
     backgroundColor: Colors.whiteColor,
     borderRadius: 16,
@@ -81,12 +81,35 @@ whiteCardContainer: {
     elevation: Platform.OS === 'android' ? 20 : 0,
     shadowColor: Platform.OS === 'android' ? Colors.shadowAndroid : Colors.shadow,
 },
-
+//big card use
 CardTextContainer: {
     width: '65%',
-    margin: -4,
-        
+    margin: -4,    
 },
+
+//item card use
+ItemTextContainer: {
+    width: '60%', 
+    marginTop: 12,
+},
+
+//white main container 
+CompletionContainer: {
+    backgroundColor: Colors.whiteColor,
+    width: Dimensions.get('window').width*0.85,
+    height: Dimensions.get('window').height*0.38,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 200,
+},
+
+CompletionOverlay: { //darkened background
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', 
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 
 WelcomeContainer: {
     marginBottom: 36,
@@ -95,7 +118,24 @@ WelcomeContainer: {
     alignContent: 'center',
     display: 'flex',
     direction: 'horizontal',
+},
 
+AddPhotoContainer: {
+    backgroundColor: Colors.whiteColor,
+    width: Dimensions.get('window').width*0.85,
+    height: Dimensions.get('window').height*0.44,
+    borderRadius: 12,
+    //spaces
+    paddingVertical: 36,
+    marginBottom:40,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+},
+
+ModelContainer: {
+    alignItems: 'center',
+    justifyContent: 'center', 
 },
 
 PictureProfileContainer: {
@@ -154,6 +194,65 @@ ImageHolderContainer: {
     shadowColor: Platform.OS === 'android' ? Colors.shadowAndroid : Colors.shadow,
 },
 
+ItemCardContainer: {
+    backgroundColor: Colors.whiteColor,
+    borderRadius: 16,
+    height: 120,
+
+    //spaces
+    padding: 12,
+    marginBottom: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+
+    
+    
+    // iOS Shadow
+    shadowColor: Colors.shadow,
+    shadowOpacity: 100,
+    shadowRadius: 80,
+        
+    // Android Shadow
+    shadowColor: Colors.shadow,
+    elevation: Platform.OS === 'android' ? 20 : 0,
+    shadowColor: Platform.OS === 'android' ? Colors.shadowAndroid : Colors.shadow,
+},
+
+ImageTagContainer: {
+    width: '35%',  
+    position: 'relative',
+    marginRight: 12,
+},
+
+MiniImageHolderContainer: {
+    backgroundColor: Colors.lightGreyColor,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100%',
+    width: '100%',
+},
+
+ImageStyle: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 8,
+  },
+
+//Tiny Tag container
+TagContainer: {
+    position: 'absolute',
+    top: 5,
+    left: 5,
+    backgroundColor: Colors.purpleColor,
+    borderRadius: 4,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 5, 
+    paddingVertical: -3, 
+    zIndex: 2, 
+},
+
     //TabNavigator container with shadow 
     navigatorContainer: {
         backgroundColor: Colors.whiteColor,
@@ -191,34 +290,101 @@ ImageHolderContainer: {
             alignItems: 'center',
     },
 
+
     //image holder full screen
     imageHolderImage: {
             width: '100%',
             height: '100%',
-        },
+    },
 
 
     //For forms (signin/signup/etc...)
     whiteFormContainer: {
         backgroundColor: Colors.whiteColor,
-        borderRadius: 12,
+        borderRadius: 16,
         
         //spaces
-        padding: 12,
-        paddingTop: 24,
-        paddingLeft: 24,
+        padding: 24,
         marginBottom: 24,
     
         // iOS Shadow
         shadowColor: Colors.shadow,
         shadowOpacity: 100,
-        shadowRadius: 80,
+        shadowRadius: 40,
         
         // Android Shadow
         shadowColor: Colors.shadow,
         elevation: Platform.OS === 'android' ? 20 : 0,
         shadowColor: Platform.OS === 'android' ? Colors.shadowAndroid : Colors.shadow,
     },
+
+    //For forms categories
+    DropDownFormContainer: {
+        backgroundColor: Colors.whiteColor,
+        borderRadius: 16,
+        height: 70,
+        
+        //spaces
+        padding: 24,
+        paddingTop: 28,
+        marginBottom: 24,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    
+        // iOS Shadow
+        shadowColor: Colors.shadow,
+        shadowOpacity: 100,
+        shadowRadius: 40,
+        
+        // Android Shadow
+        shadowColor: Colors.shadow,
+        elevation: Platform.OS === 'android' ? 20 : 0,
+        shadowColor: Platform.OS === 'android' ? Colors.shadowAndroid : Colors.shadow,
+    },
+
+    //For description forms
+    descriptionFormContainer: {
+        backgroundColor: Colors.whiteColor,
+        borderRadius: 16,
+        height: 200,
+        
+        //spaces
+        padding: 24,
+        marginBottom: 14,
+    
+        // iOS Shadow
+        shadowColor: Colors.shadow,
+        shadowOpacity: 100,
+        shadowRadius: 40,
+        
+        // Android Shadow
+        shadowColor: Colors.shadow,
+        elevation: Platform.OS === 'android' ? 20 : 0,
+        shadowColor: Platform.OS === 'android' ? Colors.shadowAndroid : Colors.shadow,
+    },
+
+    //Login Icons Container
+    LoginIconsContainer: {
+        flexDirection: 'row',
+        marginVertical: 24,
+        justifyContent: 'center',
+        
+    },
+
+    //Circle button with text Container
+    CircleButtonTextContainer: {
+        alignItems: 'center',
+        marginVertical: 44,
+        marginHorizontal: -12,  
+    },
+
+    //Intro Logo Container
+    IntroLogoContainer: {
+        alignItems: 'center',
+        marginVertical: 10,
+    },
+
 
     //white card container with RED stroke (pour le demende en cours)
     requestContainerRedStoke: {
@@ -314,6 +480,8 @@ ImageHolderContainer: {
     elevation: Platform.OS === 'android' ? 20 : 0,
     shadowColor: Platform.OS === 'android' ? Colors.shadowAndroid : Colors.shadow,
   },
+
+  
 
     //_________________HEADERS WITH BACKGROUND COLOR & ICONS_________________
 
@@ -413,6 +581,14 @@ ImageHolderContainer: {
         color: Colors.textColor,
         paddingVertical: 6,
     },
+    
+    //H3 red color
+    subtitleTextRed: {
+        ...Typography.h3,
+        color: Colors.redColor,
+        paddingVertical: 6,
+
+    },
 
     //H3 grey color
     subtitleTextGrey: {
@@ -438,6 +614,14 @@ ImageHolderContainer: {
         paddingVertical: 4,
     },
 
+       //H4 light grey color
+       miniTitleTextLightGrey: {
+        ...Typography.h4,
+        color: Colors.textColor,
+        paddingVertical: 6,
+        opacity: 0.2,
+    },
+
 
     //_________________BODYCOPY_________________
     bodyTextBlack: {
@@ -458,6 +642,17 @@ ImageHolderContainer: {
         color: Colors.textColor,
         opacity: 0.2,
         paddingVertical: 4,
+        alignContent: 'center',
+    },
+
+    bodyTextComments: {
+        ...Typography.paragraphMain,
+        color: Colors.textColor,
+        opacity: 0.2,
+        padding: 4,
+        marginTop: 12,
+        width: '70%',
+        textAlign: 'center',
     },
 
     //for subcategories
@@ -512,6 +707,12 @@ ImageHolderContainer: {
         paddingVertical: 4,
     },
 
+    whiteTinyText: {
+        ...Typography.paragraphTiny,
+        color: Colors.whiteColor,
+        paddingVertical: 4,
+    },
+
 
 
     //_________________BUTTONS_________________
@@ -529,16 +730,18 @@ ImageHolderContainer: {
         height: 1,
         backgroundColor: Colors.shadow,
         marginVertical: 8,
+        width: '80%',
     },
 
   buttonPrimary: {
     backgroundColor: Colors.purpleColor, // Default color
     borderRadius: 60,
     paddingVertical: 4,
-    marginVertical: 24,
+    marginVertical: 12,
     alignItems: 'center',
 
   },
+  
 
   buttonTextWhite: {
     ...Typography.cta,
@@ -548,8 +751,8 @@ ImageHolderContainer: {
 
   buttonSecondary: {
     borderRadius: 60,
-    paddingVertical: 4,
-    marginVertical: 24,
+    paddingVertical: 2,
+    marginVertical: 12,
     alignItems: 'center',
     //stoke color
     borderWidth: 1.5,
@@ -592,11 +795,58 @@ ImageHolderContainer: {
     marginTop: 2,
   },
 
+
+
+  editIcon: {
+    position: 'absolute',
+    top: 10,
+    right: 10, 
+    zIndex: 1,
+  },
+
 //for navigation bar
   iconContainer: {
     alignItems: 'center',
     paddingTop: 4,
   },
 
+  editCardContainer: {
+    position: 'relative', 
+    padding: 10, 
+  },
+
+  bottomUpdateContainer: {
+    position: 'absolute',
+    bottom: 10, 
+    right: 10, 
+  },
+
+  titleText: {
+    marginBottom: -8,
+  },
+
+
+
+  circleButton: {
+    width: 78, 
+    height: 78,
+    borderRadius: 50, 
+    marginHorizontal: 14,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+  },
+
+  errorText: {
+    ...Typography.paragraphSmallRed,
+    color: Colors.textColor,
+    marginBottom: 10,
+  },
+
+  scrollViewContent: {
+    flexGrow: 1,
+    paddingBottom: 50,
+    
+  },
 
 });

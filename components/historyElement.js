@@ -1,14 +1,13 @@
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 const { formatDateToUserReadable } = require('../modules/getDate');
 
-export default function Notification(props) {
+export default function HistoryElement(props) {
     const [itemName, setItemName] = useState("");
     const [isPending, setIsPending] = useState(props.statut === "pending");
     const [interlocuteur, setInterlocuteur] = useState("");
     const [dotStyle, setDotStyle] = useState("");
-    const user = useSelector((state) => state.user.value);
+
     useEffect(() => {
         async function findItem(id) {
             const fetched = await fetch(`http://192.168.1.81:3000/item/${id}`);
@@ -31,16 +30,11 @@ export default function Notification(props) {
         }
     }, []);
 
-    //arret vendredi
     const isRead = () => {
-        const data = { possesseur: props.possesseur, demandeur: props.demandeur, statut: 'read', token: user.token }
         setIsPending(!isPending);
-        fetch(`http://192.168.1.81:3000/demande/${props.id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        })
     }
+
+
 
     return (
         <TouchableOpacity style={styles.container} onPress={isRead}>

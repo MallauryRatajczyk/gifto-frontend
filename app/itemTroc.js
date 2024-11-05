@@ -17,7 +17,7 @@ import SearchBar from '../elements/components/navigation/SearchBar';
 
 const BACKEND_ADDRESS = "http://192.168.86.114:3000"
 
-export default function ItemTrocScreen({ navigation }) {
+export default function ItemTroc({ navigation }) {
     const profileImageUrl = useSelector((state) => state.user.value.imageUrl);
     const username = useSelector((state) => state.user.username);
 

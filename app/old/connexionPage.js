@@ -1,17 +1,27 @@
+//WE DON'T NEED THIS FILE ANYMORE
+
 import { Text, View, Image, StyleSheet, TouchableOpacity, TextInput } from "react-native";
-import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { toConnectUser } from '../reducers/user'
+//import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
+//import { useState } from 'react';
+//import { useDispatch } from 'react-redux';
+//import { toConnectUser } from '../../reducers/user'
+
+//import { GiftoSymbol } from '../../elements/assets/Icons';
+//import Colors from '../../elements/styles/Colors';
+//import GlobalStyles from '../../elements/styles/GlobalStyles';
 
 const BACKEND_ADDRESS = "http://192.168.86.114:3000"
 
 export default function Connection({ navigation }) {
-    const dispatch = useDispatch();
+    // Initialize the dispatch function for Redux actions
+    const dispatch = useDispatch(); 
+
+    // Define state variables for email, password, and error messages
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('');
 
+    // Function to handle user login
     const connect = (userObject) => {
         fetch(`${BACKEND_ADDRESS}/users/login`, {
             method: 'POST',
@@ -21,9 +31,9 @@ export default function Connection({ navigation }) {
             .then(data => {
                 if (data.error) {
                     setError(data.error)
-                } else {
+                } else { // If login is successful, dispatch the user data to the Redux store
                     dispatch(toConnectUser({ token: data.token, email, username: data.username }));
-                    navigation.navigate('TabNavigator')
+                    navigation.navigate('TabNavigator') // Navigate to the main application screen
                 }
             })
     }
@@ -31,7 +41,9 @@ export default function Connection({ navigation }) {
     return (
         <SafeAreaProvider style={{ flex: 1 }}>
             <SafeAreaView style={{ flex: 1 }}>
-                <View
+
+                {/* Logo Section */}
+                {/*   <View
                     style={{
                         paddingTop: 10,
                         alignItems: "center",
@@ -39,12 +51,16 @@ export default function Connection({ navigation }) {
                     }}
                 >
                     <Image source={require('../assets/images/logoGifto.png')} style={styles.logoConnection} />
-                </View>
+                </View> */}
+
+                {/* Login Form Section */}
                 <View style={{
                     alignItems: "center",
                     marginBottom: 25
                 }}>
                     <Text style={styles.textContain}>Connexion</Text>
+
+                    {/* Email Input Field */}
                     <TextInput
                         onChangeText={(value) => setEmail(value)}
                         value={email}
@@ -56,6 +72,8 @@ export default function Connection({ navigation }) {
                         autoCapitalize="none"
                         textContentType="emailAddress"
                     />
+
+                    {/* Password Input Field */}
                     <TextInput
                         onChangeText={(value) => setPassword(value)}
                         value={password}
@@ -69,13 +87,18 @@ export default function Connection({ navigation }) {
                         autoCapitalize="none"
                     />
                     {error && <Text>{error}</Text>}
+
+                    {/* Login Button */}
                     <TouchableOpacity style={styles.button} >
                         <Text style={styles.textButton} onPress={() => {
                             setError('')
                             connect({ email, password })
                         }}>Se connecter</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.retourButton} onPress={() => navigation.navigate('Authentification')} >
+
+                    {/* Back Button */}
+                    <TouchableOpacity style={styles.retourButton} 
+                    onPress={() => navigation.navigate('Authentification')} >
                         <Text style={styles.retourButtonText}>Retour</Text>
                     </TouchableOpacity>
                 </View>
