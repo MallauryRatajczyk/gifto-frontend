@@ -32,6 +32,7 @@ export default function AjoutDon({ navigation }) {
     }
     const handleSubmit = () => {
         // logique de soumission ici  
+        // doit passer le choix du troc à true
     };
     return (    // 
         <SafeAreaProvider style={styles.container}>
@@ -39,7 +40,7 @@ export default function AjoutDon({ navigation }) {
                 <ScrollView style={styles.scrollContainer}>
                     <View style={styles.content}>
                         <View style={styles.headerContainer}>
-                            <Text style={styles.header}>Ajout de don</Text>
+                            <Text style={styles.header}>Ajout de troc</Text>
                         </View>
                         {/* Bouton d'affichage de la modale                
                 <TouchableOpacity onPress={() => setIsUploadVisible(true)} style={styles.imagePickerContainer}>                
@@ -180,6 +181,10 @@ const styles = StyleSheet.create({
                 fontSize: 13,    
                 lineHeight: 14,  
             },   });
+
+
+
+
 
 
 

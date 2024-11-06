@@ -12,8 +12,8 @@ import { SettingsIcon, GiftoLogo } from '../elements/assets/Icons';
 
 import { TouchableOpacity, Image } from 'react-native';
 
-export default function HomePage() {
-  const navigation = useNavigation();
+export default function HomePage({navigation}) {
+  //const navigation = useNavigation();
   const profileImageUrl = useSelector((state) => state.user.value.imageUrl);
   //const firstName = useSelector((state) => state.user.value.firstName); // Access firstName from Redux
   const username = useSelector((state) => state.user.value.username);
@@ -52,7 +52,7 @@ export default function HomePage() {
           icon={RecevoirIcon}
           title="Recevoir"
           bodyText="Recevez des objets gratuitement ou en troc !"
-          onPress={() => navigation.navigate('RechercheRecevoir')}
+          onPress={() => navigation.navigate('ItemRecevoirPage')}
           textColor={Colors.greenColor}
           iconColor={Colors.greenColor}
         />

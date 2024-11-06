@@ -5,6 +5,8 @@ import GlobalStyles from '../../styles/GlobalStyles';
 import { SearchIcon } from '../../assets/Icons';
 import Typography from '../../styles/Typography';
 
+const BACKEND_ADDRESS = "http://192.168.86.114:3000"
+
 export default function SearchBar({
   placeholder = "Chercher",
   iconColor = Colors.purpleColor,
@@ -25,7 +27,7 @@ export default function SearchBar({
     setLoading(true);
 
     // Perform search
-    fetch(`http://192.168.1.182:3000/search?query=${inputText}`)
+    fetch(`${BACKEND_ADDRESS}/search?query=${inputText}`)
       .then((response) => response.json())
       .then((data) => {
         setResults(data.items); // Assumes `objets` is the array of search results

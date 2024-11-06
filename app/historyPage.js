@@ -10,6 +10,8 @@ import { useState, useEffect } from 'react';
 
 const { getId } = require('../modules/verifUser');
 
+const BACKEND_ADDRESS = "http://192.168.86.114:3000"
+
 export default function HistoryPage() {
     const navigation = useNavigation();
     const [id, setId] = useState('');
@@ -20,11 +22,11 @@ export default function HistoryPage() {
     useEffect(() => {
         async function fetchData() {
             try {
-                const fetchedID = await fetch(`http://192.168.1.81:3000/users/token/${user.token}`);
+                const fetchedID = await fetch(`${BACKEND_ADDRESS}/users/token/${user.token}`);
                 const responseId = await fetchedID.json();
                 setId(responseId.user.id);
 
-                const fetched = await fetch(`http://192.168.1.81:3000/demande/mesdemandes/${responseId.user.id}`);
+                const fetched = await fetch(`${BACKEND_ADDRESS}/demande/mesdemandes/${responseId.user.id}`);
                 const response = await fetched.json();
 
                 if (response.error) {

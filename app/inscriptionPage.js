@@ -29,7 +29,7 @@ export default function Inscription({ navigation }) {
   const [error, setError] = useState('');
 
   const register = (userObject) => {
-    fetch('http://192.168.1.81:3000/users/enregistrer', {
+    fetch(`${BACKEND_ADDRESS}/users/enregistrer`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(userObject),
@@ -187,5 +187,7 @@ export default function Inscription({ navigation }) {
     </SafeAreaProvider>
   );
 }
+
+
 
 

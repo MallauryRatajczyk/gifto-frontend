@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import GlobalStyles from '../elements/styles/GlobalStyles';
 import MainButton from '../elements/components/buttons/MainButton';
 import NotificationHeader from '../elements/components/navigation/NotificationHeader';
@@ -9,6 +8,8 @@ import { useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
 
 const { getId } = require('../modules/verifUser');
+
+const BACKEND_ADDRESS = "http://192.168.86.114:3000"
 
 export default function NotificationPage({ navigation }) {
   const [id, setId] = useState('');
@@ -19,11 +20,11 @@ export default function NotificationPage({ navigation }) {
   useEffect(() => {
     async function fetchData() {
       try {
-        const fetchedID = await fetch(`http://192.168.1.81:3000/users/token/${user.token}`);
+        const fetchedID = await fetch(`${BACKEND_ADDRESS}/users/token/${user.token}`);
         const responseId = await fetchedID.json();
         setId(responseId.user.id);
 
-        const fetched = await fetch(`http://192.168.1.81:3000/demande/mesdemandes/${responseId.user.id}`);
+        const fetched = await fetch(`${BACKEND_ADDRESS}/demande/mesdemandes/${responseId.user.id}`);
         const response = await fetched.json();
 
         if (response.error) {
@@ -42,7 +43,6 @@ export default function NotificationPage({ navigation }) {
   const allNotifications = notifications.map((x, i) => {
     let interlocuteur = '';
     let drt = 'Troquer'; // Valeur par défaut
-
     if (!x.type.troc) {
       if (id === x.possesseur) {
         interlocuteur = x.demandeur;
@@ -52,7 +52,6 @@ export default function NotificationPage({ navigation }) {
         drt = "Recevoir";
       }
     }
-
     return (
       <Notification
         id={x._id}
@@ -60,6 +59,8 @@ export default function NotificationPage({ navigation }) {
         item={x.item}
         message={x.message[x.message.length - 1].message}
         interlocuteur={interlocuteur}
+        possesseur={x.possesseur}
+        demandeur={x.demandeur}
         statut={x.statut}
         type={drt}
         objProp={x.type.objetPropose}

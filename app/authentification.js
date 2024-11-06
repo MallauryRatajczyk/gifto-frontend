@@ -20,6 +20,8 @@ import PasswordInputCard from '../elements/components/cards/PasswordInputCard';
 
 //REMARQUE : NOUS DEVONS METTRE À JOUR LES LIENS DU BOUTON CERCLE (WINDOWS ET APPLE) !!!!!!!
 
+const BACKEND_ADDRESS = "http://192.168.86.114:3000"
+
 export default function Authentification({ navigation }) {
     const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
         clientId: '887056109032-ja5jqdiubjk4h8ppn2e2mu24q0v5u4io.apps.googleusercontent.com', // Replace YOUR_CLIENT_ID later on
@@ -38,7 +40,7 @@ export default function Authentification({ navigation }) {
 
     // Function to handle user login
     const connect = (userObject) => {
-        fetch('http://192.168.1.81:3000/users/login', {
+        fetch(`${BACKEND_ADDRESS}/users/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(userObject)
