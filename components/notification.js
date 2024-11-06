@@ -35,27 +35,30 @@ export default function Notification(props) {
 
     //arret vendredi
     const isRead = () => {
-        console.log('read')
-        const data = { possesseur: props.possesseur, demandeur: props.demandeur, statut: 'read', token: user.token }
-        setIsPending(false);
-        fetch(`http://192.168.1.81:3000/demande/read/${props.id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        })
+        if (props.statut === "pending") {
+            const data = { possesseur: props.possesseur, demandeur: props.demandeur, statut: 'read', token: user.token }
+            setIsPending(false);
+            fetch(`http://192.168.1.81:3000/demande/read/${props.id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+        }
+
         //navigation.navigate('Chat', { message: props.message, interlocuteur })
         navigation.navigate('Demande')
     }
 
     const unread = () => {
-        console.log('unread')
-        const data = { possesseur: props.possesseur, demandeur: props.demandeur, statut: 'pending', token: user.token }
-        setIsPending(true);
-        fetch(`http://192.168.1.81:3000/demande/read/${props.id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        })
+        if (props.statut === "read") {
+            const data = { possesseur: props.possesseur, demandeur: props.demandeur, statut: 'pending', token: user.token }
+            setIsPending(true);
+            fetch(`http://192.168.1.81:3000/demande/read/${props.id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+        }
     }
 
     return (

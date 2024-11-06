@@ -6,16 +6,20 @@ const { formatDateToUserReadable } = require('../modules/getDate');
 
 
 export default function CarteItem(props) {
-    const navigation = useNavigation(); // Obtenir l'objet navigation
+    const navigation = useNavigation();
     const [itemName, setItemName] = useState("Exemple d'item");
+    const [itemImage, setItemImage] = useState(null);
+    const [idDemande, setIdDemande] = useState(null);
     const [itemDesc, setItemDesc] = useState("Description de l'exemple d'item.");
     const [interlocuteur, setInterlocuteur] = useState("Utilisateur Exemple");
     const [demande, setDemande] = useState([]); // Liste vide de demandes
     const [modalVisible, setModalVisible] = useState(false);
     const [loading, setLoading] = useState(true); // Indicateur de chargement
+    const [isValidate, setIsValidate] = useState(false)
     const user = useSelector((state) => state.user.value);
-    useEffect(() => {
 
+
+    useEffect(() => {
         async function findItem(id) {
             try {
                 const fetched = await fetch(`http://192.168.1.81:3000/item/${id}`);
@@ -23,83 +27,71 @@ export default function CarteItem(props) {
                 const response = await fetched.json();
                 setItemName(response.item.name);
                 setItemDesc(response.item.description);
+                if (response.item.image) {
+                    setItemImage(response.item.image)
+                }
             } catch (error) {
                 console.error("Error fetching item:", error);
             }
         }
 
-        /*async function getUsername(id) {
-            try {
-                const fetchedID = await fetch(`http://192.168.1.81:3000/users/${id}`);
-                if (!fetchedID.ok) throw new Error('Failed to fetch user');
-                const responseId = await fetchedID.json();
-                setInterlocuteur(responseId.user.username);
-            } catch (error) {
-                console.error("Error fetching user:", error);
-            }
-        }*/
-        //ICI
+        //ICI mercredi
         async function getDemande(id) {
             try {
                 const fetchedDemande = await fetch(`http://192.168.1.81:3000/demande/item/${id}`);
                 if (!fetchedDemande.ok) throw new Error('Failed to fetch demandes');
                 const responseDemande = await fetchedDemande.json();
+                setIdDemande(responseDemande.demande._id)
                 const fetchedDemandeur = await fetch(`http://192.168.1.81:3000/users/${responseDemande.demandes[0].demandeur}`);
-                if (!fetchedDemande.ok) throw new Error('Failed to fetch demandes');
+                if (!fetchedDemande.ok) throw new Error('Failed to fetch user');
                 const responseDemandeur = await fetchedDemandeur.json();
                 setInterlocuteur(responseDemandeur.user.username)
-                // Filtrer les demandes pour enlever les messages
-                const demandesSansMessages = responseDemande.demandes.map(demande => ({
+                const demandesSansMessages = responseDemande.demandes.map((demande, i) => ({
+                    key: i,
                     name: interlocuteur,
                     statut: demande.statut,
                     dateCreation: formatDateToUserReadable(new Date(demande.dateCreation)),
-                    //lastMessage : demande.message[demande.message.length-1].message
-                    //dateLastMessage : demande.message[demande.message.length-1].message
                 }));
-
-                setDemande(demandesSansMessages); // Met à jour la liste des demandes
+                setDemande(demandesSansMessages);
+                console.log(responseDemande.demandes.find(x => x.statut === "accepted"))
+                if (responseDemande.demandes.find(x => x.statut === "accepted")) {
+                    setIsValidate(true)
+                }
             } catch (error) {
                 console.error("Error fetching demandes:", error);
             }
         }
 
-        if (props.item) {
-            findItem(props.item);
-        }
-        /*if (props.interlocuteur) {
-            getUsername(props.interlocuteur);
-        }*/
-
-        if (props.item) {
-            getDemande(props.item);  // Assure-toi d'appeler cette fonction avec l'ID de l'item.
+        if (props.id) {
+            findItem(props.id);
+            getDemande(props.id);
         }
 
         setLoading(false); // Fin du chargement
-    }, [props.item, props.interlocuteur]);
+    }, [props.id]);
 
     const openModal = () => {
-        setModalVisible(true); // Ouvre le modal
+        setModalVisible(true);
     };
 
     const closeModal = () => {
-        setModalVisible(false); // Ferme le modal
+        setModalVisible(false);
     };
 
     const validate = () => {
-        console.log('validate')
         const data = { statut: 'accepted', token: user.token }
-        fetch(`http://192.168.1.81:3000/demande/read/${props.id}`, {
+        fetch(`http://192.168.1.81:3000/demande/read/${idDemande}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         })
         setModalVisible(false)
+        setIsValidate(true)
     }
 
     const refused = () => {
-        console.log('declined')
         const data = { statut: 'declined', token: user.token }
-        fetch(`http://192.168.1.81:3000/demande/read/${props.id}`, {
+        fetch(`http://192.168.1.81:3000/demande/read/${idDemande}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
@@ -109,13 +101,22 @@ export default function CarteItem(props) {
 
     const viewMessage = () => {
         closeModal()
-        navigation.navigate('Chat', { message: props.message, interlocuteur })
+        navigation.navigate('Chat', { messages: props.message, interlocuteur })
     }
 
-    const renderRequest = ({ item }) => (
-        <View style={styles.requestContainer}>
+    const getStatut = (statut) => {
+        switch (statut) {
+            case "read": return ("lu");
+            case "pending": return ("en attente");
+            case "declined": return ("refusé");
+            case "accepted": return ("validé");
+        }
+    }
+
+    const request = ({ item }) => (
+        <View style={[styles.requestContainer, item.statut === "declined" ? { backgroundColor: "#F08784" } : item.statut === "accepted" ? { backgroundColor: "#00BA88" } : {}]}>
             <Text style={styles.requestTitle}>Demande de: {item.name}</Text>
-            <Text style={styles.requestDescription}>Statut: {item.statut === "read" ? "lu" : "en attente"}</Text>
+            <Text style={styles.requestDescription}>Statut: {getStatut(item.statut)}</Text>
             <Text style={styles.requestDate}>Date de création: {item.dateCreation}</Text>
             <View style={{ flex: 1, flexDirection: "row", justifyContent: "space-between" }}>
                 <TouchableOpacity onPress={viewMessage}>
@@ -154,7 +155,7 @@ export default function CarteItem(props) {
                         ) : (
                             <FlatList
                                 data={demande}
-                                renderItem={renderRequest}
+                                renderItem={request}
                                 keyExtractor={(item) => item.id}
                             />
                         )}
@@ -164,12 +165,16 @@ export default function CarteItem(props) {
 
             {/* Carte principale */}
             <View style={styles.cardContainer}>
-                <View style={styles.card}>
+                <View style={[styles.card, isValidate ? styles.validate : styles.card]}>
                     <View style={styles.cardImageContainer}>
-                        <Image
+                        {itemImage !== "imageTest" ? <Image
                             style={styles.cardImage}
-                            source={{ uri: "https://via.placeholder.com/80" }}
-                        />
+                            source={{ uri: itemImage }}
+                        /> : <Image
+                            style={styles.cardImage}
+                            source={require("../assets/images/logoGifto.png")}
+                        />}
+
                     </View>
                 </View>
                 <Text style={styles.cardTitle}>{itemName}</Text>
@@ -204,6 +209,9 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         elevation: 5,
     },
+    validate: {
+        backgroundColor: '#00BA88'
+    },
     cardImageContainer: {
         width: 100,
         height: 80,
@@ -212,8 +220,9 @@ const styles = StyleSheet.create({
         top: 10,
     },
     cardImage: {
-        width: 80,
-        height: 80,
+        width: '100%',
+        height: '100%',
+        resizeMode: 'contain'
     },
     cardTitle: {
         position: 'absolute',
@@ -262,6 +271,8 @@ const styles = StyleSheet.create({
 
     // Styles pour les demandes
     requestContainer: {
+        padding: 20,
+        borderRadius: 10,
         marginBottom: 15,
     },
     requestTitle: {

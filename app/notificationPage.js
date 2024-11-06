@@ -75,10 +75,14 @@ export default function NotificationPage({ navigation }) {
   return (
     <View style={GlobalStyles.screenMainContainer}>
       <NotificationHeader />
-      <View style={GlobalStyles.container}>
+      <View >
         <MainButton
           title="Historique"
           onPress={() => navigation.navigate('HistoryPage')}
+        />
+        <MainButton
+          title="Demandes reçus"
+          onPress={() => navigation.navigate('Demande')}
         />
       </View>
       {allNotifications}
