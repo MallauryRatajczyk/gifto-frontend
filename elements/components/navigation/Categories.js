@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Modal, FlatList } from 'react-native';
-import GlobalStyles from '../../styles/GlobalStyles';
-import Colors from '../../styles/Colors';
-import { CategoryIcon } from '../../assets/Icons';
+import { View, Text, StyleSheet } from 'react-native';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 const categories = [
   { name: "Électronique", subcategories: [{ name: "Téléphones" }, { name: "Ordinateurs" }, { name: "Tablettes" }, { name: "Accessoires" }] },
@@ -13,154 +11,100 @@ const categories = [
 ];
 
 const Categories = ({ categorie, setCategorie, sousCategorie, setSousCategorie }) => {
-  const [categoryModalVisible, setCategoryModalVisible] = useState(false);
-  const [subcategoryModalVisible, setSubcategoryModalVisible] = useState(false);
+  const [openCategorie, setOpenCategorie] = useState(false);
+  const [openSousCategorie, setOpenSousCategorie] = useState(false);
 
-  const toggleCategoryModal = () => setCategoryModalVisible(!categoryModalVisible);
-  const toggleSubcategoryModal = () => {
-    if (categorie) { // Only open subcategory modal if a category is selected
-      setSubcategoryModalVisible(!subcategoryModalVisible);
+  const categoriesItems = categories.map(cat => ({
+    label: cat.name,
+    value: cat.name
+  }));
+
+  const sousCategories = categories
+    .find(cat => cat.name === categorie)
+    ?.subcategories.map(subcat => ({
+      label: subcat.name,
+      value: subcat.name
+    })) || [];
+
+   //  fonction pour fermer la sousCategorie, si la categorie est ouverte
+  const handleOpenCategorie = (open) => {
+    if (open) {
+      setOpenSousCategorie(false);
     }
+    setOpenCategorie(open);
   };
 
-  const handleCategorySelect = (categoryName) => {
-    setCategorie(categoryName);
-    setSousCategorie([]); // Reset subcategories on new category selection
-    toggleCategoryModal();
-  };
-
-  const handleSubcategorySelect = (subcategoryName) => {
-    if (sousCategorie.includes(subcategoryName)) {
-      setSousCategorie(sousCategorie.filter(item => item !== subcategoryName));
-    } else {
-      setSousCategorie([...sousCategorie, subcategoryName]);
+  const handleOpenSousCategorie = (open) => {
+    if (open) {
+      setOpenCategorie(false);
     }
+    setOpenSousCategorie(open);
   };
-// Amir did not finish this styling part here!!!!!
+
   return (
-    <View>
+    <View style={styles.container}>
+      <View style={[styles.pickerContainer, { zIndex: 2000 }]}>
+        <Text style={styles.h4}>Catégories</Text>
+        <DropDownPicker
+          open={openCategorie}
+          value={categorie}
+          items={categoriesItems}
+          setOpen={handleOpenCategorie}
+          setValue={setCategorie}
+          placeholder="Sélectionner une catégorie"
+          style={styles.picker}
+          dropDownContainerStyle={styles.dropDownContainer}
+          listMode="SCROLLVIEW"
+          scrollViewProps={{
+            nestedScrollEnabled: true
+          }}
+          maxHeight={200}  // Hauteur maximale de la liste déroulante
+        />
+      </View>
 
-      {/* Category Selector */}
-      <Text style={GlobalStyles.subtitleTextGrey}>Catégorie</Text>
-      <TouchableOpacity style={GlobalStyles.DropDownFormContainer} onPress={toggleCategoryModal}>
-        <Text style={GlobalStyles.miniTitleTextBlack}>
-          {categorie || 'Sélectionner une catégorie'}
-        </Text>
-        <CategoryIcon width={24} height={24} color={Colors.lightGreyColor} />
-      </TouchableOpacity>
-      
-      {/* Category Modal */}
-      <Modal transparent visible={categoryModalVisible} animationType="slide">
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            <FlatList
-              data={categories}
-              keyExtractor={(item) => item.name}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  style={styles.modalItem}
-                  onPress={() => handleCategorySelect(item.name)}
-                >
-                  <Text style={GlobalStyles.subtitleTextBlack}>{item.name}</Text>
-                </TouchableOpacity>
-              )}
-            />
-            <TouchableOpacity onPress={toggleCategoryModal} style={styles.closeButton}>
-              <Text style={GlobalStyles.subtitleTextRed}>Fermer</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
-
-      {/* Subcategory Selector */}
-      <Text style={GlobalStyles.subtitleTextGrey}>Sous-catégories</Text>
-      <TouchableOpacity
-        style={GlobalStyles.DropDownFormContainer} // Disable style if no category selected
-        onPress={toggleSubcategoryModal}
-        disabled={!categorie} // Disable button if no category selected
-      >
-        <Text style={[GlobalStyles.miniTitleTextBlack, !categorie && GlobalStyles.miniTitleTextLightGrey]}>
-          {sousCategorie.length > 0 ? sousCategorie.join(', ') : 'Choisir les sous-catégories'}
-        </Text>
-        <CategoryIcon width={24} height={24} color={Colors.lightGreyColor} />
-      </TouchableOpacity>
-      
-      {/* Subcategory Modal */}
-      {categorie && (
-        <Modal transparent visible={subcategoryModalVisible} animationType="slide">
-          <View style={styles.modalOverlay}>
-            <View style={styles.modalContent}>
-              <FlatList
-                data={categories.find(cat => cat.name === categorie)?.subcategories || []}
-                keyExtractor={(item) => item.name}
-                renderItem={({ item }) => (
-                  <TouchableOpacity
-                    style={styles.modalItem}
-                    onPress={() => handleSubcategorySelect(item.name)}
-                  >
-                    <Text style={GlobalStyles.subtitleTextRed}>
-                      {sousCategorie.includes(item.name) ? '• ' : ''}{item.name}
-                    </Text>
-                  </TouchableOpacity>
-                )}
-              />
-              <TouchableOpacity onPress={toggleSubcategoryModal} style={styles.closeButton}>
-                <Text style={GlobalStyles.subtitleTextRed}>Fermer</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Modal>
-      )}
+      <View style={[styles.pickerContainer, { zIndex: 1000 }]}>
+        <Text style={styles.h4}>Sous-catégories</Text>
+        <DropDownPicker
+          open={openSousCategorie}
+          value={sousCategorie}
+          items={sousCategories}
+          setOpen={handleOpenSousCategorie}
+          setValue={setSousCategorie}
+          placeholder="Sélectionner une sous-catégorie"
+          style={styles.picker}
+          dropDownContainerStyle={styles.dropDownContainer}
+          disabled={!categorie}
+          listMode="SCROLLVIEW"
+          scrollViewProps={{
+            nestedScrollEnabled: true
+          }}
+          maxHeight={200}  // Hauteur maximale de la liste déroulante
+        />
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-
-  dropdown: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: Colors.whiteColor,
-    padding: 16,
-    borderRadius: 8,
-    borderColor: Colors.lightGreyColor,
+  container: {
+    padding: 10,
+  },
+  pickerContainer: {
+    marginBottom: 50,  // Augmenté pour laisser de l'espace pour la liste déroulante
+  },
+  picker: {
+    borderRadius: 15,
     borderWidth: 1,
-    marginBottom: 16,
+    height: 40,
   },
-
-  dropdownText: {
-    fontSize: 16,
-    color: Colors.darkGreyColor,
+  dropDownContainer: {
+    borderWidth: 1,
   },
-
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalContent: {
-    width: '80%',
-    backgroundColor: Colors.whiteColor,
-    borderRadius: 8,
-    paddingVertical: 16,
-  },
-  modalItem: {
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.lightGreyColor,
-  },
-
-  closeButton: {
-    padding: 16,
-    alignItems: 'center',
-  },
-  closeButtonText: {
-    fontSize: 16,
-    color: Colors.redColor,
-    fontWeight: 'bold',
-  },
+  h4: {
+    marginBottom: 5,
+    fontFamily: 'BalooBhaijaan2_400Regular',
+    fontSize: 13,
+  }
 });
 
 export default Categories;

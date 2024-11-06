@@ -147,3 +147,43 @@ const handlePressItem = (itemId) => {
 
 
 //        <ImageHolder onPress={() => console.log('Image holder clicked!')} />
+
+const styles = StyleSheet.create({ //peut être à modifier
+  coloredHeader: {
+      backgroundColor: Colors.greenColor, // Default color
+      borderBottomRightRadius: 60,
+      paddingTop: 60,
+      marginBottom: 36,
+      alignItems: 'left',
+      flexDirection: 'row',
+      paddingHorizontal: 16,
+      justifyContent: 'left',
+      height: 140,
+  },
+  headerTextWhite: {
+      ...Typography.h1,
+      color: Colors.whiteColor,
+      paddingVertical: 24,
+      marginLeft: 12,
+      marginRight: 12,
+      marginBottom: -30,
+  },
+  titleTextBlack: {
+      ...Typography.h2,
+      color: Colors.textColor,
+      paddingVertical: 12,
+  },
+  searchButton: {
+      marginLeft: 10,
+  },
+  item: {
+      flexDirection: 'row',
+      alignItems: 'center',
+  },
+  image: {
+      width: 50,
+      height: 50,
+      borderRadius: 5,
+      marginRight: 10,
+  },
+});  

@@ -24,14 +24,18 @@ import HomePage from './homePage';
 import NotificationPage from './notificationPage';
 import SettingsPage from './settingsPage';
 import ProfilePage from './profilePage';
-import AjoutDon from './ajoutDonPage';
-import CreationTroc from './creationTroc';
+import CreationTroc from './ajoutTrocPage';
 import RechercheTroc from './rechercheTroc';
 import RechercheRecevoir from './rechercheRecevoir';
+import HistoryPage from './historyPage';
+import AjoutTroc from './ajoutTrocPage';
 import ItemTroquerPage from './itemTroquerPage';
 import ItemRecevoirPage from './itemRecevoirPage';
-import HistoryPage from './historyPage';
 
+// Components
+import AjoutDon from "./ajoutDonPage";
+// import UploadImages from '../elements/images/UploadImages';
+// // import Photos from '../elements/images/Photos';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -95,20 +99,23 @@ export default function App() {
               const currentTab = state?.routes?.[state.index]?.state?.routes?.[state.routes[state.index]?.state?.index]?.name;
               setActiveRoute(currentTab || 'Home');
             }}
-          >
+          > 
+            
             <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Authentification" component={Authentification} />
+              <Stack.Screen name="AjoutDon" component={AjoutDon} />   
+              {/* <Stack.Screen name="AjoutTroc" component={AjoutTroc} /> */}
               <Stack.Screen name="TabNavigator">
                 {(props) => <MainTabNavigator {...props} activeRoute={activeRoute} />}
               </Stack.Screen>
               <Stack.Screen name="ProfilePage" component={ProfilePage} />
-              <Stack.Screen name="Authentification" component={Authentification} />
               <Stack.Screen name="Inscription" component={Inscription} />
-              <Stack.Screen name="RechercheRecevoir" component={RechercheRecevoir} />
-              <Stack.Screen name="CreationTroc" component={CreationTroc} />
-              <Stack.Screen name="ItemTroquerPage" component={ItemTroquerPage} />
-              <Stack.Screen name="ItemRecevoirPage" component={ItemRecevoirPage} />
               <Stack.Screen name="RechercheTroc" component={RechercheTroc} />
+              <Stack.Screen name="RechercheRecevoir" component={RechercheRecevoir} />
+              {/* <Stack.Screen name="UploadImages" component={UploadImages} /> */}
+              {/* <Stack.Screen name="Photos" component={Photos} /> */}
               <Stack.Screen name="HistoryPage" component={HistoryPage} />
+              {/* <Stack.Screen name="rechercheRecevoir" component={rechercheRecevoir} /> */}
             </Stack.Navigator>
           </NavigationContainer>
         </View>

@@ -3,6 +3,7 @@ import { persistStore, persistReducer } from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import user from './user';
 import imagesArticles from './imagesArticles';
+import MakeDonation from './donation'
 
 const persistConfig = {
   key: 'root',
@@ -13,6 +14,9 @@ const persistConfig = {
 const rootReducer = combineReducers({
   user,
   imagesArticles,
+  MakeDonation,
+
+
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
