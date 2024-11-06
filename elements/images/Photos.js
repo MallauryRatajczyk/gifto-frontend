@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { addImage, removeImage } from "../../reducers/imagesArticles";
 // import * as ImagePicker from "expo-image-picker";
 import FontAwesome from "react-native-vector-icons/FontAwesome"; 
+// import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { useIsFocused } from "@react-navigation/native";
 
 const BACKEND_ADDRESS = "http://192.168.86.114:3000";
@@ -80,9 +81,10 @@ export default function Photos({ navigation, isCameraVisible, onClose, onImageAd
 					</View>
 					{/* ajout des fonctions : onImageAdd, onClose */}
 					<View style={styles.snapContainer}>
-						<TouchableOpacity onPress={() => cameraRef && takePicture()}>
-							<FontAwesome name="circle-thin" size={95} color="#ffffff" />
-						</TouchableOpacity>
+					<TouchableOpacity onPress={() => cameraRef && takePicture()}>    
+						<FontAwesome name="circle-thin" size={95} color="#ffffff" />
+					</TouchableOpacity>
+						
 					</View>
 				</View>
 			</Camera>
