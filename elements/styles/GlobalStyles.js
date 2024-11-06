@@ -222,9 +222,9 @@ RecommendationContainer: {
 ImageHolderContainer: {
     backgroundColor: Colors.whiteColor,
     borderRadius: 16,
-    marginLeft: 36,
+    marginLeft: 12,
     width: 300,
-    height: 300,
+    height: 240,
     
     //positions for icon
     alignItems: 'center',
