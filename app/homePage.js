@@ -43,7 +43,7 @@ export default function HomePage({navigation}) {
           icon={TroquerIcon}
           title="Troquer"
           bodyText="Échangez vos objets pour ce qu'il vous faut !"
-          onPress={() => navigation.navigate('ItemTroquerPage')}
+          onPress={() => navigation.navigate('RechercheTroc')}
           textColor={Colors.purpleColor}
           iconColor={Colors.purpleColor}
         />

@@ -9,7 +9,7 @@ import { SearchIcon } from '../elements/assets/Icons';
 import React from 'react';
 import ImageHolder from '../elements/components/navigation/ImageHolder';
 import { TroquerIcon } from '../elements/assets/Icons';
-
+import ItemCard from '../elements/components/cards/ItemCard';
 const BACKEND_ADDRESS = "http://192.168.86.114:3000"
 
 export default function RechercheTroc({ navigation }) {
@@ -66,7 +66,7 @@ export default function RechercheTroc({ navigation }) {
     }
 
     const handlePressItem = (itemId) => {
-        navigation.navigate('ItemTroquerPage', {itemId : itemId});
+        navigation.navigate('ItemTroquerPage', { itemId: itemId});
     }
 
     return (
@@ -105,9 +105,14 @@ export default function RechercheTroc({ navigation }) {
                                     data={resultats}
                                     keyExtractor={(item) => item._id.toString()}
                                     renderItem={({ item }) => (
-                                        <View style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: Colors.shadow }}>
-                                            <ImageHolder onPress={handlePressItem}/>
-                                        </View>
+                                        <ItemCard
+                                        imageSource={{ uri: item.image || '-' }}
+                                        title={item.name}
+                                        description={item.description}
+                                        subcategory={item.subcategory}
+                                        showSubcategory={true}
+                                        onPress={() => handlePressItem(item._id)}
+                                    />
                                     )}
                                     style={{ marginTop: 10 }}
                                 />
@@ -123,10 +128,16 @@ export default function RechercheTroc({ navigation }) {
                                     horizontal
                                     style={GlobalStyles.RecommendationContainer}
                                     renderItem={({ item }) => (
-                                        <View style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: Colors.shadow }}>
-                                            <ImageHolder onPress={handlePressItem}/>
-                                        </View>
+                                        <ItemCard
+                                        imageSource={{ uri: item.image || '-' }}
+                                        title={item.name}
+                                        description={item.description}
+                                        subcategory={item.subcategory}
+                                        showSubcategory={true}
+                                        onPress={() => handlePressItem(item._id)}
+                                    />
                                     )}
+                                    
                                 />
                             </>
                         )}

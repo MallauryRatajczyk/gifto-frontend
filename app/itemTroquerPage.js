@@ -9,18 +9,18 @@ import { ProfileIcon, FavoriteIcon } from '../elements/assets/Icons';
 import TroquerCard from '../elements/components/cards/TroquerCard';
 import CompletionCard from '../elements/components/cards/CompletionCard';
 
-const BACKEND_ADDRESS = 'http://192.168.1.182:3000';
+const BACKEND_ADDRESS = 'http://192.168.86.114:3000';
 
 export default function ItemTroquerPage() {
   const navigation = useNavigation();
   const route = useRoute();
-  //const itemId = route.params?.itemId; // Safe access to itemId
-  const itemId = '672103286cc2745bc18a24d7'; // Hardcoded item ID for testing
+  const itemId = route.params?.itemId; // Safe access to itemId
+  //const itemId = '672103286cc2745bc18a24d7'; // Hardcoded item ID for testing
   const [popupVisible, setPopupVisible] = useState(false);
   const [showTroquerCard, setShowTroquerCard] = useState(false);
   const [itemData, setItemData] = useState(null); 
   const [loading, setLoading] = useState(true);
-
+  console.log(itemId);
   // Fetch item details when component mounts
   useEffect(() => {
     
@@ -69,7 +69,6 @@ console.log(itemData);
         <ItemHeader
           showBackButton={true}
           title={itemData.proprietaire.nom} // Owner's name from item data
-          subtitle={itemData.proprietaire.location} // Assuming location is in the owner data
           backgroundColor={Colors.purpleColor}
           textColor={Colors.whiteColor}
           iconColor={Colors.purpleColor}
@@ -82,7 +81,7 @@ console.log(itemData);
       {/* Content */}
       <View style={[GlobalStyles.screenHomeContainer, { marginTop: -20 }]}>
         <View style={{ flexDirection: 'row' }}>
-          <FavoriteIcon width={20} height={20} color={Colors.greenColor} />
+          <FavoriteIcon width={20} height={20} color={Colors.purpleColor} />
           <Text style={[GlobalStyles.tinyText, { marginLeft: 5, marginTop: 3 }]}>5 personnes ont ajouté cet article à leurs favoris!</Text>
         </View>
 

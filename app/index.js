@@ -30,6 +30,7 @@ import RechercheTroc from './rechercheTroc';
 import RechercheRecevoir from './rechercheRecevoir';
 import ItemTroquerPage from './itemTroquerPage';
 import ItemRecevoirPage from './itemRecevoirPage';
+import HistoryPage from './historyPage';
 
 
 const Stack = createNativeStackNavigator();
@@ -106,7 +107,8 @@ export default function App() {
               <Stack.Screen name="CreationTroc" component={CreationTroc} />
               <Stack.Screen name="ItemTroquerPage" component={ItemTroquerPage} />
               <Stack.Screen name="ItemRecevoirPage" component={ItemRecevoirPage} />
-              <Tab.Screen name="RechercheTroc" component={RechercheTroc} />
+              <Stack.Screen name="RechercheTroc" component={RechercheTroc} />
+              <Stack.Screen name="HistoryPage" component={HistoryPage} />
             </Stack.Navigator>
           </NavigationContainer>
         </View>
