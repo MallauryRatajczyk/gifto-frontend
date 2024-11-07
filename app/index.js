@@ -24,16 +24,19 @@ import HomePage from './homePage';
 import NotificationPage from './notificationPage';
 import SettingsPage from './settingsPage';
 import ProfilePage from './profilePage';
-// import CreationTroc from './ajoutTrocPage';
+import CreationTroc from './ajoutTrocPage';
 import RechercheTroc from './rechercheTroc';
 import RechercheRecevoir from './rechercheRecevoir';
 import HistoryPage from './historyPage';
 import AjoutTroc from './ajoutTrocPage';
+import ItemTroquerPage from './itemTroquerPage';
+import ItemRecevoirPage from './itemRecevoirPage';
 
 // Components
 import AjoutDon from "./ajoutDonPage";
 // import UploadImages from '../elements/images/UploadImages';
 // // import Photos from '../elements/images/Photos';
+
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -100,7 +103,7 @@ export default function App() {
           > 
             
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="AjoutDon" component={AjoutDon} />   
+              {/* <Stack.Screen name="AjoutDon" component={AjoutDon} />    */}
               {/* <Stack.Screen name="AjoutTroc" component={AjoutTroc} /> */}
               
               <Stack.Screen name="TabNavigator">
