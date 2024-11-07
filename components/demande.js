@@ -6,6 +6,7 @@ const { formatDateToUserReadable } = require('../modules/getDate');
 
 
 export default function CarteItem(props) {
+    console.log(props)
     const navigation = useNavigation();
     const [itemName, setItemName] = useState("Exemple d'item");
     const [itemImage, setItemImage] = useState(null);
@@ -20,6 +21,7 @@ export default function CarteItem(props) {
 
 
     useEffect(() => {
+
         async function findItem(id) {
             try {
                 const fetched = await fetch(`http://192.168.1.81:3000/item/${id}`);
@@ -41,6 +43,7 @@ export default function CarteItem(props) {
                 const fetchedDemande = await fetch(`http://192.168.1.81:3000/demande/item/${id}`);
                 if (!fetchedDemande.ok) throw new Error('Failed to fetch demandes');
                 const responseDemande = await fetchedDemande.json();
+                console.log('responseDemande', responseDemande)
                 setIdDemande(responseDemande.demande._id)
                 const fetchedDemandeur = await fetch(`http://192.168.1.81:3000/users/${responseDemande.demandes[0].demandeur}`);
                 if (!fetchedDemande.ok) throw new Error('Failed to fetch user');
@@ -53,7 +56,7 @@ export default function CarteItem(props) {
                     dateCreation: formatDateToUserReadable(new Date(demande.dateCreation)),
                 }));
                 setDemande(demandesSansMessages);
-                console.log(responseDemande.demandes.find(x => x.statut === "accepted"))
+                //console.log(responseDemande.demandes.find(x => x.statut === "accepted"))
                 if (responseDemande.demandes.find(x => x.statut === "accepted")) {
                     setIsValidate(true)
                 }
@@ -113,27 +116,30 @@ export default function CarteItem(props) {
         }
     }
 
-    const request = ({ item }) => (
-        <View style={[styles.requestContainer, item.statut === "declined" ? { backgroundColor: "#F08784" } : item.statut === "accepted" ? { backgroundColor: "#00BA88" } : {}]}>
-            <Text style={styles.requestTitle}>Demande de: {item.name}</Text>
-            <Text style={styles.requestDescription}>Statut: {getStatut(item.statut)}</Text>
-            <Text style={styles.requestDate}>Date de création: {item.dateCreation}</Text>
-            <View style={{ flex: 1, flexDirection: "row", justifyContent: "space-between" }}>
-                <TouchableOpacity onPress={viewMessage}>
-                    <Text>Voir les messages</Text>
-                </TouchableOpacity>
-                <TouchableOpacity>
-                    <Text>Voir le profil</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={refused}>
-                    <Text>Refuser</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={validate}>
-                    <Text>Valider</Text>
-                </TouchableOpacity>
+    const request = ({ item }) => {
+        console.log('item', item);
+        (
+            <View style={[styles.requestContainer, item.statut === "declined" ? { backgroundColor: "#F08784" } : item.statut === "accepted" ? { backgroundColor: "#00BA88" } : {}]}>
+                <Text style={styles.requestTitle}>Demande de: {item.name}</Text>
+                <Text style={styles.requestDescription}>Statut: {getStatut(item.statut)}</Text>
+                <Text style={styles.requestDate}>Date de création: {item.dateCreation}</Text>
+                <View style={{ flex: 1, flexDirection: "row", justifyContent: "space-between" }}>
+                    <TouchableOpacity onPress={viewMessage}>
+                        <Text>Voir les messages</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                        <Text>Voir le profil</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={refused}>
+                        <Text>Refuser</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={validate}>
+                        <Text>Valider</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
-        </View>
-    );
+        );
+    }
 
     return (
         <TouchableOpacity style={styles.container} onPress={openModal}>

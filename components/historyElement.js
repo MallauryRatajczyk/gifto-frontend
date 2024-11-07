@@ -18,9 +18,10 @@ export default function HistoryElement(props) {
         async function getUsername(id) {
             const fetchedID = await fetch(`http://192.168.1.81:3000/users/${id}`);
             const responseId = await fetchedID.json();
+            setInterlocuteur(responseId.user.username)
             return responseId.user.username;
         }
-        getUsername(props.interlocuteur).then(username => setInterlocuteur(username));
+        getUsername(props.interlocuteur)//.then(username => setInterlocuteur(username));
         if (props.type === "Donner") {
             setDotStyle(styles.dotDonner);
         } else if (props.type === "Recevoir") {
@@ -33,8 +34,6 @@ export default function HistoryElement(props) {
     const isRead = () => {
         setIsPending(!isPending);
     }
-
-
 
     return (
         <TouchableOpacity style={styles.container} onPress={isRead}>

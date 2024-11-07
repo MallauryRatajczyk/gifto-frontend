@@ -3,7 +3,7 @@ import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import GlobalStyles from '../elements/styles/GlobalStyles';
 import MainButton from '../elements/components/buttons/MainButton';
-import NotificationHeader from '../elements/components/navigation/NotificationHeader';
+import HistoryHeader from '../elements/components/navigation/HistoryHeader';
 import Notification from '../components/notification';
 import { useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
@@ -33,7 +33,7 @@ export default function HistoryPage() {
                     setError(response.error);
                 } else {
                     response.demandes.map(x => {
-                        if (x.status === "accepted" || x.status === "declined") {
+                        if (x.statut === "accepted" || x.statut === "declined") {
                             setNotifications([...notifications, x]);
                         }
                     }
@@ -79,13 +79,7 @@ export default function HistoryPage() {
 
     return (
         <View style={GlobalStyles.screenMainContainer}>
-            <NotificationHeader />
-            <View style={GlobalStyles.container}>
-                <MainButton
-                    title="Historique"
-                    onPress={() => navigation.navigate('Connection')}
-                />
-            </View>
+            <HistoryHeader />
             {allNotifications}
         </View>
     );

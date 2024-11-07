@@ -28,7 +28,7 @@ const Message = (props) => {
             messages={messages}
             onSend={(messages) => onSend(messages)}
             user={{
-                _id: 1, // Identifiant de l'utilisateur
+                _id: 1, // Identifiant de l'utilisateur mettre l'id de l'user
             }}
             renderBubble={renderBubble}
         />

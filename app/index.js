@@ -31,6 +31,7 @@ import RechercheRecevoir from './rechercheRecevoir';
 import HistoryPage from './historyPage';
 import Chat from './chat'
 import Demande from './demandePage'
+import ConnexionPage from './connexionPage'
 // Components
 // import AjoutDon from "./AjoutDonPage";
 // import UploadImages from '../elements/images/UploadImages';
@@ -102,13 +103,13 @@ export default function App() {
               setActiveRoute(currentTab || 'Home');
             }}
           >
-            <Stack.Screen name="Authentification" component={Authentification} />
             <Stack.Navigator screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="Authentification" component={Authentification} />
               <Stack.Screen name="TabNavigator">
                 {(props) => <MainTabNavigator {...props} activeRoute={activeRoute} />}
               </Stack.Screen>
               <Stack.Screen name="ProfilePage" component={ProfilePage} />
-
+              <Stack.Screen name="Connection" component={ConnexionPage} />
               <Stack.Screen name="Inscription" component={Inscription} />
               <Stack.Screen name="RechercheRecevoir" component={RechercheRecevoir} />
               <Stack.Screen name="Chat" component={Chat} />
