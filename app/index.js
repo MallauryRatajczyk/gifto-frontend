@@ -104,6 +104,7 @@ export default function App() {
             <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Authentification" component={Authentification} />
               <Stack.Screen name="AjoutDon" component={AjoutDon} />   
+              <Stack.Screen name="AjoutTroc" component={AjoutTroc} /> 
               {/* <Stack.Screen name="AjoutTroc" component={AjoutTroc} /> */}
               <Stack.Screen name="TabNavigator">
                 {(props) => <MainTabNavigator {...props} activeRoute={activeRoute} />}

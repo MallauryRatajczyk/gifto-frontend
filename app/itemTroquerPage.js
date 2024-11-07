@@ -113,6 +113,7 @@ console.log(itemData);
             onClose={closeTroquerCard}
             setPopupVisible={setPopupVisible}
             setShowTroquerCard={setShowTroquerCard}
+            itemToExchangeId={itemId}
           />
         )}
 

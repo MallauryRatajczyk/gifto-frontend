@@ -13,7 +13,7 @@ import AjoutHeader from '../elements/components/navigation/AjoutHeader';
 import MainButton from '../elements/components/buttons/MainButton'; // Validation button
 import { addDonation } from '../reducers/donation';
 
-const BACKEND_ADDRESS = "http://192.168.1.182:3000";      // adresse à modifier
+const BACKEND_ADDRESS = "http://192.168.86.114:3000";      // adresse à modifier
 
 export default function AjoutDon({ navigation }) {
 
@@ -85,7 +85,7 @@ const closePopup = () => {
                 backgroundColor={Colors.redColor}
                 textColor={Colors.whiteColor}
                 showBackButton={true}
-                backButtonColor={Colors.whiteColor} // Customize back button color
+                backButtonColor={Colors.redColor} // Customize back button color
             />
               
             {/* Bouton d'affichage de la camera */}

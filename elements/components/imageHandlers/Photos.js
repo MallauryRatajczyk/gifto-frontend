@@ -6,7 +6,7 @@ import { addImage, removeImage } from "../../../reducers/imagesArticles";
 import { useIsFocused } from "@react-navigation/native";
 import FontAwesome from "react-native-vector-icons/FontAwesome"; // for on camera icons 
 
-const BACKEND_ADDRESS = "http://192.168.1.3:3000";        
+const BACKEND_ADDRESS = "http://192.168.86.114:3000";        
 
 export default function Photos({ visible, onClose, onImageAdd }) {
     const dispatch = useDispatch();
