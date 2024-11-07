@@ -4,6 +4,8 @@ import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native'; // Importer useNavigation
 const { formatDateToUserReadable } = require('../modules/getDate');
 
+const BACKEND_ADDRESS =process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
+
 export default function Notification(props) {
     const navigation = useNavigation(); // Obtenir l'objet navigation
     const [itemName, setItemName] = useState("");
@@ -15,7 +17,7 @@ export default function Notification(props) {
     useEffect(() => {
         async function findItem(id) {
             try {
-                const fetched = await fetch(`http://192.168.1.81:3000/item/${id}`);
+                const fetched = await fetch(`http://${BACKEND_ADDRESS}/item/${id}`);
                 const response = await fetched.json();
                 if (response && response.item && response.item.name) {
                     setItemName(response.item.name);
@@ -41,7 +43,7 @@ export default function Notification(props) {
         if (props.statut === "pending") {
             const data = { statut: 'read', token: user.token }
             setIsPending(false);
-            fetch(`http://192.168.1.81:3000/demande/read/${props.id}`, {
+            fetch(`http://${BACKEND_ADDRESS}/demande/read/${props.id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
@@ -54,7 +56,7 @@ export default function Notification(props) {
         if (props.statut === "read") {
             const data = { statut: 'pending', token: user.token }
             setIsPending(true);
-            fetch(`http://192.168.1.81:3000/demande/read/${props.id}`, {
+            fetch(`http://${BACKEND_ADDRESS}/demande/read/${props.id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)

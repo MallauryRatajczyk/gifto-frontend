@@ -2,6 +2,8 @@ import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { useState, useEffect } from 'react';
 const { formatDateToUserReadable } = require('../modules/getDate');
 
+const BACKEND_ADDRESS =process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
+
 export default function HistoryElement(props) {
     const [itemName, setItemName] = useState("");
     const [isPending, setIsPending] = useState(props.statut === "pending");
@@ -10,13 +12,13 @@ export default function HistoryElement(props) {
 
     useEffect(() => {
         async function findItem(id) {
-            const fetched = await fetch(`http://192.168.1.81:3000/item/${id}`);
+            const fetched = await fetch(`${BACKEND_ADDRESS}/item/${id}`);
             const response = await fetched.json();
             setItemName(response.item.name);
         }
         findItem(props.item);
         async function getUsername(id) {
-            const fetchedID = await fetch(`http://192.168.1.81:3000/users/${id}`);
+            const fetchedID = await fetch(`${BACKEND_ADDRESS}/users/${id}`);
             const responseId = await fetchedID.json();
             return responseId.user.username;
         }

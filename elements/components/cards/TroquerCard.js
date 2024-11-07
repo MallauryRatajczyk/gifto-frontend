@@ -6,7 +6,7 @@ import Colors from '../../styles/Colors';
 import MainButton from '../buttons/MainButton';
 import SelectArticleButton from '../buttons/SelectArticleButton';
 
-const BACKEND_ADDRESS = 'http://192.168.86.114:3000';
+const BACKEND_ADDRESS =process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 const TroquerCard = ({
   visible,
   onClose,
@@ -26,7 +26,7 @@ useEffect(() => {
   console.log('Fetching user items with token:', userToken);
   setLoading(true);
   
-  fetch(`${BACKEND_ADDRESS}/item/user/myitems`, {
+  fetch(`${BACKEND_ADDRESS}/item/userByToken/myitems`, {
     method: 'GET',
     headers: {
       'Authorization': `Bearer ${userToken}`,

@@ -13,7 +13,7 @@ import ItemCard from '../elements/components/cards/ItemCard';
 import SearchBar from '../elements/components/navigation/SearchBar';
 import { StyleSheet } from 'react-native';
 
-const BACKEND_ADDRESS = "http://192.168.86.114:3000"
+const BACKEND_ADDRESS =process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
 export default function RechercheTroc({ navigation }) {
     const [resultats, setResultats] = useState([]);

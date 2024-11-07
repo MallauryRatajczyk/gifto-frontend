@@ -8,7 +8,7 @@ import HistoryHeader from '../elements/components/navigation/HistoryHeader';
 
 const { getId } = require('../modules/verifUser');
 
-const BACKEND_ADDRESS = "http://192.168.1.81:3000";
+const BACKEND_ADDRESS =process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
 export default function HistoryPage() {
     const navigation = useNavigation();

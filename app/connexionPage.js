@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { toConnectUser } from '../reducers/user.js';
 
-const BACKEND_ADDRESS = "http://192.168.1.81:3000";
+const BACKEND_ADDRESS =process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
 export default function Connection({ navigation }) {
     const dispatch = useDispatch();

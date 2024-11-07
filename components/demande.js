@@ -4,6 +4,8 @@ import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 const { formatDateToUserReadable } = require('../modules/getDate');
 
+const BACKEND_ADDRESS =process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
+
 export default function CarteItem(props) {
     const navigation = useNavigation();
     const [itemName, setItemName] = useState("Exemple d'item");
@@ -20,7 +22,7 @@ export default function CarteItem(props) {
     useEffect(() => {
         async function findItem(id) {
             try {
-                const fetched = await fetch(`http://192.168.1.81:3000/item/${id}`);
+                const fetched = await fetch(`${BACKEND_ADDRESS}/item/${id}`);
                 if (!fetched.ok) throw new Error('Failed to fetch item');
                 const response = await fetched.json();
                 setItemName(response.item.name);
@@ -35,7 +37,7 @@ export default function CarteItem(props) {
 
         async function getDemande(id) {
             try {
-                const fetchedDemande = await fetch(`http://192.168.1.81:3000/demande/item/${id}`);
+                const fetchedDemande = await fetch(`${BACKEND_ADDRESS}/demande/item/${id}`);
                 if (!fetchedDemande.ok) throw new Error('Failed to fetch demandes');
                 const responseDemande = await fetchedDemande.json();
                 console.log("responseDemande", responseDemande)
@@ -66,7 +68,7 @@ export default function CarteItem(props) {
     useEffect(() => {
         const fetchInterlocuteur = async (demandeurId) => {
             try {
-                const fetchedDemandeur = await fetch(`http://192.168.1.81:3000/users/${demandeurId}`);
+                const fetchedDemandeur = await fetch(`${BACKEND_ADDRESS}/users/${demandeurId}`);
                 if (!fetchedDemandeur.ok) throw new Error('Failed to fetch user');
                 const responseDemandeur = await fetchedDemandeur.json();
                 setInterlocuteur([...interlocuteur, responseDemandeur.user.username]);
@@ -95,7 +97,7 @@ export default function CarteItem(props) {
 
     const validate = (i) => {
         const data = { statut: 'accepted', token: user.token };
-        fetch(`http://192.168.1.81:3000/demande/read/${idDemande[i]}`, {
+        fetch(`${BACKEND_ADDRESS}/demande/read/${idDemande[i]}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
@@ -106,7 +108,7 @@ export default function CarteItem(props) {
 
     const refused = (i) => {
         const data = { statut: 'declined', token: user.token };
-        fetch(`http://192.168.1.81:3000/demande/read/${idDemande[i]}`, {
+        fetch(`${BACKEND_ADDRESS}/demande/read/${idDemande[i]}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)

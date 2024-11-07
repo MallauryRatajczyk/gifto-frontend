@@ -14,11 +14,7 @@ export default function ItemRecevoirPage() {
   const [popupVisible, setPopupVisible] = useState(false); // CompletionCard visibility
   const [showExplainCard, setShowExplainCard] = useState(false); // ExplainCard visibility
 
-/*************  ✨ Codeium Command ⭐  *************/
-/**
- * Navigates to the Profile screen when the profile icon is pressed.
- */
-/******  96efdc27-2c0f-46b7-a698-e23c1b1ea1d7  *******/  const handleProfilePress = () => {
+const handleProfilePress = () => {
     navigation.navigate('Profile');
   };
 

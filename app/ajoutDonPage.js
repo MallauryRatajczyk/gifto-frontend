@@ -13,7 +13,7 @@ import AjoutHeader from '../elements/components/navigation/AjoutHeader';
 import MainButton from '../elements/components/buttons/MainButton'; // Validation button
 import { addDonation } from '../reducers/donation';
 
-const BACKEND_ADDRESS = "http://192.168.1.182:3000";      // adresse à modifier
+const BACKEND_ADDRESS =process.env.EXPO_PUBLIC_BACKEND_ADDRESS;     // adresse à modifier
 
 export default function AjoutDon({ navigation }) {
 

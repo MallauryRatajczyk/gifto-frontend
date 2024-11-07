@@ -5,6 +5,8 @@ import GlobalStyles from '../elements/styles/GlobalStyles';
 import DemandeHeader from '../elements/components/navigation/DemandeHeader';
 import Demande from '../components/demande';
 
+const BACKEND_ADDRESS =process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
+
 export default function NotificationPage({ navigation }) {
 
     const [item, setItem] = useState([]);
@@ -14,10 +16,10 @@ export default function NotificationPage({ navigation }) {
     useEffect(() => {
         async function fetchData() {
             try {
-                const fetchedID = await fetch(`http://192.168.1.81:3000/users/token/${user.token}`);
+                const fetchedID = await fetch(`${BACKEND_ADDRESS}/users/token/${user.token}`);
                 const responseId = await fetchedID.json();
                 // Pour tests, on remplace par un ID fixe 671fb98fe3a8ffe9c0ea2697 / 672386d302d94d974fe999b2
-                const fetched = await fetch(`http://192.168.1.81:3000/item/user/${responseId.user.id}`);
+                const fetched = await fetch(`${BACKEND_ADDRESS}/item/user/${responseId.user.id}`);
                 //const fetched = await fetch(`http://192.168.1.81:3000/item/user/672386d302d94d974fe999b2`);
                 const response = await fetched.json();
                 if (response.error) {

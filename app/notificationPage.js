@@ -6,7 +6,7 @@ import MainButton from '../elements/components/buttons/MainButton';
 import NotificationHeader from '../elements/components/navigation/NotificationHeader';
 import Notification from '../components/notification';
 
-const BACKEND_ADDRESS = "http://192.168.1.81:3000";
+const BACKEND_ADDRESS =process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
 export default function NotificationPage({ navigation }) {
   const [id, setId] = useState('');

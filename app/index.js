@@ -37,7 +37,7 @@ import ItemTroquerPage from './itemTroquerPage';
 // import ItemRecevoirPage from './itemRecevoirPage';
 
 // Components
-import AjoutDon from "./AjoutDonPage";
+
 // import AjoutDon from "./AjoutDonPage";
 // import UploadImages from '../elements/images/UploadImages';
 // // import Photos from '../elements/images/Photos';

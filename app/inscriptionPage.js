@@ -5,6 +5,8 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { useDispatch } from 'react-redux';
 import { toConnectUser } from '../reducers/user';
 
+const BACKEND_ADDRESS =process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
+
 const { dateRequired } = require('../modules/dateRequirement');
 
 export default function Inscription({ navigation }) {
@@ -26,7 +28,7 @@ export default function Inscription({ navigation }) {
   };
 
   const register = (userObject) => {
-    fetch('http://192.168.1.81:3000/users/enregistrer', {
+    fetch('${BACKEND_ADDRESS}/users/enregistrer', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(userObject),

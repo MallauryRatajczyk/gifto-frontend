@@ -8,7 +8,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 // import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { useIsFocused } from "@react-navigation/native";
 
-const BACKEND_ADDRESS = "http://192.168.1.182:3000";
+const BACKEND_ADDRESS =process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
 export default function Photos({ navigation, isCameraVisible, onClose, onImageAdd }) {
     const dispatch = useDispatch();
@@ -53,7 +53,7 @@ const takePicture = async () => {
                 console.error("Erreur : le serveur n'a pas retourné un résultat valide.");
             }
         })
-        
+        .catch(error => console.log("erreur lors de l'upload de l'image:", error));
 };
 // const changeTab = () => navigation.navigate('AjoutDonPage');    
 // console.log(changeTab);    

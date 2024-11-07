@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, FlatList, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native'; // Utilisé pour récupérer la navigation
 
+const BACKEND_ADDRESS =process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
+
 export default function ChatPage() {
     const route = useRoute(); // Pour récupérer les props passées lors de la navigation
     const navigation = useNavigation(); // Pour gérer la navigation
@@ -26,7 +28,7 @@ export default function ChatPage() {
 
             // Envoi du message au serveur
             try {
-                await fetch("http://192.168.1.81:3000/messages", {
+                await fetch("${BACKEND_ADDRESS}/messages", {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

@@ -4,7 +4,7 @@ import Colors from '../../styles/Colors';
 import GlobalStyles from '../../styles/GlobalStyles';
 import { SearchIcon } from '../../assets/Icons';
 
-const BACKEND_ADDRESS = "http://192.168.86.114:3000"
+const BACKEND_ADDRESS =process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
 export default function SearchBar({
   placeholder = "Chercher",
