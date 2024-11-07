@@ -31,7 +31,7 @@ import HistoryPage from './historyPage';
 import AjoutTroc from './ajoutTrocPage';
 
 // Components
-import AjoutDon from "./ajoutDonPage";
+import AjoutDon from "./AjoutDonPage";
 // import UploadImages from '../elements/images/UploadImages';
 // // import Photos from '../elements/images/Photos';
 
@@ -100,14 +100,14 @@ export default function App() {
           > 
             
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="AjoutDon" component={AjoutDon} />   
+              <Stack.Screen name="Authentification" component={Authentification} />
+              <Stack.Screen name="AjoutDon" component={AjoutDon} />  
               {/* <Stack.Screen name="AjoutTroc" component={AjoutTroc} /> */}
               
               <Stack.Screen name="TabNavigator">
                 {(props) => <MainTabNavigator {...props} activeRoute={activeRoute} />}
               </Stack.Screen>
               <Stack.Screen name="ProfilePage" component={ProfilePage} />
-              <Stack.Screen name="Authentification" component={Authentification} />
               <Stack.Screen name="Inscription" component={Inscription} />
               
               <Stack.Screen name="RechercheTroc" component={RechercheTroc} />
