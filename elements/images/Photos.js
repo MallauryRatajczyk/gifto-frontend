@@ -5,9 +5,10 @@ import { useDispatch } from "react-redux";
 import { addImage, removeImage } from "../../reducers/imagesArticles";
 // import * as ImagePicker from "expo-image-picker";
 import FontAwesome from "react-native-vector-icons/FontAwesome"; 
+// import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { useIsFocused } from "@react-navigation/native";
 
-const BACKEND_ADDRESS = "http://192.168.86.114:3000";
+const BACKEND_ADDRESS = "http://192.168.1.182:3000";
 
 export default function Photos({ navigation, isCameraVisible, onClose, onImageAdd }) {
 	const dispatch = useDispatch();
@@ -16,6 +17,7 @@ export default function Photos({ navigation, isCameraVisible, onClose, onImageAd
 	const [type, setType] = useState(CameraType.back);
 	const [flashMode, setFlashMode] = useState(FlashMode.off);
 	// const [isCameraVisible, setIsCameraVisible] = useState(false);    
+
 	let cameraRef = useRef(null);
 	useEffect(() => {
 		(async () => {
@@ -25,10 +27,12 @@ export default function Photos({ navigation, isCameraVisible, onClose, onImageAd
 			}
 		})();
 	}, []);
+
 	const takePicture = async () => {
 		const photo = await cameraRef.takePictureAsync({ quality: 0.3 });
 		const formData = new FormData();
 		const uri = photo?.uri;
+		console.log("uri", uri);
 		formData.append("photoFromFront", {
 			uri: uri,
 			name: "photo.jpg",
@@ -40,17 +44,16 @@ export default function Photos({ navigation, isCameraVisible, onClose, onImageAd
 		})
 			.then((response) => response.json())
 			.then((data) => {
+				console.log("data", data);
 				if (data.result) {
-					dispatch(addImage(data.url)); // Mise à jour du Redux                    
-					onImageAdd(data.url); // Envoi de l'image au composant parent                    
-					onClose(); // Fermeture de la caméra                
+					dispatch(addImage(data.url)); 										// Mise à jour du Redux                    
+					onImageAdd(data.url); 												// Envoi de l'image au composant parent                    
+					onClose(); 															// Fermeture de la caméra                
 				} else {
 					console.error("Erreur : le serveur n'a pas retourné un résultat valide.");
 				}
 			})
-			.catch((error) => {
-				console.error("Erreur lors de la prise ou de l'envoi de la photo :", error);
-			});
+			
 	};
 	// const changeTab = () => navigation.navigate('AjoutDonPage');    
 	// console.log(changeTab);    
@@ -80,9 +83,10 @@ export default function Photos({ navigation, isCameraVisible, onClose, onImageAd
 					</View>
 					{/* ajout des fonctions : onImageAdd, onClose */}
 					<View style={styles.snapContainer}>
-						<TouchableOpacity onPress={() => cameraRef && takePicture()}>
-							<FontAwesome name="circle-thin" size={95} color="#ffffff" />
-						</TouchableOpacity>
+					<TouchableOpacity onPress={() => cameraRef && takePicture()}>    
+						<FontAwesome name="circle-thin" size={95} color="#ffffff" />
+					</TouchableOpacity>
+						
 					</View>
 				</View>
 			</Camera>

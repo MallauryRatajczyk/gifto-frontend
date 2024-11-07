@@ -10,22 +10,23 @@ const categories = [
   { name: "Jouets", subcategories: [{ name: "Jeux de société" }, { name: "Puzzles" }, { name: "Jouets éducatifs" }, { name: "Peluches" }] }
 ];
 
-const Categories = ({ categorie, setCategorie, sousCategorie, setSousCategorie }) => {
-  const [openCategorie, setOpenCategorie] = useState(false);
-  const [openSousCategorie, setOpenSousCategorie] = useState(false);
+const BACKEND_ADDRESS = "http://192.168.86.114:3000";                                           //Adresse à modifier
 
-  const categoriesItems = categories.map(cat => ({
+const Categories = ({ categorie, setCategorie, sousCategorie, setSousCategorie}) => {
+  const [openCategorie, setOpenCategorie] = useState(false);
+	const [openSousCategorie, setOpenSousCategorie] = useState(false);
+	
+	 const categoriesItems = categories.map(cat => ({
     label: cat.name,
     value: cat.name
   }));
-
+  
   const sousCategories = categories
     .find(cat => cat.name === categorie)
     ?.subcategories.map(subcat => ({
       label: subcat.name,
       value: subcat.name
     })) || [];
-
    //  fonction pour fermer la sousCategorie, si la categorie est ouverte
   const handleOpenCategorie = (open) => {
     if (open) {
@@ -33,14 +34,15 @@ const Categories = ({ categorie, setCategorie, sousCategorie, setSousCategorie }
     }
     setOpenCategorie(open);
   };
-
+  
   const handleOpenSousCategorie = (open) => {
     if (open) {
       setOpenCategorie(false);
     }
     setOpenSousCategorie(open);
   };
-
+  
+  
   return (
     <View style={styles.container}>
       <View style={[styles.pickerContainer, { zIndex: 2000 }]}>
@@ -61,43 +63,42 @@ const Categories = ({ categorie, setCategorie, sousCategorie, setSousCategorie }
           maxHeight={200}  // Hauteur maximale de la liste déroulante
         />
       </View>
-
-  <View style={[styles.pickerContainer, { zIndex: 1000 }]}>
-    <Text style={styles.h4}>Sous-catégories</Text>
-    <DropDownPicker
-      open={openSousCategorie}
-      value={sousCategorie}
-      items={sousCategories}
-      setOpen={handleOpenSousCategorie}
-      setValue={setSousCategorie}
-      placeholder="Sélectionner une sous-catégorie"
-      style={styles.picker}
-      dropDownContainerStyle={styles.dropDownContainer}
-      disabled={!categorie}
-      listMode="SCROLLVIEW"
-      scrollViewProps={{
-        nestedScrollEnabled: true
-      }}
-      maxHeight={200}  // Hauteur maximale de la liste déroulante
-    />
-  </View>
-</View>
+	   <View style={[styles.pickerContainer, { zIndex: 1000 }]}>
+        <Text style={styles.h4}>Sous-catégories</Text>
+        <DropDownPicker
+          open={openSousCategorie}
+          value={sousCategorie}
+          items={sousCategories}
+          setOpen={handleOpenSousCategorie}
+          setValue={setSousCategorie}
+          placeholder="Sélectionner une sous-catégorie"
+          style={styles.picker}
+          dropDownContainerStyle={styles.dropDownContainer}
+          disabled={!categorie}
+          listMode="SCROLLVIEW"
+          scrollViewProps={{
+            nestedScrollEnabled: true
+          }}
+          maxHeight={200}  // Hauteur maximale de la liste déroulante
+        />
+      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+	 container: {
     padding: 10,
   },
   pickerContainer: {
-    marginBottom: 50,  // Augmenté pour laisser de l'espace pour la liste déroulante
+    marginBottom: 50,  // espace pour la liste déroulante
   },
   picker: {
     borderRadius: 15,
     borderWidth: 1,
     height: 40,
   },
-  dropDownContainer: {
+   dropDownContainer: {
     borderWidth: 1,
   },
   h4: {
@@ -108,4 +109,3 @@ const styles = StyleSheet.create({
 });
 
 export default Categories;
-

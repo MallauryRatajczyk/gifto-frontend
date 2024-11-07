@@ -27,48 +27,82 @@ export default function AjoutDon({ navigation }) {
   const [sousCategorie, setSousCategorie] = useState('');
   const [description, setDescription] = useState('');
   const [popupVisible, setPopupVisible] = useState(false); 
+  const [errorMessage, setErrorMessage] = useState('');
+  
 
-  // Fonction pour ajouter une image
+  // Ajouter une image
   const handleImageAdd = (imageUri) => {
     setSelectedImages([...selectedImages, imageUri]);
     dispatch(addImage(imageUri));
   };
 
+  console.log("selectedImages", selectedImages);
+
+  // Supprimer une image
   const handleRemoveImage = (imageUri) => {
     setSelectedImages(selectedImages.filter(uri => uri !== imageUri));
     dispatch(removeImage(imageUri));
   };
-
+  
+  // Fermer la camera
 const closeCamera = () => {
   setIsCameraVisible(false);
 }
 
-const handleSubmit = () => {
-    setPopupVisible(true); 
+// Vérifier la validation du formulaire
+const validateForm = () => {
+    if (selectedImages.length === 0) { setErrorMessage("Une photo est requise.");
+        return false;
+      }
+    if (!nomArticle.trim()) {setErrorMessage("Le nom de l'article est requis.");
+      return false;
+    }
+    if (!description.trim()) {setErrorMessage("La description est requise.");
+      return false;
+    }
+    if (!categorie.trim()) {setErrorMessage("La catégorie est requise.");
+      return false;
+    }
+    if (!sousCategorie.trim()) {setErrorMessage("La sous-catégorie est requise.");
+      return false;
+    }
+    setErrorMessage('');  // Aucune erreur si tout est bien rempli
+    return true;
+  };
 
-    fetch(`${BACKEND_ADDRESS}/item`, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({token: user.token, name: user.username, description: description, image: selectedImages, categorie: categorie, sousCategorie: sousCategorie, troc: false})     
-    })  .then((response) => response.json())    
-        .then((data) => {
-        if (data.result) {
-            dispatch(addDonation(data.itemPop))
+//Soumettre le formulaire
+const handleSubmit = () => {
+    if (validateForm()) {
+        console.log('Formulaire validé, tous les champs sont bien remplis.');
+            setPopupVisible(true); 
+
+        fetch(`${BACKEND_ADDRESS}/item`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({token: user.token, name: user.username, description: description, image: selectedImages, categorie: categorie, sousCategorie: sousCategorie, troc: false})     
+        })  .then((response) => response.json())    
+            .then((data) => {
+            if (data.result) {
+                dispatch(addDonation(data.itemPop))
+                setPopupVisible(false); 
+            } else {
+                console.error('Erreur de création de la demande:', data.error);      //verification du fetch
+                setPopupVisible(false); 
+            }
+        })
+        .catch(error => {
+            console.error('Erreur dans la requête:', error);
             setPopupVisible(false); 
-        } else {
-            console.error('Erreur de création de la demande:', data.error);
-            setPopupVisible(false); 
-        }
-    })
-    .catch(error => {
-        console.error('Erreur dans la requête:', error);
-        setPopupVisible(false); 
-    }); 
+        }); 
+    } else {
+        setErrorMessage("Veuillez remplir tous les champs requis");
+    }
 };
 
+//fermer la popup et aller à la page d'accueil
 const closePopup = () => {
     setPopupVisible(false);
-    navigation.navigate('Home'); // Navigate to Home screen after popup
+    navigation.navigate('Home'); 
 };
 
   return (
@@ -95,30 +129,30 @@ const closePopup = () => {
                 </TouchableOpacity>
 
 
-                <Photos
-                    navigation={navigation}
-                    onImageAdd={handleImageAdd}                                       // Ajoute une image
-                    onClose={closeCamera} 
-                    isCameraVisible={isCameraVisible}                        // Ferme la camera
-                />
-                
-                {/* Affichage et suppression d'images */}
-                <View style={styles.imagesContainer}>
-                    {selectedImages.map((uri, index) => (
-                    <View key={index} style={styles.imageWrapper}>
-                    <Image source={{ uri }} style={styles.imagePreview} />
-                    <TouchableOpacity style={styles.removeIcon} onPress={() => handleRemoveImage(uri)}>
-                        <_FontAwesome name="trash" size={20} color="red" />
-                    </TouchableOpacity>
+                    <Photos
+                        navigation={navigation}
+                        onImageAdd={handleImageAdd}                               // Ajoute une image
+                        onClose={closeCamera} 
+                        isCameraVisible={isCameraVisible}                        // Ferme la camera
+                    />
+                    
+                    {/* Affichage et suppression d'images */}
+                    <View style={styles.imagesContainer}>
+                        {selectedImages.map((uri, index) => (
+                        <View key={index} style={styles.imageWrapper}>
+                        <Image source={{ uri }} style={styles.imagePreview} />
+                        <TouchableOpacity style={styles.removeIcon} onPress={() => handleRemoveImage(uri)}>
+                            <_FontAwesome name="trash" size={20} color="red" />
+                        </TouchableOpacity>
+                        </View>
+                        ))}
                     </View>
-                    ))}
-                </View>
-                <View style={styles.formContainer}>
-                    {/* Nom de l'article */}
-                    <Text style={styles.paragraphMain}>Nom de l'article</Text>
-                    <TextInput style={styles.textAreas} value={nomArticle} onChangeText={setNomArticle}/>
-                    {/* Utilisation du composant Categories */}
-                    <Categories categorie={categorie} setCategorie={setCategorie} sousCategorie={sousCategorie} setSousCategorie={setSousCategorie}/>
+                    <View style={styles.formContainer}>
+                        {/* Nom de l'article */}
+                        <Text style={styles.paragraphMain}>Nom de l'article</Text>
+                        <TextInput style={styles.textAreas} value={nomArticle} onChangeText={setNomArticle}/>
+                        {/* Utilisation du composant Categories */}
+                        <Categories categorie={categorie} setCategorie={setCategorie} sousCategorie={sousCategorie} setSousCategorie={setSousCategorie}/>
 
                     {/* Description */}
                     <Text style={styles.paragraphMain}>Description de l'article</Text>
@@ -160,82 +194,90 @@ const styles = StyleSheet.create({
     scrollContainer: { flex: 1, },
     content: { padding: 20, },
     headerContainer: {
-        marginBottom: 20,
-        paddingVertical: 10,
-        backgroundColor: '#FF7B7B',
+    marginBottom: 20,
+    paddingVertical: 10,
+    backgroundColor: '#FF7B7B',
     },
     header: {
-        fontFamily: 'BalooBhaijaan2_700Bold',
-        fontSize: 36,
-        lineHeight: 28,
-        textAlign: 'center',
+    fontFamily: 'BalooBhaijaan2_700Bold',
+    fontSize: 36,
+    lineHeight: 28,
+    textAlign: 'center',
     },
     imagePickerContainer: {
-        height: 150,
-        backgroundColor: '#F5F5F5',
-        borderRadius: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginBottom: 20,
-        borderWidth: 2,
-        borderColor: '#D3D3D3',
-        borderStyle: 'dashed',
+    height: 150,
+    backgroundColor: '#F5F5F5',
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20,
+    borderWidth: 2,
+    borderColor: '#D3D3D3',
+    borderStyle: 'dashed',
     },
     uploadText: {
-        fontFamily: 'BalooBhaijaan2_400Regular',
-        fontSize: 13,
-        color: '#666',
-        marginTop: 10,
+    fontFamily: 'BalooBhaijaan2_400Regular',
+    fontSize: 13,
+    color: '#666',
+    marginTop: 10,
     },
     imagesContainer: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        gap: 10,
-        marginBottom: 20,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+    marginBottom: 20,
     },
     imageWrapper: {
-        position: 'relative',
-        margin: 5,
+    position: 'relative',
+    margin: 5,
     },
     imagePreview: {
-        width: 100,
-        height: 100,
-        borderRadius: 10,
+    width: 100,
+    height: 100,
+    borderRadius: 10,
     },
     removeIcon: {
-        position: 'absolute',
-        top: 5,
-        right: 5,
-        backgroundColor: 'white',
-        borderRadius: 15,
-        padding: 5,
+    position: 'absolute',
+    top: 5,
+    right: 5,
+    backgroundColor: 'white',
+    borderRadius: 15,
+    padding: 5,
     },
     formContainer: { gap: 15, },
     logoConnection: {
-        width: 100,
-        height: 100,
-        resizeMode: 'contain'
+    width: 100,
+    height: 100,
+    resizeMode: 'contain'
     },
     textButton: {
-        fontFamily: 'BalooBhaina2-Regular',
-        color: 'red',
-        textAlign: 'center'
+    fontFamily: 'BalooBhaina2-Regular',
+    color: 'red',
+    textAlign: 'center'
     },
     pickerContainer: { marginVertical: 10, },
     input: { 
-        height: 50, 
-        backgroundColor: '#F5F5F5', 
-        borderRadius: 10, 
-        paddingHorizontal: 15, 
-        fontFamily: 'BalooBhaijaan2_400Regular', 
-        fontSize: 16, }, 
-        paragraphSmall: { //for description text
-            fontFamily: 'BalooBhaijaan2_400Regular',
-            fontSize: 11,
-            lineHeight: 12,  },
-            paragraphMain: { 
-                //main bodycopy font     //
-                fontFamily: 'BalooBhaijaan2_400Regular',
-                fontSize: 13,
-                lineHeight: 14,
-            },   });
+    height: 50, 
+    backgroundColor: '#F5F5F5', 
+    borderRadius: 10, 
+    paddingHorizontal: 15, 
+    fontFamily: 'BalooBhaijaan2_400Regular', 
+    fontSize: 16, }, 
+    paragraphSmall: { //for description text    
+    fontFamily: 'BalooBhaijaan2_400Regular',    
+    fontSize: 11,    
+    lineHeight: 12,  },  
+    paragraphMain: { 
+    //main bodycopy font     //    
+    fontFamily: 'BalooBhaijaan2_400Regular',    
+    fontSize: 13,    
+    lineHeight: 14,  
+    },  
+    textAreas: {
+    borderWidth: 2,
+    borderColor: 'grey',
+    borderradius: 15,
+    padding: 10,
+    width: '100%',
+    },
+});
