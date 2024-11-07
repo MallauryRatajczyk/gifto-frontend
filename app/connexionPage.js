@@ -1,27 +1,18 @@
-//WE DON'T NEED THIS FILE ANYMORE
-
 import { Text, View, Image, StyleSheet, TouchableOpacity, TextInput } from "react-native";
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { toConnectUser } from '../reducers/user.js'
+import { toConnectUser } from '../reducers/user.js';
 
-/*import { GiftoSymbol } from '../../elements/assets/Icons';
-import Colors from '../../elements/styles/Colors';
-import GlobalStyles from '../../elements/styles/GlobalStyles';*/
-
-const BACKEND_ADDRESS = "http://192.168.1.81:3000"
+const BACKEND_ADDRESS = "http://192.168.1.81:3000";
 
 export default function Connection({ navigation }) {
-    // Initialize the dispatch function for Redux actions
     const dispatch = useDispatch();
-
-    // Define state variables for email, password, and error messages
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    // Function to handle user login
+    // Fonction de connexion
     const connect = (userObject) => {
         fetch(`${BACKEND_ADDRESS}/users/login`, {
             method: 'POST',
@@ -30,39 +21,27 @@ export default function Connection({ navigation }) {
         }).then(response => response.json())
             .then(data => {
                 if (data.error) {
-                    setError(data.error)
-                } else { // If login is successful, dispatch the user data to the Redux store
+                    setError(data.error);
+                } else {
                     dispatch(toConnectUser({ token: data.token, email, username: data.username }));
-                    navigation.navigate('TabNavigator') // Navigate to the main application screen
+                    navigation.navigate('TabNavigator');
                 }
             })
     }
 
     return (
         <SafeAreaProvider style={{ flex: 1 }}>
-            <SafeAreaView style={{ flex: 1 }}>
-
-                {/* Logo Section */}
-                {/*   <View
-                    style={{
-                        paddingTop: 10,
-                        alignItems: "center",
-                        marginBottom: 25
-                    }}
-                >
-                    <Image source={require('../assets/images/logoGifto.png')} style={styles.logoConnection} />
-                </View> */}
-
-                {/* Login Form Section */}
-                <View style={{
-                    alignItems: "center",
-                    marginBottom: 25
-                }}>
+            <SafeAreaView style={styles.container}>
+                {/* Titre de la page */}
+                <View style={styles.header}>
                     <Text style={styles.textContain}>Connexion</Text>
+                </View>
 
-                    {/* Email Input Field */}
+                {/* Formulaire de connexion */}
+                <View style={styles.formContainer}>
+                    {/* Champ Email */}
                     <TextInput
-                        onChangeText={(value) => setEmail(value)}
+                        onChangeText={setEmail}
                         value={email}
                         style={styles.textInput}
                         placeholder="Adresse email"
@@ -73,126 +52,106 @@ export default function Connection({ navigation }) {
                         textContentType="emailAddress"
                     />
 
-                    {/* Password Input Field */}
+                    {/* Champ Mot de passe */}
                     <TextInput
-                        onChangeText={(value) => setPassword(value)}
+                        onChangeText={setPassword}
                         value={password}
                         style={styles.textInput}
                         placeholder="Mot de passe"
+                        secureTextEntry
                         autoComplete="current-password"
                         textAlign={'center'}
                         textContentType="password"
-                        keyboardType="default"
-                        secureTextEntry={true}
                         autoCapitalize="none"
                     />
-                    {error && <Text>{error}</Text>}
+                    {/* Affichage de l'erreur */}
+                    {error && <Text style={styles.errorText}>{error}</Text>}
 
-                    {/* Login Button */}
-                    <TouchableOpacity style={styles.button} >
-                        <Text style={styles.textButton} onPress={() => {
-                            setError('')
-                            connect({ email, password })
-                        }}>Se connecter</Text>
+                    {/* Bouton de connexion */}
+                    <TouchableOpacity style={styles.button} onPress={() => {
+                        setError('');
+                        connect({ email, password });
+                    }}>
+                        <Text style={styles.textButton}>Se connecter</Text>
                     </TouchableOpacity>
 
-                    {/* Back Button */}
-                    <TouchableOpacity style={styles.retourButton}
-                        onPress={() => navigation.navigate('Authentification')} >
+                    {/* Bouton retour */}
+                    <TouchableOpacity style={styles.retourButton} onPress={() => navigation.navigate('Authentification')}>
                         <Text style={styles.retourButtonText}>Retour</Text>
                     </TouchableOpacity>
                 </View>
             </SafeAreaView>
-        </SafeAreaProvider >
+        </SafeAreaProvider>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: '#F4F4F9', // Fond léger pour l'écran
+        justifyContent: 'center',
+        paddingHorizontal: 20,
     },
-    logoConnection: {
-        width: 100,
-        height: 100,
-        resizeMode: 'contain'
-    },
-    h1: {
-        color: "#8B85EF",
-        fontSize: 36,
-        fontWeight: 'bold',
-        fontFamily: 'BalooBhaina2-Regular'
+    header: {
+        alignItems: 'center',
+        marginBottom: 40,
     },
     textContain: {
         fontFamily: 'BalooBhaina2-Regular',
-        fontSize: 20,
+        fontSize: 28,
+        color: "#8B85EF",
+        fontWeight: 'bold',
+        marginBottom: 30,
     },
-
-    button: {
-        backgroundColor: "#8B85EF",
-        padding: 10,
-        width: 320,
-        height: 40,
-        borderRadius: 50,
-        margin: 5
-    },
-    textButton: {
-        fontFamily: 'BalooBhaina2-Regular',
-        color: 'white',
-        textAlign: 'center'
+    formContainer: {
+        alignItems: 'center',
     },
     textInput: {
         borderWidth: 1,
         borderRadius: 50,
         width: 320,
-        height: 40,
-        margin: 10,
+        height: 50,
+        marginVertical: 10,
+        paddingHorizontal: 15,
         fontFamily: 'BalooBhaina2-Regular',
-        fontSize: 15,
-        alignItems: "center",
-        backgroundColor: "white"
+        fontSize: 16,
+        backgroundColor: 'white',
+        borderColor: '#8B85EF',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
+        shadowRadius: 5,
     },
-    nomEtPrenomContainer: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-    },
-    nomEtPrenomInput: {
-        borderWidth: 1,
+    button: {
+        backgroundColor: "#8B85EF",
+        padding: 15,
+        width: 320,
         borderRadius: 50,
-        width: 150,
-        height: 40,
-        margin: 10,
-        fontFamily: 'BalooBhaina2-Regular',
-        fontSize: 15,
-        alignItems: "center",
-        backgroundColor: "white"
+        marginVertical: 15,
+        alignItems: 'center',
+        justifyContent: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
+        shadowRadius: 5,
     },
-    usernameInput: {
-        borderWidth: 1,
-        borderRadius: 50,
-        width: 220,
-        height: 40,
-        margin: 10,
+    textButton: {
         fontFamily: 'BalooBhaina2-Regular',
-        fontSize: 15,
-        alignItems: "center",
-        backgroundColor: "white"
+        color: 'white',
+        fontSize: 18,
     },
-    ageInput: {
-        borderWidth: 1,
-        borderRadius: 50,
-        width: 80,
-        height: 40,
-        margin: 10,
-        fontFamily: 'BalooBhaina2-Regular',
-        fontSize: 15,
-        alignItems: "center",
-        backgroundColor: "white"
+    errorText: {
+        color: 'red',
+        fontSize: 14,
+        marginBottom: 10,
     },
     retourButton: {
-        margin: 15
+        marginTop: 15,
+        alignItems: 'center',
     },
     retourButtonText: {
         fontFamily: 'BalooBhaina2-Regular',
-        color: "#8B85EF"
-    }
+        color: "#8B85EF",
+        fontSize: 16,
+    },
 });

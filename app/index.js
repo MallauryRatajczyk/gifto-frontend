@@ -26,18 +26,23 @@ import HomePage from './homePage';
 import NotificationPage from './notificationPage';
 import SettingsPage from './settingsPage';
 import ProfilePage from './profilePage';
+import CreationTroc from './ajoutTrocPage';
 import RechercheTroc from './rechercheTroc';
 import RechercheRecevoir from './rechercheRecevoir';
 import HistoryPage from './historyPage';
-import Chat from './chat'
+import ChatPage from './chatPage';
 import Demande from './demandePage'
-import ConnexionPage from './connexionPage'
+import ConnexionPage from './connexionPage';
+import ItemTroquerPage from './itemTroquerPage';
+// import ItemRecevoirPage from './itemRecevoirPage';
+
 // Components
+import AjoutDon from "./AjoutDonPage";
 // import AjoutDon from "./AjoutDonPage";
 // import UploadImages from '../elements/images/UploadImages';
 // // import Photos from '../elements/images/Photos';
-import ItemTroquerPage from './itemTroquerPage';
-import ItemRecevoirPage from './itemRecevoirPage';
+
+
 import AjoutTroc from './ajoutTrocPage';
 import AjoutDon from "./ajoutDonPage";
 
@@ -65,8 +70,8 @@ function MainTabNavigator({ activeRoute }) {
       <Tab.Screen name="RechercheRecevoir" component={RechercheRecevoir} options={{ tabBarButton: () => null }} />
       <Tab.Screen name="AjoutTroc" component={AjoutTroc} options={{ tabBarButton: () => null }} />
       <Tab.Screen name="ItemTroquerPage" component={ItemTroquerPage} options={{ tabBarButton: () => null }} />
-      <Tab.Screen name="ItemRecevoirPage" component={ItemRecevoirPage} options={{ tabBarButton: () => null }} />
-      <Tab.Screen name="AjoutDon" component={AjoutDon} options={{ tabBarButton: () => null }} />
+      <Tab.Screen name="Demande" component={Demande} options={{ tabBarButton: () => null }} />
+      <Tab.Screen name="HistoryPage" component={HistoryPage} options={{ tabBarButton: () => null }} />
 
     </Tab.Navigator>
   );
@@ -102,18 +107,25 @@ export default function App() {
               setActiveRoute(currentTab || 'Home');
             }}
           > 
-            <Stack.Navigator 
-              screenOptions={{ headerShown: false }}
-              initialRouteName="TabNavigator"
-            >
+            
+            <Stack.Navigator screenOptions={{ headerShown: false }}>
               <Stack.Screen name="Authentification" component={Authentification} />
+              <Stack.Screen name="AjoutDon" component={AjoutDon} />  
+              {/* <Stack.Screen name="AjoutTroc" component={AjoutTroc} /> */}
+              
               <Stack.Screen name="TabNavigator">
                 {(props) => <MainTabNavigator {...props} activeRoute={activeRoute} />}
               </Stack.Screen>
               <Stack.Screen name="ProfilePage" component={ProfilePage} />
               <Stack.Screen name="Connection" component={ConnexionPage} />
               <Stack.Screen name="Inscription" component={Inscription} />
-              <Stack.Screen name="AjoutDon" component={AjoutDon} />
+
+              <Stack.Screen name="RechercheTroc" component={RechercheTroc} />
+              <Stack.Screen name="RechercheRecevoir" component={RechercheRecevoir} />
+              <Stack.Screen name="Chat" component={ChatPage} />
+              <Stack.Screen name="Demande" component={Demande} />
+              {/* <Stack.Screen name="UploadImages" component={UploadImages} /> */}
+              {/* <Stack.Screen name="Photos" component={Photos} /> */}
               <Stack.Screen name="HistoryPage" component={HistoryPage} />
               <Stack.Screen name="ItemTroquerPage" component={ItemTroquerPage} />
             </Stack.Navigator>

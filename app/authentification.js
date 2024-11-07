@@ -1,26 +1,10 @@
-import { Text, View, Image, StyleSheet, TouchableOpacity, Button, Alert } from "react-native";
+import { Text, View, Image, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import * as AuthSession from 'expo-auth-session';
 import * as WebBrowser from 'expo-web-browser';
 import * as Application from 'expo-application';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import * as Google from 'expo-auth-session/providers/google';
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-
-import { toConnectUser } from '../reducers/user';
-import { GiftoSymbol, GoogleIcon, AppleIcon, WindowsIcon } from '../elements/assets/Icons';
-import Colors from '../elements/styles/Colors';
-import GlobalStyles from '../elements/styles/GlobalStyles';
-
-import MainButton from '../elements/components/buttons/MainButton';
-import SecondaryButton from '../elements/components/buttons/SecondaryButton';
-import CircleButton from '../elements/components/buttons/CircleButton';
-import InputCard from '../elements/components/cards/InputCard';
-import PasswordInputCard from '../elements/components/cards/PasswordInputCard';
-
-//REMARQUE : NOUS DEVONS METTRE À JOUR LES LIENS DU BOUTON CERCLE (WINDOWS ET APPLE) !!!!!!!
-
-const BACKEND_ADDRESS = "http://192.168.1.3:3000"
+import { useEffect } from 'react';
 
 export default function Authentification({ navigation }) {
     const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
@@ -30,36 +14,6 @@ export default function Authentification({ navigation }) {
         }),
     });
 
-    // Initialize the dispatch function for Redux actions
-    const dispatch = useDispatch();
-
-    // Define state variables for email, password, and error messages
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
-
-    // Function to handle user login
-    const connect = (userObject) => {
-        fetch(`${BACKEND_ADDRESS}/users/login`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(userObject)
-        }).then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    setError(data.error)
-                } else { // If login is successful, dispatch the user data to the Redux store
-                    dispatch(toConnectUser({ 
-                        token: data.token, 
-                        email: data.email, 
-                        username: data.username 
-                    }));
-                    navigation.navigate('TabNavigator') // Navigate to the main application screen
-                }
-            })
-    }
-
-    // Handle the response from Google authentication
     useEffect(() => {
         if (response?.type === 'success') {
             const { id_token } = response.params;
@@ -70,22 +24,27 @@ export default function Authentification({ navigation }) {
 
     return (
         <SafeAreaProvider style={{ flex: 1 }}>
-            <SafeAreaView style={{ flex: 1, marginBottom: 100, alignItems: "center", justifyContent: "space-between" }}>
-                <View style={{ paddingTop: 10, alignItems: "center", }}>
+            <SafeAreaView style={styles.container}>
+                <View style={styles.header}>
                     <Image source={require('../assets/images/logoWithoutGifto.png')} style={styles.logoConnection} />
                     <Text style={styles.h1}>Bienvenue sur Gifto</Text>
                 </View>
-                <TouchableOpacity style={styles.purpleSquare} onPress={() => navigation.navigate('Connection')} >
-                    <Text style={styles.textButton}>Se connecter</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.whiteSquare} onPress={() => navigation.navigate('Inscription')} >
-                    <Text style={styles.textButtonWithWhiteSquare}>S'inscrire</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.whiteSquare} disabled={!request} onPress={() => {
-                    promptAsync();
-                }} >
-                    <Text style={styles.textButtonWithWhiteSquare}>Se connecter avec Google</Text>
-                </TouchableOpacity>
+
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={styles.purpleSquare} onPress={() => navigation.navigate('Connection')} >
+                        <Text style={styles.textButton}>Se connecter</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.whiteSquare} onPress={() => navigation.navigate('Inscription')} >
+                        <Text style={styles.textButtonWithWhiteSquare}>S'inscrire</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={[styles.whiteSquare, !request && styles.disabledButton]}
+                        disabled={!request}
+                        onPress={() => promptAsync()}
+                    >
+                        <Text style={styles.textButtonWithWhiteSquare}>Se connecter avec Google</Text>
+                    </TouchableOpacity>
+                </View>
             </SafeAreaView>
         </SafeAreaProvider>
     );
@@ -94,40 +53,61 @@ export default function Authentification({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: '#F4F4F9', // Ajout d'un fond léger
+        justifyContent: 'center',
+        paddingHorizontal: 20,
+    },
+    header: {
+        alignItems: 'center',
+        marginBottom: 40,
     },
     logoConnection: {
-        width: 100,
-        height: 100,
-        resizeMode: 'contain'
+        width: 120,
+        height: 120,
+        resizeMode: 'contain',
+        marginBottom: 20,
     },
     h1: {
         color: "#8B85EF",
         fontSize: 36,
         fontWeight: 'bold',
-        fontFamily: 'BalooBhaina2-Regular'
-    },
-    textContain: {
         fontFamily: 'BalooBhaina2-Regular',
-        fontSize: 36,
-        color: "#8B85EF",
+        textAlign: 'center',
+    },
+    buttonContainer: {
+        width: '100%',
+        alignItems: 'center',
     },
     purpleSquare: {
         backgroundColor: "#8B85EF",
         width: 320,
-        height: 100,
+        height: 60,
         borderRadius: 10,
         borderWidth: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        marginBottom: 20,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
+        shadowRadius: 5,
     },
     whiteSquare: {
         backgroundColor: "white",
         width: 320,
-        height: 100,
+        height: 60,
         borderRadius: 10,
         borderWidth: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        marginBottom: 20,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
+        shadowRadius: 5,
+    },
+    disabledButton: {
+        backgroundColor: "#f0f0f0", // Désactive le bouton s'il n'y a pas de requête
     },
     textButton: {
         fontFamily: 'BalooBhaina2-Regular',
@@ -140,5 +120,5 @@ const styles = StyleSheet.create({
         color: "#8B85EF",
         textAlign: 'center',
         fontSize: 20,
-    }
+    },
 });

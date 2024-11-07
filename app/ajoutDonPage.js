@@ -36,8 +36,6 @@ export default function AjoutDon({ navigation }) {
     dispatch(addImage(imageUri));
   };
 
-  console.log("selectedImages", selectedImages);
-
   // Supprimer une image
   const handleRemoveImage = (imageUri) => {
     setSelectedImages(selectedImages.filter(uri => uri !== imageUri));
@@ -50,29 +48,14 @@ const closeCamera = () => {
 }
 
 // Vérifier la validation du formulaire
-const validateForm = () => {
-    if (selectedImages.length === 0) { setErrorMessage("Une photo est requise.");
-        return false;
-      }
-    if (!nomArticle.trim()) {setErrorMessage("Le nom de l'article est requis.");
-      return false;
-    }
-    if (!description.trim()) {setErrorMessage("La description est requise.");
-      return false;
-    }
-    if (!categorie.trim()) {setErrorMessage("La catégorie est requise.");
-      return false;
-    }
-    if (!sousCategorie.trim()) {setErrorMessage("La sous-catégorie est requise.");
-      return false;
-    }
-    setErrorMessage('');  // Aucune erreur si tout est bien rempli
-    return true;
-  };
+
 
 //Soumettre le formulaire
 const handleSubmit = () => {
-    if (validateForm()) {
+    if (!nomArticle || !description || selectedImages.length === 0) {
+        setErrorMessage("Veuillez remplir tous les champs requis");
+    } 
+    else { 
         console.log('Formulaire validé, tous les champs sont bien remplis.');
             setPopupVisible(true); 
 
@@ -94,9 +77,7 @@ const handleSubmit = () => {
         console.error('Erreur dans la requête:', error);
         setPopupVisible(false); 
     }); 
-} else {
-    setErrorMessage("Veuillez remplir tous les champs requis");
-}
+} 
 };
 
 //fermer la popup et aller à la page d'accueil
@@ -276,7 +257,7 @@ const styles = StyleSheet.create({
     textAreas: {
     borderWidth: 2,
     borderColor: 'grey',
-    borderradius: 15,
+    borderRadius: 15,
     padding: 10,
     width: '100%',
     },
