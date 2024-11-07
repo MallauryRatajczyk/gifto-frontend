@@ -34,18 +34,17 @@ import Chat from './chat'
 import Demande from './demandePage'
 import ConnexionPage from './connexionPage';
 import ItemTroquerPage from './itemTroquerPage';
-import ItemRecevoirPage from './itemRecevoirPage';
+// import ItemRecevoirPage from './itemRecevoirPage';
 
 // Components
 // import AjoutDon from "./AjoutDonPage";
 // import UploadImages from '../elements/images/UploadImages';
 // // import Photos from '../elements/images/Photos';
 
-import ItemTroquerPage from './itemTroquerPage';
-import ItemRecevoirPage from './itemRecevoirPage';
+
 import AjoutTroc from './ajoutTrocPage';
-import AjoutDon from "./ajoutDonPage";
-import ItemTroquerPage from './itemTroquerPage';
+import AjoutDon from "./AjoutDonPage";
+
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
