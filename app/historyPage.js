@@ -1,23 +1,22 @@
-import React from 'react';
-import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, FlatList, SafeAreaView, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import GlobalStyles from '../elements/styles/GlobalStyles';
-import MainButton from '../elements/components/buttons/MainButton';
-import HistoryHeader from '../elements/components/navigation/HistoryHeader';
-import Notification from '../components/notification';
 import { useSelector } from 'react-redux';
-import { useState, useEffect } from 'react';
+import Notification from '../components/notification';
+import GlobalStyles from '../elements/styles/GlobalStyles';
+import HistoryHeader from '../elements/components/navigation/HistoryHeader';
 
 const { getId } = require('../modules/verifUser');
 
-const BACKEND_ADDRESS = "http://192.168.1.81:3000"
+const BACKEND_ADDRESS = "http://192.168.1.81:3000";
 
 export default function HistoryPage() {
     const navigation = useNavigation();
     const [id, setId] = useState('');
     const [notifications, setNotifications] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const user = useSelector((state) => state.user.value);
-    const [error, setError] = useState();
 
     useEffect(() => {
         async function fetchData() {
@@ -32,120 +31,143 @@ export default function HistoryPage() {
                 if (response.error) {
                     setError(response.error);
                 } else {
-                    response.demandes.map(x => {
-                        if (x.statut === "accepted" || x.statut === "declined") {
-                            setNotifications([...notifications, x]);
-                        }
-                    }
-                    )
+                    const filteredNotifications = response.demandes.filter(
+                        (x) => x.statut === "accepted" || x.statut === "declined"
+                    );
+                    setNotifications(filteredNotifications);
                 }
             } catch (error) {
                 console.error("Erreur lors de la récupération des données:", error);
                 setError("Une erreur s'est produite.");
+            } finally {
+                setLoading(false);
             }
         }
         fetchData();
-    }, [user.token]); // Ajouter user.token comme dépendance
+    }, [user.token]); // Ré-exécuter lorsque le token change
 
-    const allNotifications = notifications.map((x, i) => {
+    const renderNotification = ({ item }) => {
         let interlocuteur = '';
         let drt = 'Troquer'; // Valeur par défaut
 
-        if (!x.type.troc) {
-            if (id === x.possesseur) {
-                interlocuteur = x.demandeur;
+        if (!item.type.troc) {
+            if (id === item.possesseur) {
+                interlocuteur = item.demandeur;
                 drt = "Donner";
             } else {
-                interlocuteur = x.possesseur;
+                interlocuteur = item.possesseur;
                 drt = "Recevoir";
             }
         }
 
         return (
             <Notification
-                key={i}
-                item={x.item}
-                message={x.message[x.message.length - 1].message}
+                key={item.id}
+                item={item.item}
+                message={item.message[item.message.length - 1].message}
                 interlocuteur={interlocuteur}
-                statut={x.statut}
+                statut={item.statut}
                 type={drt}
-                objProp={x.type.objetPropose}
-                de={x.message[x.message.length - 1].de}
-                a={x.message[x.message.length - 1].a}
-                date={x.message[x.message.length - 1].date}
+                objProp={item.type.objetPropose}
+                de={item.message[item.message.length - 1].de}
+                a={item.message[item.message.length - 1].a}
+                date={item.message[item.message.length - 1].date}
             />
         );
-    });
+    };
 
     return (
-        <View style={GlobalStyles.screenMainContainer}>
+        <SafeAreaView style={GlobalStyles.screenMainContainer}>
             <HistoryHeader />
-            {allNotifications}
-        </View>
+            {loading ? (
+                <View style={styles.loadingContainer}>
+                    <ActivityIndicator size="large" color="#8B85EF" />
+                    <Text style={styles.loadingText}>Chargement des notifications...</Text>
+                </View>
+            ) : error ? (
+                <View style={styles.errorContainer}>
+                    <Text style={styles.errorText}>{error}</Text>
+                </View>
+            ) : (
+                <FlatList
+                    data={notifications}
+                    renderItem={renderNotification}
+                    keyExtractor={(item) => item.id.toString()}
+                    contentContainerStyle={styles.notificationsContainer}
+                />
+            )}
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    loadingText: {
+        marginTop: 10,
+        fontSize: 16,
+        color: '#8B85EF',
+    },
+    errorContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: 20,
+    },
+    errorText: {
+        fontSize: 16,
+        color: 'red',
+        textAlign: 'center',
+    },
+    notificationsContainer: {
+        paddingBottom: 20,
+    },
     container: {
         width: '100%',
         height: '100%',
-        position: 'relative',
-        flex: 1
+        flex: 1,
+        padding: 16,
+        backgroundColor: '#F4F7FB',
     },
     box: {
-        width: 324,
-        height: 54,
-        position: 'absolute',
+        width: '100%',
+        padding: 16,
         backgroundColor: 'white',
+        borderRadius: 12,
+        marginBottom: 12,
         shadowColor: '#DCE5F2',
         shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.5,
-        shadowRadius: 54,
-        borderRadius: 12,
-        paddingHorizontal: 16,
-        paddingVertical: 8,
+        shadowOpacity: 0.3,
+        shadowRadius: 6,
+        elevation: 3,
     },
     dot: {
-        width: 10.25,
+        width: 10,
         height: 10,
         backgroundColor: '#8B85EF',
-        borderRadius: 9999,
+        borderRadius: 5,
         position: 'absolute',
-        left: 22.55,
-        top: 21,
+        left: 20,
+        top: 20,
     },
     title: {
-        position: 'absolute',
-        left: 48.60,
-        top: 16,
         color: '#262B37',
         fontSize: 16,
         fontFamily: 'Baloo Bhaina 2',
         fontWeight: '500',
-        lineHeight: 16,
-    },
-    id: {
-        position: 'absolute',
-        left: 48.60,
-        top: 32,
-        opacity: 0.5,
-        color: '#262B37',
-        fontSize: 8,
-        fontFamily: 'Baloo Bhaina 2',
-        fontWeight: '400',
-        lineHeight: 9,
+        marginLeft: 30,
+        marginTop: 12,
     },
     date: {
         position: 'absolute',
-        left: 241,
+        right: 20,
         top: 18,
         opacity: 0.5,
-        textAlign: 'right',
-        color: '#262B37',
         fontSize: 12,
         fontFamily: 'Baloo Bhaina 2',
-        fontWeight: '400',
-        lineHeight: 14,
+        color: '#262B37',
     },
 });
-
