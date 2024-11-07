@@ -13,9 +13,9 @@ const categories = [
 
 const BACKEND_ADDRESS = "http://192.168.1.81:3000"                                         //Adresse à modifier
 
-const Categories = ({ categorie, setCategorie, sousCategorie, setSousCategorie }) => {
+/* const Categories = ({ categorie, setCategorie, sousCategorie, setSousCategorie }) => {
 
-  /* return (
+  return (
      <View style={styles.pickerContainer}>
        <Text>Catégories</Text>
        <Picker
@@ -41,100 +41,100 @@ const Categories = ({ categorie, setCategorie, sousCategorie, setSousCategorie }
          ))}
        </Picker>*/
 
-  const Categories = ({ categorie, setCategorie, sousCategorie, setSousCategorie }) => {
-    const [openCategorie, setOpenCategorie] = useState(false);
-    const [openSousCategorie, setOpenSousCategorie] = useState(false);
+const Categories = ({ categorie, setCategorie, sousCategorie, setSousCategorie }) => {
+  const [openCategorie, setOpenCategorie] = useState(false);
+  const [openSousCategorie, setOpenSousCategorie] = useState(false);
 
-    const categoriesItems = categories.map(cat => ({
-      label: cat.name,
-      value: cat.name
-    }));
+  const categoriesItems = categories.map(cat => ({
+    label: cat.name,
+    value: cat.name
+  }));
 
-    const sousCategories = categories
-      .find(cat => cat.name === categorie)
-      ?.subcategories.map(subcat => ({
-        label: subcat.name,
-        value: subcat.name
-      })) || [];
-    //  fonction pour fermer la sousCategorie, si la categorie est ouverte
-    const handleOpenCategorie = (open) => {
-      if (open) {
-        setOpenSousCategorie(false);
-      }
-      setOpenCategorie(open);
-    };
-
-    const handleOpenSousCategorie = (open) => {
-      if (open) {
-        setOpenCategorie(false);
-      }
-      setOpenSousCategorie(open);
-    };
-
-
-    return (
-      <View style={styles.container}>
-        <View style={[styles.pickerContainer, { zIndex: 2000 }]}>
-          <Text style={styles.h4}>Catégories</Text>
-          <DropDownPicker
-            open={openCategorie}
-            value={categorie}
-            items={categoriesItems}
-            setOpen={handleOpenCategorie}
-            setValue={setCategorie}
-            placeholder="Sélectionner une catégorie"
-            style={styles.picker}
-            dropDownContainerStyle={styles.dropDownContainer}
-            listMode="SCROLLVIEW"
-            scrollViewProps={{
-              nestedScrollEnabled: true
-            }}
-            maxHeight={200}  // Hauteur maximale de la liste déroulante
-          />
-        </View>
-        <View style={[styles.pickerContainer, { zIndex: 1000 }]}>
-          <Text style={styles.h4}>Sous-catégories</Text>
-          <DropDownPicker
-            open={openSousCategorie}
-            value={sousCategorie}
-            items={sousCategories}
-            setOpen={handleOpenSousCategorie}
-            setValue={setSousCategorie}
-            placeholder="Sélectionner une sous-catégorie"
-            style={styles.picker}
-            dropDownContainerStyle={styles.dropDownContainer}
-            disabled={!categorie}
-            listMode="SCROLLVIEW"
-            scrollViewProps={{
-              nestedScrollEnabled: true
-            }}
-            maxHeight={200}  // Hauteur maximale de la liste déroulante
-          />
-        </View>
-      </View>
-    );
+  const sousCategories = categories
+    .find(cat => cat.name === categorie)
+    ?.subcategories.map(subcat => ({
+      label: subcat.name,
+      value: subcat.name
+    })) || [];
+  //  fonction pour fermer la sousCategorie, si la categorie est ouverte
+  const handleOpenCategorie = (open) => {
+    if (open) {
+      setOpenSousCategorie(false);
+    }
+    setOpenCategorie(open);
   };
 
-  const styles = StyleSheet.create({
-    container: {
-      padding: 10,
-    },
-    pickerContainer: {
-      marginBottom: 50,  // espace pour la liste déroulante
-    },
-    picker: {
-      borderRadius: 15,
-      borderWidth: 1,
-      height: 40,
-    },
-    dropDownContainer: {
-      borderWidth: 1,
-    },
-    h4: {
-      marginBottom: 5,
-      fontFamily: 'BalooBhaijaan2_400Regular',
-      fontSize: 13,
+  const handleOpenSousCategorie = (open) => {
+    if (open) {
+      setOpenCategorie(false);
     }
-  });
+    setOpenSousCategorie(open);
+  };
 
-  export default Categories;
+
+  return (
+    <View style={styles.container}>
+      <View style={[styles.pickerContainer, { zIndex: 2000 }]}>
+        <Text style={styles.h4}>Catégories</Text>
+        <DropDownPicker
+          open={openCategorie}
+          value={categorie}
+          items={categoriesItems}
+          setOpen={handleOpenCategorie}
+          setValue={setCategorie}
+          placeholder="Sélectionner une catégorie"
+          style={styles.picker}
+          dropDownContainerStyle={styles.dropDownContainer}
+          listMode="SCROLLVIEW"
+          scrollViewProps={{
+            nestedScrollEnabled: true
+          }}
+          maxHeight={200}  // Hauteur maximale de la liste déroulante
+        />
+      </View>
+      <View style={[styles.pickerContainer, { zIndex: 1000 }]}>
+        <Text style={styles.h4}>Sous-catégories</Text>
+        <DropDownPicker
+          open={openSousCategorie}
+          value={sousCategorie}
+          items={sousCategories}
+          setOpen={handleOpenSousCategorie}
+          setValue={setSousCategorie}
+          placeholder="Sélectionner une sous-catégorie"
+          style={styles.picker}
+          dropDownContainerStyle={styles.dropDownContainer}
+          disabled={!categorie}
+          listMode="SCROLLVIEW"
+          scrollViewProps={{
+            nestedScrollEnabled: true
+          }}
+          maxHeight={200}  // Hauteur maximale de la liste déroulante
+        />
+      </View>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 10,
+  },
+  pickerContainer: {
+    marginBottom: 50,  // espace pour la liste déroulante
+  },
+  picker: {
+    borderRadius: 15,
+    borderWidth: 1,
+    height: 40,
+  },
+  dropDownContainer: {
+    borderWidth: 1,
+  },
+  h4: {
+    marginBottom: 5,
+    fontFamily: 'BalooBhaijaan2_400Regular',
+    fontSize: 13,
+  }
+});
+
+export default Categories;
