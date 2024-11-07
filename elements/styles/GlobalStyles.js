@@ -163,15 +163,13 @@ PictureProfileContainer: {
 whiteSearchContainer: {
     backgroundColor: Colors.whiteColor,
     borderRadius: 40,
-    //spaces
-    paddingHorizontal: 36,
-    paddingVertical: 24,
-    marginBottom: 24,
+    paddingHorizontal: 20,
+    paddingVertical: 12,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-
-}, 
+    zIndex: 2,
+},
 
 SelectArticleContainer: {
     backgroundColor: Colors.whiteColor,
@@ -222,9 +220,8 @@ RecommendationContainer: {
 ImageHolderContainer: {
     backgroundColor: Colors.whiteColor,
     borderRadius: 16,
-    marginLeft: 12,
-    width: 300,
-    height: 240,
+    width: 280,
+    height: 160,
     
     //positions for icon
     alignItems: 'center',
@@ -552,6 +549,12 @@ profileHeaderContainer: {
     paddingHorizontal: 24,
 },
 
+MenuHeaderContainer: {
+    flexDirection: 'row',
+    paddingHorizontal: 24,
+    marginTop: 12,
+},
+
 
     //_________________HEADERS WITH BACKGROUND COLOR & ICONS_________________
 
@@ -655,6 +658,14 @@ profileHeaderContainer: {
     subtitleTextRed: {
         ...Typography.h3,
         color: Colors.redColor,
+        paddingVertical: 6,
+
+    },
+
+    //H3 purple color
+    subtitleTextPurple: {
+        ...Typography.h3,
+        color: Colors.purpleColor,
         paddingVertical: 6,
 
     },
@@ -940,6 +951,13 @@ backContainer: {
     bottom: 24,
     right: 36, 
     zIndex: 1,
+},
+
+
+SearchBarText: {
+    ...Typography.h3,
+    color: Colors.textColor,
+    lineHeight: 28,
 },
 
 

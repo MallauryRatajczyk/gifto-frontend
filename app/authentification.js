@@ -20,7 +20,7 @@ import PasswordInputCard from '../elements/components/cards/PasswordInputCard';
 
 //REMARQUE : NOUS DEVONS METTRE À JOUR LES LIENS DU BOUTON CERCLE (WINDOWS ET APPLE) !!!!!!!
 
-const BACKEND_ADDRESS = "http://192.168.86.114:3000"
+const BACKEND_ADDRESS = "http://192.168.1.3:3000"
 
 export default function Authentification({ navigation }) {
     const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
@@ -49,7 +49,11 @@ export default function Authentification({ navigation }) {
                 if (data.error) {
                     setError(data.error)
                 } else { // If login is successful, dispatch the user data to the Redux store
-                    dispatch(toConnectUser({ token: data.token, email, username: data.username }));
+                    dispatch(toConnectUser({ 
+                        token: data.token, 
+                        email: data.email, 
+                        username: data.username 
+                    }));
                     navigation.navigate('TabNavigator') // Navigate to the main application screen
                 }
             })
