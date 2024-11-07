@@ -28,7 +28,7 @@ import CreationTroc from './ajoutTrocPage';
 import RechercheTroc from './rechercheTroc';
 import RechercheRecevoir from './rechercheRecevoir';
 import HistoryPage from './historyPage';
-import Chat from './chat'
+import ChatPage from './chatPage';
 import Demande from './demandePage'
 import ConnexionPage from './connexionPage'
 // Components
@@ -122,7 +122,7 @@ export default function App() {
 
               <Stack.Screen name="RechercheTroc" component={RechercheTroc} />
               <Stack.Screen name="RechercheRecevoir" component={RechercheRecevoir} />
-              <Stack.Screen name="Chat" component={Chat} />
+              <Stack.Screen name="Chat" component={ChatPage} />
               <Stack.Screen name="Demande" component={Demande} />
               {/* <Stack.Screen name="UploadImages" component={UploadImages} /> */}
               {/* <Stack.Screen name="Photos" component={Photos} /> */}

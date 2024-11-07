@@ -1,76 +1,71 @@
 import { Text, View, Image, StyleSheet, TouchableOpacity, TextInput, Pressable, Platform } from "react-native";
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { useState } from 'react';
-import DateTimePicker from '@react-native-community/datetimepicker'
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { useDispatch } from 'react-redux';
-import { toConnectUser } from '../reducers/user'
+import { toConnectUser } from '../reducers/user';
 
-const { dateRequired } = require('../modules/dateRequirement')
+const { dateRequired } = require('../modules/dateRequirement');
 
 export default function Inscription({ navigation }) {
   const dispatch = useDispatch();
-  const [email, setEmail] = useState('')
-  const [nom, setNom] = useState('')
-  const [prenom, setPrenom] = useState('')
-  const [password, setPassword] = useState('')
-  const [verifPassword, setVerifPassword] = useState('')
-  const [username, setUsername] = useState('')
-  const [date, setDate] = useState(new Date())
+  const [email, setEmail] = useState('');
+  const [nom, setNom] = useState('');
+  const [prenom, setPrenom] = useState('');
+  const [password, setPassword] = useState('');
+  const [verifPassword, setVerifPassword] = useState('');
+  const [username, setUsername] = useState('');
+  const [date, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
   const [wrongPassword, setWrongPassword] = useState(false);
   const [error, setError] = useState('');
 
   const toggleShow = () => {
-    setDate(dateRequired())
-    setShow(!show)
-  }
+    setDate(dateRequired());
+    setShow(!show);
+  };
 
   const register = (userObject) => {
     fetch('http://192.168.1.81:3000/users/enregistrer', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(userObject)
-    }).then(response => response.json())
+      body: JSON.stringify(userObject),
+    })
+      .then(response => response.json())
       .then(data => {
         if (data.error) {
-          setError(data.error)
+          setError(data.error);
         } else {
           dispatch(toConnectUser({ token: data.token, email, username }));
-          navigation.navigate('TabNavigator')
+          navigation.navigate('TabNavigator');
         }
-      })
-  }
+      });
+  };
 
   const changeDate = ({ type }, selectedDate) => {
     if (type === 'set') {
       const currentDate = selectedDate || date;
       setDate(currentDate);
       if (Platform.OS === 'android') {
-        setShow(false); // Ferme le date picker après la sélection
+        setShow(false);
       }
     } else {
-      setShow(false); // Ferme le date picker si l'utilisateur annule
+      setShow(false);
     }
   };
 
   return (
     <SafeAreaProvider style={{ flex: 1 }}>
-      <SafeAreaView style={{ flex: 1 }}>
-        <View
-          style={{
-            paddingTop: 10,
-            alignItems: "center",
-            marginBottom: 25
-          }}
-        >
+      <SafeAreaView style={styles.container}>
+        {/* Logo */}
+        <View style={styles.logoContainer}>
           <Image source={require('../assets/images/logoGifto.png')} style={styles.logoConnection} />
         </View>
 
-        <View style={{
-          flex: 1,
-          alignItems: "center",
-        }}>
+        <View style={styles.formContainer}>
           <Text style={styles.textContain}>Inscription</Text>
+
+          {/* Champ Email */}
           <TextInput
             onChangeText={(value) => setEmail(value)}
             value={email}
@@ -81,6 +76,8 @@ export default function Inscription({ navigation }) {
             textAlign={'center'}
             autoCapitalize="none"
           />
+
+          {/* Nom et Prénom */}
           <View style={styles.twoContainer}>
             <TextInput
               onChangeText={(value) => setNom(value)}
@@ -103,6 +100,8 @@ export default function Inscription({ navigation }) {
               autoCapitalize="words"
             />
           </View>
+
+          {/* Nom d'utilisateur et Date de naissance */}
           <View style={styles.twoContainer}>
             <TextInput
               onChangeText={(value) => setUsername(value)}
@@ -114,7 +113,6 @@ export default function Inscription({ navigation }) {
               textAlign={'center'}
               autoCapitalize="none"
             />
-
             {show && (
               <DateTimePicker
                 mode="date"
@@ -124,12 +122,9 @@ export default function Inscription({ navigation }) {
                 style={styles.dateTimePicker}
               />
             )}
-
             {!show && (
-              <Pressable
-                onPress={toggleShow}>
+              <Pressable onPress={toggleShow}>
                 <TextInput
-                  onChangeText={setDate}
                   value={date.toDateString()}
                   style={styles.ageInput}
                   placeholder="Date de naissance"
@@ -138,8 +133,9 @@ export default function Inscription({ navigation }) {
                 />
               </Pressable>
             )}
-
           </View>
+
+          {/* Mot de passe et confirmation */}
           <TextInput
             onChangeText={(value) => setPassword(value)}
             value={password}
@@ -162,125 +158,149 @@ export default function Inscription({ navigation }) {
             secureTextEntry={true}
             autoCapitalize="none"
           />
-          {wrongPassword && <Text>Les mots de passe ne correspondent pas.</Text>}
-          {error && <Text>{error}</Text>}
-          <TouchableOpacity style={styles.button} onPress={() => {
-            setWrongPassword(false);
-            setError('')
-            if (password === verifPassword) {
-              register({ email, nom, prenom, username, password, age: date })
+          {wrongPassword && <Text style={styles.errorText}>Les mots de passe ne correspondent pas.</Text>}
+          {error && <Text style={styles.errorText}>{error}</Text>}
 
-            } else {
-              setWrongPassword(true)
-            }
-          }
-          }>
+          {/* Bouton d'inscription */}
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              setWrongPassword(false);
+              setError('');
+              if (password === verifPassword) {
+                register({ email, nom, prenom, username, password, age: date });
+              } else {
+                setWrongPassword(true);
+              }
+            }}
+          >
             <Text style={styles.textButton}>S'inscrire</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.retourButton} onPress={() => navigation.navigate('Authentification')} >
+
+          {/* Bouton retour */}
+          <TouchableOpacity style={styles.retourButton} onPress={() => navigation.navigate('Authentification')}>
             <Text style={styles.retourButtonText}>Retour</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
-    </SafeAreaProvider >
+    </SafeAreaProvider>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#F4F4F9', // Fond léger
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+  },
+  logoContainer: {
+    alignItems: 'center',
+    marginBottom: 40,
   },
   logoConnection: {
     width: 100,
     height: 100,
-    resizeMode: 'contain'
-  },
-  h1: {
-    color: "#8B85EF",
-    fontSize: 36,
-    fontWeight: 'bold',
-    fontFamily: 'BalooBhaina2-Regular'
+    resizeMode: 'contain',
   },
   textContain: {
     fontFamily: 'BalooBhaina2-Regular',
-    fontSize: 20,
+    fontSize: 28,
+    color: "#8B85EF",
+    fontWeight: 'bold',
+    marginBottom: 30,
   },
-
-  button: {
-    backgroundColor: "#8B85EF",
-    padding: 10,
-    width: 320,
-    height: 40,
-    borderRadius: 50
-  },
-  textButton: {
-    fontFamily: 'BalooBhaina2-Regular',
-    color: 'white',
-    textAlign: 'center'
+  formContainer: {
+    alignItems: 'center',
   },
   textInput: {
     borderWidth: 1,
     borderRadius: 50,
     width: 320,
-    height: 40,
-    margin: 10,
+    height: 50,
+    marginVertical: 10,
+    paddingHorizontal: 15,
     fontFamily: 'BalooBhaina2-Regular',
-    fontSize: 15,
-    alignItems: "center",
-    backgroundColor: "white",
+    fontSize: 16,
+    backgroundColor: 'white',
+    borderColor: '#8B85EF',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
   },
   twoContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    justifyContent: 'center',
   },
   nomEtPrenomInput: {
     borderWidth: 1,
     borderRadius: 50,
     width: 150,
-    height: 40,
+    height: 50,
     margin: 10,
     fontFamily: 'BalooBhaina2-Regular',
     fontSize: 15,
-    alignItems: "center",
     backgroundColor: "white",
+    borderColor: '#8B85EF',
   },
   usernameInput: {
     borderWidth: 1,
     borderRadius: 50,
     width: 180,
-    height: 40,
+    height: 50,
     margin: 10,
     fontFamily: 'BalooBhaina2-Regular',
     fontSize: 15,
-    alignItems: "center",
-    backgroundColor: "white"
+    backgroundColor: "white",
+    borderColor: '#8B85EF',
   },
   ageInput: {
     borderWidth: 1,
     borderRadius: 50,
-    width: 120,
-    height: 40,
+    width: 150,
+    height: 50,
     margin: 10,
     fontFamily: 'BalooBhaina2-Regular',
     fontSize: 15,
-    alignItems: "center",
     backgroundColor: "white",
-
+    borderColor: '#8B85EF',
+  },
+  button: {
+    backgroundColor: "#8B85EF",
+    padding: 15,
+    width: 320,
+    borderRadius: 50,
+    marginVertical: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+  },
+  textButton: {
+    fontFamily: 'BalooBhaina2-Regular',
+    color: 'white',
+    fontSize: 18,
   },
   retourButton: {
-    margin: 15
+    marginTop: 20,
+    alignItems: 'center',
   },
   retourButtonText: {
     fontFamily: 'BalooBhaina2-Regular',
-    color: "#8B85EF"
+    color: "#8B85EF",
+    fontSize: 16,
   },
-  ageInputText: {
-    fontFamily: 'BalooBhaina2-Regular',
-    color: "gray",
-    textAlign: 'center'
+  errorText: {
+    color: 'red',
+    fontSize: 14,
+    marginBottom: 10,
   },
   dateTimePicker: {
     height: 40,
-    marginTop: -10
-  }
+    marginTop: -10,
+  },
 });
