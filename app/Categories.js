@@ -10,39 +10,67 @@ const categories = [
   { name: "Jouets", subcategories: [{ name: "Jeux de société" }, { name: "Puzzles" }, { name: "Jouets éducatifs" }, { name: "Peluches" }] }
 ];
 
-const BACKEND_ADDRESS = "http://192.168.86.114:3000";                                           //Adresse à modifier
+const BACKEND_ADDRESS = "http://192.168.1.81:3000"                                         //Adresse à modifier
 
-const Categories = ({ categorie, setCategorie, sousCategorie, setSousCategorie}) => {
+/* const Categories = ({ categorie, setCategorie, sousCategorie, setSousCategorie }) => {
+
+  return (
+     <View style={styles.pickerContainer}>
+       <Text>Catégories</Text>
+       <Picker
+         selectedValue={categorie}
+         onValueChange={(itemValue) => setCategorie(itemValue)}
+         style={styles.picker}
+       >
+         <Picker.Item label="Sélectionner une catégorie" value="" />
+         {categories.map((category) => (
+           <Picker.Item key={category.name} label={category.name} value={category.name} />
+         ))}
+       </Picker>
+ 
+       <Text>Sous-catégories</Text>
+       <Picker
+         selectedValue={sousCategorie}
+         onValueChange={(itemValue) => setSousCategorie(itemValue)}
+         style={styles.picker}
+       >
+         <Picker.Item label="Sélectionner une sous-catégorie" value="" />
+         {categories.find(cat => cat.name === categorie)?.subcategories.map((subcategory) => (
+           <Picker.Item key={subcategory.name} label={subcategory.name} value={subcategory.name} />
+         ))}
+       </Picker>*/
+
+const Categories = ({ categorie, setCategorie, sousCategorie, setSousCategorie }) => {
   const [openCategorie, setOpenCategorie] = useState(false);
-	const [openSousCategorie, setOpenSousCategorie] = useState(false);
-	
-	 const categoriesItems = categories.map(cat => ({
+  const [openSousCategorie, setOpenSousCategorie] = useState(false);
+
+  const categoriesItems = categories.map(cat => ({
     label: cat.name,
     value: cat.name
   }));
-  
+
   const sousCategories = categories
     .find(cat => cat.name === categorie)
     ?.subcategories.map(subcat => ({
       label: subcat.name,
       value: subcat.name
     })) || [];
-   //  fonction pour fermer la sousCategorie, si la categorie est ouverte
+  //  fonction pour fermer la sousCategorie, si la categorie est ouverte
   const handleOpenCategorie = (open) => {
     if (open) {
       setOpenSousCategorie(false);
     }
     setOpenCategorie(open);
   };
-  
+
   const handleOpenSousCategorie = (open) => {
     if (open) {
       setOpenCategorie(false);
     }
     setOpenSousCategorie(open);
   };
-  
-  
+
+
   return (
     <View style={styles.container}>
       <View style={[styles.pickerContainer, { zIndex: 2000 }]}>
@@ -63,7 +91,7 @@ const Categories = ({ categorie, setCategorie, sousCategorie, setSousCategorie})
           maxHeight={200}  // Hauteur maximale de la liste déroulante
         />
       </View>
-	   <View style={[styles.pickerContainer, { zIndex: 1000 }]}>
+      <View style={[styles.pickerContainer, { zIndex: 1000 }]}>
         <Text style={styles.h4}>Sous-catégories</Text>
         <DropDownPicker
           open={openSousCategorie}
@@ -87,7 +115,7 @@ const Categories = ({ categorie, setCategorie, sousCategorie, setSousCategorie})
 };
 
 const styles = StyleSheet.create({
-	 container: {
+  container: {
     padding: 10,
   },
   pickerContainer: {
@@ -98,7 +126,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     height: 40,
   },
-   dropDownContainer: {
+  dropDownContainer: {
     borderWidth: 1,
   },
   h4: {

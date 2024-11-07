@@ -8,8 +8,11 @@ import GlobalStyles from '../elements/styles/GlobalStyles';
 import { SearchIcon } from '../elements/assets/Icons';
 import React from 'react';
 import ImageHolder from '../elements/components/navigation/ImageHolder';
-import ItemCard from '../elements/components/cards/ItemCard';
-const BACKEND_ADDRESS = "http://192.168.86.114:3000"
+import HeaderMenu from '../elements/components/navigation/HeaderMenu';
+
+import SearchBar from '../elements/components/navigation/SearchBar';
+
+const BACKEND_ADDRESS = "http://192.168.1.81:3000"
 
 export default function RechercheRecevoir({ navigation }) {
   const [chercher, setChercher] = useState('');

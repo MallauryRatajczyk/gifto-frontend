@@ -18,15 +18,15 @@ export default function ItemTroquerPage() {
   //const itemId = '672103286cc2745bc18a24d7'; // Hardcoded item ID for testing
   const [popupVisible, setPopupVisible] = useState(false);
   const [showTroquerCard, setShowTroquerCard] = useState(false);
-  const [itemData, setItemData] = useState(null); 
+  const [itemData, setItemData] = useState(null);
   const [loading, setLoading] = useState(true);
   console.log(itemId);
   // Fetch item details when component mounts
   useEffect(() => {
-    
+
     if (!itemId) return; // Exit if itemId is undefined
     setLoading(true);
-    
+
     const fetchItemData = async () => {
       fetch(`${BACKEND_ADDRESS}/item/${itemId}`)
         .then(response => response.json())
@@ -41,7 +41,7 @@ export default function ItemTroquerPage() {
     fetchItemData();
     setLoading(false);
   }, [itemId]);
-console.log(itemData);
+  console.log(itemData);
   const handleProfilePress = () => {
     navigation.navigate('Profile');
   };
@@ -73,7 +73,7 @@ console.log(itemData);
           textColor={Colors.whiteColor}
           iconColor={Colors.purpleColor}
           onProfilePress={handleProfilePress}
-          profileBackgroundColor={Colors.whiteColor} 
+          profileBackgroundColor={Colors.whiteColor}
           iconColorProfile={Colors.purpleColor}
         />
       )}

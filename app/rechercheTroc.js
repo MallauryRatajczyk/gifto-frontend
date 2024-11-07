@@ -9,6 +9,7 @@ import React from 'react';
 import ImageHolder from '../elements/components/navigation/ImageHolder';
 import { TroquerIcon } from '../elements/assets/Icons';
 import ItemCard from '../elements/components/cards/ItemCard';
+
 import SearchBar from '../elements/components/navigation/SearchBar';
 import { StyleSheet } from 'react-native';
 
@@ -57,7 +58,13 @@ export default function RechercheTroc({ navigation }) {
                     <View icon={TroquerIcon}>
                         <Text style={[styles.coloredHeader, styles.headerTextWhite]}>Troquer</Text>
                     </View>
-                    <SearchBar placeholder="Rechercher" trocValue={true} onSearch={handleSearchResults} />
+
+                    <SearchBar
+                        placeholder="Rechercher"
+                        trocValue={true}
+                        onSearch={handleSearchResults}
+                    />
+
                     <View style={styles.resultsContainer}>
                         {!montreResult && resultats.length !== 0 ? (<Text>Aucun résultat trouvé.</Text>
                         ) : montreResult && resultats.length > 0 ? (
@@ -87,15 +94,17 @@ export default function RechercheTroc({ navigation }) {
                                         (item) => item._id.toString()}
                                     horizontal
                                     style={GlobalStyles.RecommendationContainer}
-                                    renderItem={
-                                        ({ item }) => (
-                                            <View style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: Colors.shadow }}>
-                                                <ImageHolder onPress={() => handlePressItem(item._id)} />
-
-                                            </View>)}
+                                    renderItem={({ item }) => (
+                                        <View style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: Colors.shadow }}>
+                                            <ImageHolder onPress={handlePressItem} />
+                                            <ImageHolder onPress={() => handlePressItem(item._id)} />
+                                        </View >
+                                    )
+                                    }
                                 />
-                            </>)}
-                    </View>
+                            </>
+                        )}
+                    </View >
                     <View style={GlobalStyles.screenHomeContainer}>
                         <View>
                             <Text style={styles.titleTextBlack}>Ajouter un item</Text>
@@ -105,9 +114,10 @@ export default function RechercheTroc({ navigation }) {
                             </View>
                         </View>
                     </View>
-                </View>
-            </SafeAreaView>
-        </SafeAreaProvider>);
+                </View >
+            </SafeAreaView >
+        </SafeAreaProvider >
+    );
 };
 
 const styles = StyleSheet.create({

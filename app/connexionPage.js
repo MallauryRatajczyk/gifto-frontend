@@ -1,20 +1,20 @@
 //WE DON'T NEED THIS FILE ANYMORE
 
 import { Text, View, Image, StyleSheet, TouchableOpacity, TextInput } from "react-native";
-//import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-//import { useState } from 'react';
-//import { useDispatch } from 'react-redux';
-//import { toConnectUser } from '../../reducers/user'
+import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { toConnectUser } from '../reducers/user.js'
 
-//import { GiftoSymbol } from '../../elements/assets/Icons';
-//import Colors from '../../elements/styles/Colors';
-//import GlobalStyles from '../../elements/styles/GlobalStyles';
+/*import { GiftoSymbol } from '../../elements/assets/Icons';
+import Colors from '../../elements/styles/Colors';
+import GlobalStyles from '../../elements/styles/GlobalStyles';*/
 
-const BACKEND_ADDRESS = "http://192.168.86.114:3000"
+const BACKEND_ADDRESS = "http://192.168.1.81:3000"
 
 export default function Connection({ navigation }) {
     // Initialize the dispatch function for Redux actions
-    const dispatch = useDispatch(); 
+    const dispatch = useDispatch();
 
     // Define state variables for email, password, and error messages
     const [email, setEmail] = useState('')
@@ -97,8 +97,8 @@ export default function Connection({ navigation }) {
                     </TouchableOpacity>
 
                     {/* Back Button */}
-                    <TouchableOpacity style={styles.retourButton} 
-                    onPress={() => navigation.navigate('Authentification')} >
+                    <TouchableOpacity style={styles.retourButton}
+                        onPress={() => navigation.navigate('Authentification')} >
                         <Text style={styles.retourButtonText}>Retour</Text>
                     </TouchableOpacity>
                 </View>

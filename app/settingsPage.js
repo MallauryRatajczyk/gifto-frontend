@@ -9,11 +9,6 @@ import Colors from '../elements/styles/Colors';
 import HeaderMenu from '../elements/components/navigation/HeaderMenu';
 import ItemCard from '../elements/components/cards/ItemCard';
 
-
-
-
-
-
 //REMARQUE : NOUS DEVONS METTRE À JOUR LES LIENS DU BOUTON CERCLE !!!!!!!
 //Changer la direction du point de terminaison du bouton Historique
 
@@ -24,47 +19,47 @@ export default function SettingsPage() {
   return (
     <View style={GlobalStyles.screenMainContainer}>
 
-    {/* AMIR IS TESTING HERE */}
+      {/* AMIR IS TESTING HERE */}
       <HeaderMenu />
 
 
- 
-    {/* TESTING FINISHED */}
+
+      {/* TESTING FINISHED */}
 
 
       <View style={GlobalStyles.screenHomeContainer}>
 
         <MainButton
-            title="Historique"
-            onPress={() => navigation.navigate('Connection')}
-            normalBackgroundColor={Colors.textColor}
-            clickedBackgroundColor={Colors.purpleColor}    // Clicked state background color
-          />
+          title="Historique"
+          onPress={() => navigation.navigate('Connection')}
+          normalBackgroundColor={Colors.textColor}
+          clickedBackgroundColor={Colors.purpleColor}    // Clicked state background color
+        />
 
         <SecondaryButton
-            title="Se déconnecter"
-            onPress={() => navigation.navigate('Authentification')}
-            normalBackgroundColor={Colors.backgroundColor}
-            clickedBackgroundColor={Colors.textColor}    // Clicked state background color
-            normalStrokeColor={Colors.textColor}
-            clickedStrokeColor={Colors.textColor}        // Clicked state stroke color
-            normalTextColorStyle={GlobalStyles.buttonTextBlack}
-            clickedTextColorStyle={GlobalStyles.buttonTextWhite}  // Clicked state text color
-          />
+          title="Se déconnecter"
+          onPress={() => navigation.navigate('Authentification')}
+          normalBackgroundColor={Colors.backgroundColor}
+          clickedBackgroundColor={Colors.textColor}    // Clicked state background color
+          normalStrokeColor={Colors.textColor}
+          clickedStrokeColor={Colors.textColor}        // Clicked state stroke color
+          normalTextColorStyle={GlobalStyles.buttonTextBlack}
+          clickedTextColorStyle={GlobalStyles.buttonTextWhite}  // Clicked state text color
+        />
 
         <View style={GlobalStyles.LoginIconsContainer}>
 
           {/* Button to Rate our application on the App Store */}
           <View style={GlobalStyles.CircleButtonTextContainer}>
             <CircleButton
-                icon={StarIcon}
-                onPress={() => {promptAsync();}}
-                normalBackgroundColor={Colors.backgroundColor}
-                clickedBackgroundColor={Colors.purpleColor}
-                normalStrokeColor={Colors.shadow}
-                clickedStrokeColor={Colors.purpleColor}
-                normalIconColor={Colors.purpleColor}
-                clickedIconColor={Colors.whiteColor}
+              icon={StarIcon}
+              onPress={() => { promptAsync(); }}
+              normalBackgroundColor={Colors.backgroundColor}
+              clickedBackgroundColor={Colors.purpleColor}
+              normalStrokeColor={Colors.shadow}
+              clickedStrokeColor={Colors.purpleColor}
+              normalIconColor={Colors.purpleColor}
+              clickedIconColor={Colors.whiteColor}
             />
             <Text style={GlobalStyles.bodyTextComments}>Évaluez-nous</Text>
           </View>
@@ -73,7 +68,7 @@ export default function SettingsPage() {
           <View style={GlobalStyles.CircleButtonTextContainer}>
             <CircleButton
               icon={ShareIcon}
-              onPress={() => {promptAsync();}}
+              onPress={() => { promptAsync(); }}
               normalBackgroundColor={Colors.backgroundColor}
               clickedBackgroundColor={Colors.purpleColor}
               normalStrokeColor={Colors.shadow}
@@ -81,27 +76,27 @@ export default function SettingsPage() {
               normalIconColor={Colors.purpleColor}
               clickedIconColor={Colors.whiteColor}
             />
-          <Text style={GlobalStyles.bodyTextComments}>Partagez notre application</Text>
+            <Text style={GlobalStyles.bodyTextComments}>Partagez notre application</Text>
           </View>
 
           {/* Button to stop notifications (connected to the settings page) */}
           <View style={GlobalStyles.CircleButtonTextContainer}>
 
             <CircleButton
-                icon={MuteIcon}
-                onPress={() => {promptAsync();}}
-                normalBackgroundColor={Colors.backgroundColor}
-                clickedBackgroundColor={Colors.purpleColor}
-                normalStrokeColor={Colors.shadow}
-                clickedStrokeColor={Colors.purpleColor}
-                normalIconColor={Colors.purpleColor}
-                clickedIconColor={Colors.whiteColor}
+              icon={MuteIcon}
+              onPress={() => { promptAsync(); }}
+              normalBackgroundColor={Colors.backgroundColor}
+              clickedBackgroundColor={Colors.purpleColor}
+              normalStrokeColor={Colors.shadow}
+              clickedStrokeColor={Colors.purpleColor}
+              normalIconColor={Colors.purpleColor}
+              clickedIconColor={Colors.whiteColor}
             />
             <Text style={GlobalStyles.bodyTextComments}>Enlever notif</Text>
 
           </View>
 
-          </View>
+        </View>
 
       </View>
 
