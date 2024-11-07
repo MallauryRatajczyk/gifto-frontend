@@ -4,10 +4,9 @@ import GlobalStyles from '../elements/styles/GlobalStyles';
 import MainButton from '../elements/components/buttons/MainButton';
 import SecondaryButton from '../elements/components/buttons/SecondaryButton';
 import CircleButton from '../elements/components/buttons/CircleButton';
-import { ShareIcon, MuteIcon, StarIcon } from '../elements/assets/Icons';
+import { ShareIcon, MuteIcon, StarIcon, SettingsIcon } from '../elements/assets/Icons';
 import Colors from '../elements/styles/Colors';
 import HeaderMenu from '../elements/components/navigation/HeaderMenu';
-import ItemCard from '../elements/components/cards/ItemCard';
 
 //REMARQUE : NOUS DEVONS METTRE À JOUR LES LIENS DU BOUTON CERCLE !!!!!!!
 //Changer la direction du point de terminaison du bouton Historique
@@ -19,13 +18,15 @@ export default function SettingsPage() {
   return (
     <View style={GlobalStyles.screenMainContainer}>
 
-      {/* AMIR IS TESTING HERE */}
-      <HeaderMenu />
-
-
-
-      {/* TESTING FINISHED */}
-
+      <HeaderMenu 
+        title="Paramètres"
+        icon={SettingsIcon}
+        backgroundColor={Colors.textColor}
+        textColor={Colors.whiteColor}
+        iconColor={Colors.whiteColor}
+        backButtonColor={Colors.textColor}
+        showBackButton={false}
+      />
 
       <View style={GlobalStyles.screenHomeContainer}>
 

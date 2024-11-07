@@ -171,18 +171,16 @@ export default StyleSheet.create({
         height: 70,
     },
 
-    whiteSearchContainer: {
-        backgroundColor: Colors.whiteColor,
-        borderRadius: 40,
-        //spaces
-        paddingHorizontal: 36,
-        paddingVertical: 24,
-        marginBottom: 24,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-
-    },
+whiteSearchContainer: {
+    backgroundColor: Colors.whiteColor,
+    borderRadius: 40,
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    zIndex: 2,
+},
 
     SelectArticleContainer: {
         backgroundColor: Colors.whiteColor,
@@ -230,16 +228,15 @@ export default StyleSheet.create({
         paddingVertical: 20,
     },
 
-    ImageHolderContainer: {
-        backgroundColor: Colors.whiteColor,
-        borderRadius: 16,
-        marginLeft: 36,
-        width: 300,
-        height: 300,
-
-        //positions for icon
-        alignItems: 'center',
-        justifyContent: 'center',
+ImageHolderContainer: {
+    backgroundColor: Colors.whiteColor,
+    borderRadius: 16,
+    width: 280,
+    height: 160,
+    
+    //positions for icon
+    alignItems: 'center',
+    justifyContent: 'center',
 
         // iOS Shadow
         shadowColor: Colors.shadow,
@@ -556,12 +553,18 @@ export default StyleSheet.create({
 
     },
 
-    profileHeaderContainer: {
-        alignItems: 'left',
-        flexDirection: 'row',
-        justifyContent: 'left',
-        paddingHorizontal: 24,
-    },
+profileHeaderContainer: {
+    alignItems: 'left',
+    flexDirection: 'row',
+    justifyContent: 'left',
+    paddingHorizontal: 24,
+},
+
+MenuHeaderContainer: {
+    flexDirection: 'row',
+    paddingHorizontal: 24,
+    marginTop: 12,
+},
 
 
     //_________________HEADERS WITH BACKGROUND COLOR & ICONS_________________
@@ -676,6 +679,14 @@ export default StyleSheet.create({
     subtitleTextRed: {
         ...Typography.h3,
         color: Colors.redColor,
+        paddingVertical: 6,
+
+    },
+
+    //H3 purple color
+    subtitleTextPurple: {
+        ...Typography.h3,
+        color: Colors.purpleColor,
         paddingVertical: 6,
 
     },
@@ -956,12 +967,19 @@ export default StyleSheet.create({
         justifyContent: 'center',
     },
 
-    backContainer: {
-        position: 'absolute',
-        bottom: 24,
-        right: 36,
-        zIndex: 1,
-    },
+backContainer: {
+    position: 'absolute',
+    bottom: 24,
+    right: 36, 
+    zIndex: 1,
+},
+
+
+SearchBarText: {
+    ...Typography.h3,
+    color: Colors.textColor,
+    lineHeight: 28,
+},
 
 
 
