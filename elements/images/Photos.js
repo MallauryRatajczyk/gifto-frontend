@@ -29,6 +29,7 @@ export default function Photos({ navigation, isCameraVisible, onClose, onImageAd
 		const photo = await cameraRef.takePictureAsync({ quality: 0.3 });
 		const formData = new FormData();
 		const uri = photo?.uri;
+		console.log("uri", uri);
 		formData.append("photoFromFront", {
 			uri: uri,
 			name: "photo.jpg",
