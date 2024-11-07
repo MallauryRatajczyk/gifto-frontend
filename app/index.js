@@ -60,6 +60,7 @@ function MainTabNavigator({ activeRoute }) {
       <Tab.Screen name="Home" component={HomePage} />
       <Tab.Screen name="Notification" component={NotificationPage} />
       <Tab.Screen name="Settings" component={SettingsPage} />
+      <Tab.Screen name="AjoutDon" component={AjoutDon} options={{ tabBarButton: () => null }} />
       <Tab.Screen name="RechercheTroc" component={RechercheTroc} options={{ tabBarButton: () => null }} />
       <Tab.Screen name="RechercheRecevoir" component={RechercheRecevoir} options={{ tabBarButton: () => null }} />
       <Tab.Screen name="AjoutTroc" component={AjoutTroc} options={{ tabBarButton: () => null }} />
@@ -105,6 +106,7 @@ export default function App() {
               screenOptions={{ headerShown: false }}
               initialRouteName="TabNavigator"
             >
+              <Stack.Screen name="Authentification" component={Authentification} />
               <Stack.Screen name="TabNavigator">
                 {(props) => <MainTabNavigator {...props} activeRoute={activeRoute} />}
               </Stack.Screen>

@@ -36,6 +36,8 @@ export default function AjoutDon({ navigation }) {
     dispatch(addImage(imageUri));
   };
 
+  console.log("selectedImages", selectedImages);
+
   // Supprimer une image
   const handleRemoveImage = (imageUri) => {
     setSelectedImages(selectedImages.filter(uri => uri !== imageUri));
@@ -48,13 +50,29 @@ const closeCamera = () => {
 }
 
 // Vérifier la validation du formulaire
+const validateForm = () => {
+    if (selectedImages.length === 0) { setErrorMessage("Une photo est requise.");
+        return false;
+      }
+    if (!nomArticle.trim()) {setErrorMessage("Le nom de l'article est requis.");
+      return false;
+    }
+    if (!description.trim()) {setErrorMessage("La description est requise.");
+      return false;
+    }
+    if (!categorie.trim()) {setErrorMessage("La catégorie est requise.");
+      return false;
+    }
+    if (!sousCategorie.trim()) {setErrorMessage("La sous-catégorie est requise.");
+      return false;
+    }
+    setErrorMessage('');  // Aucune erreur si tout est bien rempli
+    return true;
+  };
 
 //Soumettre le formulaire
 const handleSubmit = () => {
-    if (!nomArticle || !description || selectedImages.length === 0) {
-        setErrorMessage("Veuillez remplir tous les champs requis");
-    } 
-    else { 
+    if (validateForm()) {
         console.log('Formulaire validé, tous les champs sont bien remplis.');
             setPopupVisible(true); 
 
@@ -65,7 +83,6 @@ const handleSubmit = () => {
     })  .then((response) => response.json())    
         .then((data) => {
         if (data.result) {
-
             dispatch(addDonation(data.itemPop))
             setPopupVisible(false); 
         } else {
@@ -77,7 +94,8 @@ const handleSubmit = () => {
         console.error('Erreur dans la requête:', error);
         setPopupVisible(false); 
     }); 
-   
+} else {
+    setErrorMessage("Veuillez remplir tous les champs requis");
 }
 };
 
@@ -101,7 +119,7 @@ const closePopup = () => {
                 backgroundColor={Colors.redColor}
                 textColor={Colors.whiteColor}
                 showBackButton={true}
-                backButtonColor={Colors.redColor} // Customize back button color
+                backButtonColor={Colors.whiteColor} // Customize back button color
             />
               
             {/* Bouton d'affichage de la camera */}
@@ -151,17 +169,15 @@ const closePopup = () => {
                     />
 
                      {/* Completion Popup */}
-                     {popupVisible && (
-          <CompletionCard
-            visible={popupVisible}
-            onClose={closePopup}
-            iconColor={Colors.redColor}
-            title="Opération Validée."
-            navigation={navigation}
-            navigateTo="Home"
-            duration={2000}
-          />
-        )}
+                     <CompletionCard
+                        visible={popupVisible}
+                        onClose={closePopup}
+                        iconColor={Colors.redColor} // Customize icon color
+                        title="Opération Validée." // Customize title
+                        navigation={navigation}
+                        navigateTo="Home" 
+                        duration={2000} 
+                    />
     
                     
                 </View>
@@ -260,8 +276,9 @@ const styles = StyleSheet.create({
     textAreas: {
     borderWidth: 2,
     borderColor: 'grey',
-    borderRadius: 15,
+    borderradius: 15,
     padding: 10,
     width: '100%',
     },
 });
+
