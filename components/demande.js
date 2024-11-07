@@ -8,7 +8,7 @@ export default function CarteItem(props) {
     const navigation = useNavigation();
     const [itemName, setItemName] = useState("Exemple d'item");
     const [itemImage, setItemImage] = useState(null);
-    const [idDemande, setIdDemande] = useState(null);
+    const [idDemande, setIdDemande] = useState([]);
     const [itemDesc, setItemDesc] = useState("Description de l'exemple d'item.");
     const [interlocuteur, setInterlocuteur] = useState([]);
     const [demande, setDemande] = useState([]);
@@ -39,13 +39,12 @@ export default function CarteItem(props) {
                 if (!fetchedDemande.ok) throw new Error('Failed to fetch demandes');
                 const responseDemande = await fetchedDemande.json();
                 console.log("responseDemande", responseDemande)
-                if (responseDemande.demande) {
-                    console.log("responseDemande", responseDemande._id)
-                    setIdDemande(responseDemande.demande._id);
+                console.log("responseDemande", responseDemande.demandes)
+                if (responseDemande.demandes) {
+                    for (let elem of responseDemande.demandes)
+                        setIdDemande([...idDemande, elem._id]);
                 }
-
                 setDemande(responseDemande.demandes);
-
                 // Si une demande a le statut "accepted", on met à jour l'état de validation
                 if (responseDemande.demandes.find(x => x.statut === "accepted")) {
                     setIsValidate(true);
@@ -94,9 +93,9 @@ export default function CarteItem(props) {
         setModalVisible(false);
     };
 
-    const validate = () => {
+    const validate = (i) => {
         const data = { statut: 'accepted', token: user.token };
-        fetch(`http://192.168.1.81:3000/demande/read/${idDemande}`, {
+        fetch(`http://192.168.1.81:3000/demande/read/${idDemande[i]}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
@@ -105,9 +104,9 @@ export default function CarteItem(props) {
         setIsValidate(true);
     };
 
-    const refused = () => {
+    const refused = (i) => {
         const data = { statut: 'declined', token: user.token };
-        fetch(`http://192.168.1.81:3000/demande/read/${idDemande}`, {
+        fetch(`http://192.168.1.81:3000/demande/read/${idDemande[i]}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
@@ -154,10 +153,10 @@ export default function CarteItem(props) {
                     <TouchableOpacity style={styles.button}>
                         <Text style={styles.buttonText}>Voir le profil</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={refused} style={[styles.button, { backgroundColor: "#F08784" }]}>
+                    <TouchableOpacity onPress={() => refused(i)} style={[styles.button, { backgroundColor: "#F08784" }]}>
                         <Text style={styles.buttonText}>Refuser</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={validate} style={[styles.button, { backgroundColor: "#00BA88" }]}>
+                    <TouchableOpacity onPress={() => validate(i)} style={[styles.button, { backgroundColor: "#00BA88" }]}>
                         <Text style={styles.buttonText}>Valider</Text>
                     </TouchableOpacity>
                 </View>
