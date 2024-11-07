@@ -140,7 +140,7 @@ export default function RechercheTroc({ navigation }) {
                             <View>
                                 <MainButton
                                     title="Créer !"
-                                    onPress={() => navigation.navigate('CreationTroc')}
+                                    onPress={() => navigation.navigate('AjoutTroc')}
                                     normalBackgroundColor={Colors.purpleColor}
                                     clickedBackgroundColor={Colors.textColor}
                                 />

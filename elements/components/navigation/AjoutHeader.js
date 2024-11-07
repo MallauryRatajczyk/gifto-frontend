@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Colors from '../../styles/Colors';
 import GlobalStyles from '../../styles/GlobalStyles';
@@ -12,51 +12,43 @@ export default function AjoutHeader({
     textColor = Colors.whiteColor,
     iconColor = Colors.whiteColor,
     showBackButton = false,
-    backButtonColor, // New prop to customize back button color
-    backButtonSize = 24, // New prop to customize back button size
-    onBackPress, // Optional: Custom back press handler
+    backButtonColor,
+    backButtonSize = 24,
+    onBackPress,
 }) {
     const navigation = useNavigation();
 
     return (
-        <View style={[styles.headerContainer, { backgroundColor }]}>
-            {showBackButton && (
-                <BackButton
-                    iconColor={backButtonColor || iconColor}
-                    iconSize={backButtonSize}
-                    onPress={onBackPress || navigation.goBack}
-                    style={styles.backButton}
-                />
-            )}
+        <View style={[GlobalStyles.coloredHeader, { 
+            backgroundColor,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            paddingHorizontal: 15,
+            paddingVertical: 30,
+            marginBottom: 24,
+        }]}>
+            <Text style={[GlobalStyles.headerTextWhite, { color: textColor, marginTop: 12 }]}>
+                {title}
+            </Text>
 
             {Icon && (
                 <Icon
                     width={40}
                     height={40}
                     color={iconColor}
-                    style={styles.iconStyle}
+                    style={{ marginRight: 10 }}
                 />
             )}
 
-            <Text style={[GlobalStyles.headerTextWhite, { color: textColor }]}>
-                {title}
-            </Text>
+            {showBackButton && (
+                <BackButton
+                    iconColor={backButtonColor || iconColor}
+                    iconSize={backButtonSize}
+                    onPress={onBackPress || navigation.goBack}
+                    style={{ marginRight: 10 }}
+                />
+            )}
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    headerContainer: {
-        ...GlobalStyles.coloredHeader,
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingHorizontal: 15,
-        paddingVertical: 10,
-    },
-    backButton: {
-        marginRight: 10,
-    },
-    iconStyle: {
-        marginRight: 10,
-    },
-});

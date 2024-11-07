@@ -68,6 +68,55 @@ export default StyleSheet.create({
         shadowColor: Platform.OS === 'android' ? Colors.shadowAndroid : Colors.shadow,
     },
 
+    pickerContainer: {
+        marginBottom: 40,       
+    },
+
+    pickerMenu: {
+        backgroundColor: Colors.whiteColor,
+        borderColor: Colors.whiteColor,
+        borderRadius: 16,
+        height: 80,
+        ...Typography.h3,
+        color: Colors.textColor,
+        paddingVertical: 6,
+
+        // iOS Shadow
+        shadowColor: Colors.shadow,
+        shadowOpacity: 100,
+        shadowRadius: 80,
+
+        // Android Shadow
+        shadowColor: Colors.shadow,
+        elevation: Platform.OS === 'android' ? 20 : 0,
+        shadowColor: Platform.OS === 'android' ? Colors.shadowAndroid : Colors.shadow,
+    
+    },
+
+    dropDownContainer: {
+        backgroundColor: Colors.whiteColor,
+        borderColor: Colors.whiteColor,
+        ...Typography.h3,
+        color: Colors.textColor,
+        position: 'relative',
+        zIndex: 100,
+        marginTop: -80,
+        marginBottom: 70,
+        padding: 12,
+
+
+        // iOS Shadow
+        shadowColor: Colors.shadow,
+        shadowOpacity: 100,
+        shadowRadius: 80,
+
+        // Android Shadow
+        shadowColor: Colors.shadow,
+        elevation: Platform.OS === 'android' ? 20 : 0,
+        shadowColor: Platform.OS === 'android' ? Colors.shadowAndroid : Colors.shadow,
+    },
+
+
     //white card container with shadow (for information cards mainly for items)
     whiteCardContainer: {
         backgroundColor: Colors.whiteColor,

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
+import GlobalStyles from '../../styles/GlobalStyles';
+import Colors from '../../styles/Colors';
 
 const categories = [
   { name: "Électronique", subcategories: [{ name: "Téléphones" }, { name: "Ordinateurs" }, { name: "Tablettes" }, { name: "Accessoires" }] },
@@ -42,69 +44,54 @@ const Categories = ({ categorie, setCategorie, sousCategorie, setSousCategorie }
   };
 
   return (
-    <View style={styles.container}>
-      <View style={[styles.pickerContainer, { zIndex: 2000 }]}>
-        <Text style={styles.h4}>Catégories</Text>
-        <DropDownPicker
+    <View>
+      <View style={GlobalStyles.pickerContainer}>
+        <Text style={GlobalStyles.subtitleTextGrey}>Catégories</Text>
+
+        <DropDownPicker 
+          style={GlobalStyles.pickerMenu}
           open={openCategorie}
           value={categorie}
           items={categoriesItems}
           setOpen={handleOpenCategorie}
           setValue={setCategorie}
           placeholder="Sélectionner une catégorie"
-          style={styles.picker}
-          dropDownContainerStyle={styles.dropDownContainer}
+          placeholderStyle={[GlobalStyles.subtitleTextGrey, {marginBottom: -16, marginLeft: 8}]}
+          textStyle={[GlobalStyles.subtitleTextBlack, {marginBottom: -16, marginLeft: 8}]}
+          dropDownContainerStyle={[GlobalStyles.dropDownContainer, {marginBottom: 70}]}
           listMode="SCROLLVIEW"
           scrollViewProps={{
             nestedScrollEnabled: true
           }}
-          maxHeight={200}  // Hauteur maximale de la liste déroulante
+          maxHeight={200}
         />
       </View>
 
-      <View style={[styles.pickerContainer, { zIndex: 1000 }]}>
-        <Text style={styles.h4}>Sous-catégories</Text>
+      <View style={GlobalStyles.pickerContainer}>
+        <Text style={GlobalStyles.subtitleTextGrey}>Sous-catégories</Text>
+
         <DropDownPicker
+          style={GlobalStyles.pickerMenu}
           open={openSousCategorie}
           value={sousCategorie}
           items={sousCategories}
           setOpen={handleOpenSousCategorie}
           setValue={setSousCategorie}
           placeholder="Sélectionner une sous-catégorie"
-          style={styles.picker}
-          dropDownContainerStyle={styles.dropDownContainer}
+          placeholderStyle={[GlobalStyles.subtitleTextGrey, {marginBottom: -16, marginLeft: 12}]}
+          textStyle={[GlobalStyles.subtitleTextBlack, {marginBottom: -16, marginLeft: 8}]}
+          dropDownContainerStyle={[GlobalStyles.dropDownContainer, {marginBottom: 70}]}
           disabled={!categorie}
           listMode="SCROLLVIEW"
           scrollViewProps={{
             nestedScrollEnabled: true
           }}
-          maxHeight={200}  // Hauteur maximale de la liste déroulante
+          maxHeight={200}
+          placeholderTextColor={Colors.lightGreyColor}
         />
       </View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 10,
-  },
-  pickerContainer: {
-    marginBottom: 50,  // Augmenté pour laisser de l'espace pour la liste déroulante
-  },
-  picker: {
-    borderRadius: 15,
-    borderWidth: 1,
-    height: 40,
-  },
-  dropDownContainer: {
-    borderWidth: 1,
-  },
-  h4: {
-    marginBottom: 5,
-    fontFamily: 'BalooBhaijaan2_400Regular',
-    fontSize: 13,
-  }
-});
 
 export default Categories;

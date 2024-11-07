@@ -1,118 +1,224 @@
-import React, { useState } from 'react';
-import { View, ScrollView } from "react-native";
+import React, { useState, useEffect} from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-import GlobalStyles from '../elements/styles/GlobalStyles';
 import Colors from '../elements/styles/Colors';
-import { useDispatch } from 'react-redux'; 
-
-//components
-import AjoutHeader from '../elements/components/navigation/AjoutHeader';
-import AddImageCard from '../elements/components/cards/AddImageCard'; 
-import InputCard from '../elements/components/cards/InputCard';
+import GlobalStyles from '../elements/styles/GlobalStyles';
+import { addImage, removeImage } from '../reducers/imagesArticles';
+import { CameraIcon, ImageHolderIcon } from '../elements/assets/Icons';
+import _FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Categories from '../elements/components/navigation/Categories';
-import DescriptionCard from '../elements/components/cards/DescriptionCard';
-import MainButton from '../elements/components/buttons/MainButton'; // Validation button
+import Photos from '../elements/images/Photos';
 import CompletionCard from '../elements/components/cards/CompletionCard'; // Popup completion page
+import AjoutHeader from '../elements/components/navigation/AjoutHeader';
+import MainButton from '../elements/components/buttons/MainButton'; // Validation button
+import { addDonation } from '../reducers/donation';
+import DescriptionCard from '../elements/components/cards/DescriptionCard';
+import InputCard from '../elements/components/cards/InputCard';
 
-export default function AjoutTroc({ navigation }) {
-    const dispatch = useDispatch();
-    const [nomArticle, setNomArticle] = useState('');
-    const [categorie, setCategorie] = useState(''); // Ensure categorie is initialized
-    const [sousCategorie, setSousCategorie] = useState([]); // Ensure sousCategorie is initialized as an array for multi-select
-    const [description, setDescription] = useState('');
-    const [selectedImages, setSelectedImages] = useState([]);
-    const [popupVisible, setPopupVisible] = useState(false); // Popup page state
 
-    // Function to handle image addition from AddImageCard
-    const handleImagesChange = (images) => {
-        setSelectedImages(images);
-    };
+const BACKEND_ADDRESS = "http://192.168.1.81:3000";      // adresse à modifier
 
-    const handleSubmit = () => {
-        setPopupVisible(true); // Activate the popup
-    };
+export default function AjoutDon({ navigation }) {
 
-    const closePopup = () => {
-        setPopupVisible(false);
-        navigation.navigate("Home"); // Navigate to Home screen after popup
-    };
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.user.value); 
 
-    return (
-        <SafeAreaProvider style={GlobalStyles.appStyle}>
-            <SafeAreaView style={{ flex: 1 }}>
-                {/* Header */}
-                <AjoutHeader
-                    title="Ajout de troc"
-                    backgroundColor={Colors.redColor}                                   // to change
-                    textColor={Colors.whiteColor}
-                    showBackButton={true}
-                    backButtonColor={Colors.whiteColor} // Customize back button color
+
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [isCameraVisible, setIsCameraVisible] = useState(false);
+  const [nomArticle, setNomArticle] = useState('');
+  const [categorie, setCategorie] = useState('');
+  const [sousCategorie, setSousCategorie] = useState('');
+  const [description, setDescription] = useState('');
+  const [popupVisible, setPopupVisible] = useState(false); 
+  const [errorMessage, setErrorMessage] = useState('');
+  
+
+  // Ajouter une image
+  const handleImageAdd = (imageUri) => {
+    console.log("Image URI to add:", imageUri); // Log the image URI being added
+    setSelectedImages([...selectedImages, imageUri]);
+    console.log("Updated selectedImages:", [...selectedImages, imageUri]); // Log the updated state
+    dispatch(addImage(imageUri));
+  };
+
+  console.log("selectedImages", selectedImages);
+
+  // Supprimer une image
+  const handleRemoveImage = (imageUri) => {
+    setSelectedImages(selectedImages.filter(uri => uri !== imageUri));
+    dispatch(removeImage(imageUri));
+  };
+  
+  // Fermer la camera
+const closeCamera = () => {
+  setIsCameraVisible(false);
+}
+
+// Vérifier la validation du formulaire (amir modified it to make the photos not required)
+const validateForm = () => {
+    if (!nomArticle.trim()) {
+        setErrorMessage("Le nom de l'article est requis.");
+        return false;
+    }
+    if (!description.trim()) {
+        setErrorMessage("La description est requise.");
+        return false;
+    }
+    if (!categorie.trim()) {
+        setErrorMessage("La catégorie est requise.");
+        return false;
+    }
+    if (!sousCategorie.trim()) {
+        setErrorMessage("La sous-catégorie est requise.");
+        return false;
+    }
+    setErrorMessage('');  // Aucune erreur si tout est bien rempli
+    return true;
+};
+
+//Soumettre le formulaire
+const handleSubmit = () => {
+    console.log("selectedImages", selectedImages); // Log the selectedImages state on submit
+    if (validateForm()) {
+        console.log('Formulaire validé, tous les champs sont bien remplis.');
+            setPopupVisible(true); 
+
+        fetch(`${BACKEND_ADDRESS}/item`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({token: user.token, name: user.username, description: description, image: selectedImages, categorie: categorie, sousCategorie: sousCategorie, troc: false})     
+        })  .then((response) => response.json())    
+            .then((data) => {
+            if (data.result) {
+                dispatch(addDonation(data.itemPop))
+                setPopupVisible(false); 
+            } else {
+                console.error('Erreur de création de la demande:', data.error); //verification du fetch
+                setPopupVisible(false); 
+            }
+        })
+        .catch(error => {
+            console.error('Erreur dans la requête:', error);
+            setPopupVisible(false); 
+        }); 
+    } else {
+        setErrorMessage("Veuillez remplir tous les champs requis");
+    }
+};
+
+//fermer la popup et aller à la page d'accueil
+const closePopup = () => {
+    setPopupVisible(false);
+    navigation.navigate('Home'); 
+};
+
+
+  return (
+    <SafeAreaProvider style={GlobalStyles.appStyle}>
+      <SafeAreaView style={{ flex: 1 }}>
+        <KeyboardAvoidingView 
+          behavior={Platform.OS === "ios" ? "padding" : "height"} 
+          style={styles.container} keyboardVerticalOffset={80}>
+
+          <ScrollView style={styles.scrollContainer}>
+
+            {/* Header */}
+            <AjoutHeader
+                title="Ajout de troc"
+                backgroundColor={Colors.purpleColor}
+                textColor={Colors.whiteColor}
+                showBackButton={true}
+                backButtonColor={Colors.purpleColor} // Customize back button color
+              />
+              
+            {/* Contenu */}
+            <View style={styles.content}>
+            {/* Bouton d'affichage de la camera */}
+                <TouchableOpacity onPress={() => setIsCameraVisible(true)} style={GlobalStyles.whiteCardContainer}>
+                    <CameraIcon width={60} height={60} color={Colors.lightGreyColor} />
+                    <Text style={[GlobalStyles.subtitleTextLightGrey, { marginTop: 20 }]}>Prendre une photo</Text>
+                </TouchableOpacity>
+
+                <Photos
+                    navigation={navigation}
+                    onImageAdd={handleImageAdd}// Ajoute une image
+                    onClose={closeCamera} 
+                    isCameraVisible={isCameraVisible}// Ferme la camera
+                />
+            
+            {/* Affichage et suppression d'images */}
+            <View style={styles.imagesContainer}>
+                {selectedImages.map((uri, index) => (
+                <View key={index} style={styles.imageWrapper}>
+                <Image source={{ uri }} style={styles.imagePreview} />
+                <TouchableOpacity style={styles.removeIcon} onPress={() => handleRemoveImage(uri)}>
+                    <_FontAwesome name="trash" size={20} color="purple" />
+                </TouchableOpacity>
+                </View>
+                ))}
+            </View>
+          
+            {/* Form */}
+            <View style={styles.formContainer}>
+                {/* Nom de l'article */}
+                <InputCard
+                  title="Nom de l'article"
+                  value={nomArticle}
+                  onChangeText={setNomArticle}
+                  placeholder="Entrez le nom de l'article"
+                  autoCapitalize="sentences"
                 />
 
-                <ScrollView
-                    style={GlobalStyles.scrollViewContent}
-                    keyboardShouldPersistTaps="handled"
-                >
-                    <View style={GlobalStyles.screenHomeContainer}>
-                        {/* Add Image Card */}
-                        <AddImageCard
-                            onImagesChange={handleImagesChange}
-                            existingImages={selectedImages}
-                            containerStyle={{ marginBottom: 20 }}
-                            showTitle={true}
-                            title="Ajouter des images"
-                        />
+                {/* Utilisation du composant Categories */}
+                <Categories 
+                  categorie={categorie} 
+                  setCategorie={setCategorie} 
+                  sousCategorie={sousCategorie} 
+                  setSousCategorie={setSousCategorie}/>
 
-                        {/* Nom de l'article */}
-                        <InputCard
-                            title="Nom de l’article"
-                            onChangeText={setNomArticle}
-                            value={nomArticle}
-                            placeholder="Article de Gifto"
-                        />
+                {/* Description */}
+                <DescriptionCard
+                  title="Description de l'article"
+                  value={description}
+                  onChangeText={setDescription}
+                  placeholder="Écrivez votre description ici..."
+                />
 
-                        {/* Category Selection */}
-                        <Categories
-                            categorie={categorie}
-                            setCategorie={setCategorie}
-                            sousCategorie={sousCategorie}
-                            setSousCategorie={setSousCategorie}
-                        />
+              {/* Validation */}
+              <MainButton
+                  title="Valider!"
+                  onPress={handleSubmit}
+                  normalBackgroundColor={Colors.purpleColor}
+                  clickedBackgroundColor={Colors.textColor} 
+              />
 
-                        {/* Description */}
-                        <DescriptionCard
-                            value={description}
-                            onChangeText={setDescription}
-                            showTitle={true}
-                            placeholderTextColor={Colors.lightGreyColor}
-                            inputStyle={{ backgroundColor: Colors.whiteColor }}
-                        />
-
-                        {/* Validation Button */}
-                        <MainButton
-                            title="Valider!"
-                            onPress={handleSubmit}
-                            normalBackgroundColor={Colors.redColor}                        // to change
-                            clickedBackgroundColor={Colors.textColor} 
-                        />
-
-                        {/* Completion Popup */}
-                        <CompletionCard
-                            visible={popupVisible}
-                            onClose={closePopup}
-                            iconColor={Colors.redColor} // Customize icon color
-                            title="Opération Validée." // Customize title
-                            navigation={navigation}
-                            navigateTo="Home" 
-                            duration={2000} 
-                        />
-
-                        {/* Spacing */}
-                        <View style={{ marginVertical: 160 }} />
-                    </View>
-                </ScrollView>
-            </SafeAreaView>
-        </SafeAreaProvider>
-    );
+              {/* Completion Popup */}
+              <CompletionCard
+                  visible={popupVisible}
+                  onClose={closePopup}
+                  iconColor={Colors.purpleColor} // Customize icon color
+                  title="Opération Validée." // Customize title
+                  navigation={navigation}
+                  navigateTo="Home" 
+                  duration={2000} 
+              />
+      
+                    
+              </View>
+            </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
+        
+      </SafeAreaView>
+    </SafeAreaProvider>
+  );
 }
+const styles = StyleSheet.create({
+    container: { flex: 1 },
+    scrollContainer: { flex: 1 },
+    content: { padding: 20 },
+    formContainer: { gap: 15 },
+});
 
