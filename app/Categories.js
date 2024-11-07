@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
-import { View, Text, StyleSheet } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 const categories = [

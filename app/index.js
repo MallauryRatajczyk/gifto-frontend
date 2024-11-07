@@ -24,7 +24,7 @@ import HomePage from './homePage';
 import NotificationPage from './notificationPage';
 import SettingsPage from './settingsPage';
 import ProfilePage from './profilePage';
-// import CreationTroc from './ajoutTrocPage';
+import CreationTroc from './ajoutTrocPage';
 import RechercheTroc from './rechercheTroc';
 import RechercheRecevoir from './rechercheRecevoir';
 import HistoryPage from './historyPage';
@@ -135,7 +135,6 @@ export default function App() {
 
               {/* <Stack.Screen name="UploadImages" component={UploadImages} /> */}
               {/* <Stack.Screen name="Photos" component={Photos} /> */}
-              <Stack.Screen name="HistoryPage" component={HistoryPage} />
               {/* <Stack.Screen name="rechercheRecevoir" component={rechercheRecevoir} /> */}
             </Stack.Navigator>
           </NavigationContainer>
