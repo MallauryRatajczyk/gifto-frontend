@@ -1,69 +1,51 @@
 import { useState, useEffect } from 'react';
-import { ActivityIndicator, FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { FlatList, Text, View } from "react-native";
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import MainButton from '../elements/components/buttons/MainButton';
 import Typography from "../elements/styles/Typography";
 import Colors from '../elements/styles/Colors';
 import GlobalStyles from '../elements/styles/GlobalStyles';
-import { SearchIcon } from '../elements/assets/Icons';
 import React from 'react';
 import ImageHolder from '../elements/components/navigation/ImageHolder';
 import { TroquerIcon } from '../elements/assets/Icons';
 import ItemCard from '../elements/components/cards/ItemCard';
+
+import SearchBar from '../elements/components/navigation/SearchBar';
+import { StyleSheet } from 'react-native';
+
 const BACKEND_ADDRESS = "http://192.168.1.81:3000"
 
 export default function RechercheTroc({ navigation }) {
-    const [chercher, setChercher] = useState('');
     const [resultats, setResultats] = useState([]);
     const [itemRecommande, setItemRecommande] = useState([]);
     const [montreResult, setMontreResult] = useState(false);
-    const [loading, setLoading] = useState(false);
-
-    const textColor = Colors.textColor;
-    const iconColor = Colors.purpleColor;
 
     useEffect(() => {
-        async function itemRandom() {
-            const fetched = await fetch(`${BACKEND_ADDRESS}/item`);
-            const response = await fetched.json();
-            if (response) {
-                // Filtre les items où troc est true
-                const itemsTroc = response.item.filter(articl => articl.troc === true);
-                const tableauMelange = itemsTroc.sort((a, b) => Math.random() - 0.5);
-                if (tableauMelange.length == 1 || tableauMelange.length == 2) {
-                    setItemRecommande(tableauMelange);
-                } else if (tableauMelange.length >= 3) {
-                    setItemRecommande(tableauMelange.slice(0, 3));
-                }
-            }
+        function itemRandom() {
+            fetch(`${BACKEND_ADDRESS}/item`)
+                .then(response => response.json())
+                .then(response => {
+                    if (response) {
+                        const itemsTroc = response.item.filter(articl => articl.troc === true);
+                        const tableauMelange = itemsTroc.sort((a, b) => Math.random() - 0.5);
+                        if (tableauMelange.length == 1 || tableauMelange.length == 2) {
+                            setItemRecommande(tableauMelange);
+                        } else if (tableauMelange.length >= 3) {
+                            setItemRecommande(tableauMelange.slice(0, 3));
+                        }
+                    }
+                });
         }
-        itemRandom(); // Appelle la fonction pour charger les articles recommandés au démarrage
+        itemRandom();
     }, []);
 
-    const handleSearch = () => {
-        if (chercher.trim() === '') return;
-        setLoading(true);
-        fetch(`${BACKEND_ADDRESS}/item`)
-            .then(response => response.json())
-            .then(data => {
-                // Filtre les items où troc est true
-                const filtreTrocTrue = data.item.filter(item => item.troc === true);
-                const resultatsFiltres = filtreTrocTrue.filter(item =>
-                    item.name.toLowerCase().includes(chercher.toLowerCase())
-                );
-                setResultats(resultatsFiltres);
-                setMontreResult(true);
-                setLoading(false);
-                setChercher('');
-            })
-            .catch(error => {
-                console.error(error);
-                setMontreResult(true); // Afficher les résultats même en cas d'erreur
-                setResultats([]);
-                setLoading(false);
-                setChercher('');
-            });
-    }
+    const handleSearchResults = (results) => {
+        if (results.length === 0 && !montreResult) {
+            return;
+        }
+        setResultats(results);
+        setMontreResult(true);
+    };
 
     const handlePressItem = (itemId) => {
         navigation.navigate('ItemTroquerPage', { itemId: itemId });
@@ -76,31 +58,19 @@ export default function RechercheTroc({ navigation }) {
                     <View icon={TroquerIcon}>
                         <Text style={[styles.coloredHeader, styles.headerTextWhite]}>Troquer</Text>
                     </View>
-                    <View style={[GlobalStyles.whiteSearchContainer, { flexDirection: 'row', alignItems: 'center', padding: 10 }]}>
-                        <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
-                            <SearchIcon width={24} height={24} color={iconColor} style={{ marginRight: 10 }} />
-                        </TouchableOpacity>
-                        <TextInput
-                            onChangeText={(value) => setChercher(value)}
-                            value={chercher}
-                            style={{ flex: 1, color: textColor, fontSize: 16 }}
-                            placeholder="Rechercher"
-                            placeholderTextColor={Colors.shadow}
-                            onPress={handleSearch}
-                        />
-                    </View>
-                    {loading && <ActivityIndicator size="small" color={Colors.shadow} style={{ marginTop: 10 }} />}
-                    <View style={{
-                        paddingTop: 10,
-                        alignItems: "center",
-                        marginBottom: 25
-                    }}>
-                        {montreResult && resultats.length === 0 && (
+
+                    <SearchBar
+                        placeholder="Rechercher"
+                        trocValue={true}
+                        onSearch={handleSearchResults}
+                    />
+
+                    <View style={styles.resultsContainer}>
+                        {!montreResult && resultats.length !== 0 ? (
                             <Text>Aucun résultat trouvé.</Text>
-                        )}
-                        {montreResult && resultats.length > 0 ? (
+                        ) : montreResult && resultats.length > 0 ? (
                             <>
-                                <Text>Résultats de recherche :</Text>
+                                <Text style={styles.resultTitle}>Résultats de recherche :</Text>
                                 <FlatList
                                     data={resultats}
                                     keyExtractor={(item) => item._id.toString()}
@@ -114,7 +84,8 @@ export default function RechercheTroc({ navigation }) {
                                             onPress={() => handlePressItem(item._id)}
                                         />
                                     )}
-                                    style={{ marginTop: 10 }}
+                                    style={styles.searchResultsList}
+                                    contentContainerStyle={styles.searchResultsContent}
                                 />
                             </>
                         ) : (
@@ -130,12 +101,14 @@ export default function RechercheTroc({ navigation }) {
                                     renderItem={({ item }) => (
                                         <View style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: Colors.shadow }}>
                                             <ImageHolder onPress={handlePressItem} />
-                                        </View>
-                                    )}
+                                            <ImageHolder onPress={() => handlePressItem(item._id)} />
+                                        </View >
+                                    )
+                                    }
                                 />
                             </>
                         )}
-                    </View>
+                    </View >
                     <View style={GlobalStyles.screenHomeContainer}>
                         <View>
                             <Text style={styles.titleTextBlack}>Ajouter un item</Text>
@@ -145,20 +118,20 @@ export default function RechercheTroc({ navigation }) {
                                     title="Créer !"
                                     onPress={() => navigation.navigate('CreationTroc')}
                                     normalBackgroundColor={Colors.purpleColor}
-                                    clickedBackgroundColor={Colors.textColor}    // Clicked state background color
+                                    clickedBackgroundColor={Colors.textColor}
                                 />
                             </View>
                         </View>
                     </View>
-                </View>
-            </SafeAreaView>
-        </SafeAreaProvider>
+                </View >
+            </SafeAreaView >
+        </SafeAreaProvider >
     );
 };
 
-const styles = StyleSheet.create({ //peut être à modifier
+const styles = StyleSheet.create({
     coloredHeader: {
-        backgroundColor: Colors.purpleColor, // Default color
+        backgroundColor: Colors.purpleColor,
         borderBottomRightRadius: 60,
         paddingTop: 60,
         marginBottom: 36,
@@ -181,8 +154,25 @@ const styles = StyleSheet.create({ //peut être à modifier
         color: Colors.textColor,
         paddingVertical: 12,
     },
-    searchButton: {
-        marginLeft: 10,
+    resultsContainer: {
+        flex: 1,
+        paddingTop: 10,
+        alignItems: "center",
+        marginBottom: 25,
+    },
+    searchResultsList: {
+        flex: 1,
+        width: '100%',
+        marginTop: 10,
+    },
+    searchResultsContent: {
+        paddingHorizontal: 16,
+        paddingBottom: 20,
+    },
+    resultTitle: {
+        marginBottom: 10,
+        fontSize: 16,
+        fontWeight: '500',
     },
     item: {
         flexDirection: 'row',
@@ -194,4 +184,4 @@ const styles = StyleSheet.create({ //peut être à modifier
         borderRadius: 5,
         marginRight: 10,
     },
-});    
+});

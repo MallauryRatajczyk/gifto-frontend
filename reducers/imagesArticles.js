@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     value: {
-        images: [], // Initialize as an empty array to store multiple images
+        images: [],
     },
 };
 
@@ -11,11 +11,11 @@ export const imagesArticles = createSlice({
     initialState,
     reducers: {
         addImage: (state, action) => {
-            // Append the new image URL to the existing images array
+            // rajouter un image
             state.value.images.push(action.payload);
         },
         removeImage: (state, action) => {
-            // Remove the specified image URL from the images array
+            // supprimer une image
             state.value.images = state.value.images.filter(e => e !== action.payload);
         },
         clearImages: (state) => {

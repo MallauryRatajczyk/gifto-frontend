@@ -27,7 +27,20 @@ export default StyleSheet.create({
         display: 'flex',
         scroll: 'true',
 
+<<<<<<< HEAD
     },
+=======
+ImageHolderContainer: {
+    backgroundColor: Colors.whiteColor,
+    borderRadius: 16,
+    marginLeft: 12,
+    width: 300,
+    height: 240,
+    
+    //positions for icon
+    alignItems: 'center',
+    justifyContent: 'center',
+>>>>>>> 4f0864661a0b2f7dee9289845c49bcebcdb7b9ab
 
     screenHomeContainer: {
         paddingTop: 60,

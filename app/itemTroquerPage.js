@@ -113,6 +113,7 @@ export default function ItemTroquerPage() {
             onClose={closeTroquerCard}
             setPopupVisible={setPopupVisible}
             setShowTroquerCard={setShowTroquerCard}
+            itemToExchangeId={itemId}
           />
         )}
 
