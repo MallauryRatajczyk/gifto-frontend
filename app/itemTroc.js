@@ -26,13 +26,13 @@ export default function ItemTroc({ navigation }) {
             <SafeAreaView style={{ flex: 1 }}>
                 <View style={GlobalStyles.WelcomeContainer}>
                     <View style={[styles.coloredHeader, styles.headerTextWhite]} >
-                    <PictureProfile
-                        imageUrl={profileImageUrl}
-                        onPress={() => navigation.navigate('ProfilePage')}
-                    />
-                    {/* <Text style={GlobalStyles.titleTextBlack}>Bonjour {firstName}</Text>*/}
-                    <Text>Bonjour {username}</Text>
-                </View>
+                        <PictureProfile
+                            imageUrl={profileImageUrl}
+                            onPress={() => navigation.navigate('ProfilePage')}
+                        />
+                        {/* <Text style={GlobalStyles.titleTextBlack}>Bonjour {firstName}</Text>*/}
+                        <Text>Bonjour {username}</Text>
+                    </View>
                 </View>
                 <Text >item</Text>
             </SafeAreaView>

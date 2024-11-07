@@ -14,7 +14,7 @@ import {
 } from '@expo-google-fonts/baloo-bhaijaan-2';
 
 //Import elements
-import { store, persistor } from '../reducers/store'; 
+import { store, persistor } from '../reducers/store';
 import Colors from '../elements/styles/Colors';
 import GlobalStyles from '../elements/styles/GlobalStyles';
 import NavigationBar from '../elements/components/navigation/NavigationBar';
@@ -29,6 +29,15 @@ import ProfilePage from './profilePage';
 import RechercheTroc from './rechercheTroc';
 import RechercheRecevoir from './rechercheRecevoir';
 import HistoryPage from './historyPage';
+import Chat from './chat'
+import Demande from './demandePage'
+import ConnexionPage from './connexionPage'
+// Components
+// import AjoutDon from "./AjoutDonPage";
+// import UploadImages from '../elements/images/UploadImages';
+// // import Photos from '../elements/images/Photos';
+import ItemTroquerPage from './itemTroquerPage';
+import ItemRecevoirPage from './itemRecevoirPage';
 import AjoutTroc from './ajoutTrocPage';
 import AjoutDon from "./ajoutDonPage";
 import ItemTroquerPage from './itemTroquerPage';
@@ -36,7 +45,7 @@ import ItemTroquerPage from './itemTroquerPage';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-function MainTabNavigator({activeRoute}) {
+function MainTabNavigator({ activeRoute }) {
   return (
     <Tab.Navigator
       tabBar={(props) => <NavigationBar {...props} activeRoute={activeRoute} />}
@@ -45,7 +54,7 @@ function MainTabNavigator({activeRoute}) {
         tabBarInactiveTintColor: Colors.redColor,
         tabBarActiveTintColor: Colors.purpleColor,
         tabBarStyle: {
-          backgroundColor: Colors.background, 
+          backgroundColor: Colors.background,
         },
       }}
     >
@@ -99,7 +108,7 @@ export default function App() {
                 {(props) => <MainTabNavigator {...props} activeRoute={activeRoute} />}
               </Stack.Screen>
               <Stack.Screen name="ProfilePage" component={ProfilePage} />
-              <Stack.Screen name="Authentification" component={Authentification} />
+              <Stack.Screen name="Connection" component={ConnexionPage} />
               <Stack.Screen name="Inscription" component={Inscription} />
               <Stack.Screen name="AjoutDon" component={AjoutDon} />
               <Stack.Screen name="HistoryPage" component={HistoryPage} />

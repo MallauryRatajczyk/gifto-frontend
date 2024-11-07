@@ -9,10 +9,11 @@ import React from 'react';
 import ImageHolder from '../elements/components/navigation/ImageHolder';
 import { TroquerIcon } from '../elements/assets/Icons';
 import ItemCard from '../elements/components/cards/ItemCard';
+
 import SearchBar from '../elements/components/navigation/SearchBar';
 import { StyleSheet } from 'react-native';
 
-const BACKEND_ADDRESS = "http://192.168.1.3:3000"
+const BACKEND_ADDRESS = "http://192.168.1.81:3000"
 
 export default function RechercheTroc({ navigation }) {
     const [resultats, setResultats] = useState([]);
@@ -47,7 +48,7 @@ export default function RechercheTroc({ navigation }) {
     };
 
     const handlePressItem = (itemId) => {
-        navigation.navigate('ItemTroquerPage', { itemId: itemId});
+        navigation.navigate('ItemTroquerPage', { itemId: itemId });
     }
 
     return (

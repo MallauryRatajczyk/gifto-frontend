@@ -5,160 +5,171 @@ import Typography from './Typography';
 
 export default StyleSheet.create({
 
-//app general style
+    //app general style
     appStyle: {
         flex: 1,
         backgroundColor: Colors.background,
-        justifyContent: 'top', 
+        justifyContent: 'top',
         align: 'center',
-        
-
-},
-
-//_________________CONTAINERS_________________
 
 
-// Global container for all screens with consistent padding
-screenMainContainer: {
-    flex: 1,
-    backgroundColor: Colors.background,
-    
-    align: 'center',
-    display: 'flex',
-    scroll: 'true',
-    
-},
+    },
 
-screenHomeContainer: {
-    paddingTop: 60,  
-    paddingHorizontal: 36,  
-    justifyContent: 'top', //top alignment for all content
-    overflow: 'visible',
-    
-},
+    //_________________CONTAINERS_________________
 
-//white main container with shadow
-whiteContainer: {
-    backgroundColor: Colors.whiteColor,
-    borderRadius: 12,
-    
-    //spaces
-    padding: 24,
-    marginBottom: 24,
 
-    // iOS Shadow
-    shadowColor: Colors.shadow,
-    shadowOpacity: 100,
-    shadowRadius: 80,
-    
-    // Android Shadow
-    shadowColor: Colors.shadow,
-    elevation: Platform.OS === 'android' ? 20 : 0,
-    shadowColor: Platform.OS === 'android' ? Colors.shadowAndroid : Colors.shadow,
-},
+    // Global container for all screens with consistent padding
+    screenMainContainer: {
+        flex: 1,
+        backgroundColor: Colors.background,
 
-//white card container with shadow (for information cards mainly for items)
-whiteCardContainer: {
-    backgroundColor: Colors.whiteColor,
-    borderRadius: 16,
-    
-    
-    //spaces
-    paddingHorizontal: 36,
-    paddingVertical: 24,
-    marginBottom: 24,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    
-    // iOS Shadow
-    shadowColor: Colors.shadow,
-    shadowOpacity: 100,
-    shadowRadius: 80,
-        
-    // Android Shadow
-    shadowColor: Colors.shadow,
-    elevation: Platform.OS === 'android' ? 20 : 0,
-    shadowColor: Platform.OS === 'android' ? Colors.shadowAndroid : Colors.shadow,
-},
-//big card use
-CardTextContainer: {
-    width: '65%',
-    margin: -4,    
-},
+        align: 'center',
+        display: 'flex',
+        scroll: 'true',
 
-//item card use
-ItemTextContainer: {
-    width: '60%', 
-    marginTop: 12,
-},
+    },
+    ImageHolderContainer: {
+        backgroundColor: Colors.whiteColor,
+        borderRadius: 16,
+        marginLeft: 12,
+        width: 300,
+        height: 240,
 
-//white main container 
-CompletionContainer: {
-    backgroundColor: Colors.whiteColor,
-    width: Dimensions.get('window').width*0.85,
-    height: Dimensions.get('window').height*0.38,
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 200,
-},
+        //positions for icon
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
 
-//white main container 
-TroquerContainer: {
-    backgroundColor: Colors.whiteColor,
-    width: Dimensions.get('window').width*0.85,
-    borderRadius: 12,
-    justifyContent: 'center',
-    marginBottom: 100,
-    paddingVertical: 24,
-    paddingHorizontal: 24,
+    screenHomeContainer: {
+        paddingTop: 60,
+        paddingHorizontal: 36,
+        justifyContent: 'top', //top alignment for all content
+        overflow: 'visible',
 
-},
+    },
 
-CompletionOverlay: { //darkened background
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', 
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+    //white main container with shadow
+    whiteContainer: {
+        backgroundColor: Colors.whiteColor,
+        borderRadius: 12,
 
-WelcomeContainer: {
-    marginBottom: 36,
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignContent: 'center',
-    display: 'flex',
-    direction: 'horizontal',
-},
+        //spaces
+        padding: 24,
+        marginBottom: 24,
 
-AddPhotoContainer: {
-    backgroundColor: Colors.whiteColor,
-    width: Dimensions.get('window').width*0.85,
-    height: Dimensions.get('window').height*0.44,
-    borderRadius: 12,
-    //spaces
-    paddingVertical: 36,
-    marginBottom:40,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-},
+        // iOS Shadow
+        shadowColor: Colors.shadow,
+        shadowOpacity: 100,
+        shadowRadius: 80,
 
-ModelContainer: {
-    alignItems: 'center',
-    justifyContent: 'center', 
-},
+        // Android Shadow
+        shadowColor: Colors.shadow,
+        elevation: Platform.OS === 'android' ? 20 : 0,
+        shadowColor: Platform.OS === 'android' ? Colors.shadowAndroid : Colors.shadow,
+    },
 
-PictureProfileContainer: {
-    backgroundColor: Colors.shadow,
-    borderRadius: 100,
-    marginRight: 24,
-    alignItems: 'center',
-    justifyContent: 'center', 
-    width: 70,
-    height: 70,
-},
+    //white card container with shadow (for information cards mainly for items)
+    whiteCardContainer: {
+        backgroundColor: Colors.whiteColor,
+        borderRadius: 16,
+
+
+        //spaces
+        paddingHorizontal: 36,
+        paddingVertical: 24,
+        marginBottom: 24,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+
+        // iOS Shadow
+        shadowColor: Colors.shadow,
+        shadowOpacity: 100,
+        shadowRadius: 80,
+
+        // Android Shadow
+        shadowColor: Colors.shadow,
+        elevation: Platform.OS === 'android' ? 20 : 0,
+        shadowColor: Platform.OS === 'android' ? Colors.shadowAndroid : Colors.shadow,
+    },
+    //big card use
+    CardTextContainer: {
+        width: '65%',
+        margin: -4,
+    },
+
+    //item card use
+    ItemTextContainer: {
+        width: '60%',
+        marginTop: 12,
+    },
+
+    //white main container 
+    CompletionContainer: {
+        backgroundColor: Colors.whiteColor,
+        width: Dimensions.get('window').width * 0.85,
+        height: Dimensions.get('window').height * 0.38,
+        borderRadius: 12,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 200,
+    },
+
+    //white main container 
+    TroquerContainer: {
+        backgroundColor: Colors.whiteColor,
+        width: Dimensions.get('window').width * 0.85,
+        borderRadius: 12,
+        justifyContent: 'center',
+        marginBottom: 100,
+        paddingVertical: 24,
+        paddingHorizontal: 24,
+
+    },
+
+    CompletionOverlay: { //darkened background
+        flex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
+    WelcomeContainer: {
+        marginBottom: 36,
+        flexDirection: 'row',
+        alignItems: 'center',
+        alignContent: 'center',
+        display: 'flex',
+        direction: 'horizontal',
+    },
+
+    AddPhotoContainer: {
+        backgroundColor: Colors.whiteColor,
+        width: Dimensions.get('window').width * 0.85,
+        height: Dimensions.get('window').height * 0.44,
+        borderRadius: 12,
+        //spaces
+        paddingVertical: 36,
+        marginBottom: 40,
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+
+    ModelContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+
+    PictureProfileContainer: {
+        backgroundColor: Colors.shadow,
+        borderRadius: 100,
+        marginRight: 24,
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 70,
+        height: 70,
+    },
 
 whiteSearchContainer: {
     backgroundColor: Colors.whiteColor,
@@ -171,51 +182,51 @@ whiteSearchContainer: {
     zIndex: 2,
 },
 
-SelectArticleContainer: {
-    backgroundColor: Colors.whiteColor,
-    borderRadius: 14,
-    padding: 6,
-    height: 70,
-    
-    //borderWidth: 2,
-    //borderColor: Colors.purpleColor,
-    marginBottom: 12,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    SelectArticleContainer: {
+        backgroundColor: Colors.whiteColor,
+        borderRadius: 14,
+        padding: 6,
+        height: 70,
 
-}, 
+        //borderWidth: 2,
+        //borderColor: Colors.purpleColor,
+        marginBottom: 12,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
 
-ImageSelectContainer: {
-    backgroundColor: Colors.redColor,
-    borderRadius: 8,
-    width: "28%",
-    height: "100%",
-},
+    },
 
-CheckBox: {
-    backgroundColor: Colors.whiteColor,
-    borderColor: Colors.purpleColor,
-    borderWidth: 2,
-    borderRadius: 6,
-    width: 24,
-    height: 24,
-    marginRight: 14,
-},
+    ImageSelectContainer: {
+        backgroundColor: Colors.redColor,
+        borderRadius: 8,
+        width: "28%",
+        height: "100%",
+    },
+
+    CheckBox: {
+        backgroundColor: Colors.whiteColor,
+        borderColor: Colors.purpleColor,
+        borderWidth: 2,
+        borderRadius: 6,
+        width: 24,
+        height: 24,
+        marginRight: 14,
+    },
 
 
-GreyCircleButton: {
-    borderRadius: 35,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 4, 
-},
+    GreyCircleButton: {
+        borderRadius: 35,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 4,
+    },
 
-RecommendationContainer: {
-    flexDirection: 'row',
-    marginVertical: 20,
-    paddingVertical: 20,
-},
+    RecommendationContainer: {
+        flexDirection: 'row',
+        marginVertical: 20,
+        paddingVertical: 20,
+    },
 
 ImageHolderContainer: {
     backgroundColor: Colors.whiteColor,
@@ -227,93 +238,93 @@ ImageHolderContainer: {
     alignItems: 'center',
     justifyContent: 'center',
 
-    // iOS Shadow
-    shadowColor: Colors.shadow,
-    shadowOpacity: 100,
-    shadowRadius: 80,
-    // Android Shadow
-    elevation: Platform.OS === 'android' ? 20 : 0,
-    shadowColor: Platform.OS === 'android' ? Colors.shadowAndroid : Colors.shadow,
-},
+        // iOS Shadow
+        shadowColor: Colors.shadow,
+        shadowOpacity: 100,
+        shadowRadius: 80,
+        // Android Shadow
+        elevation: Platform.OS === 'android' ? 20 : 0,
+        shadowColor: Platform.OS === 'android' ? Colors.shadowAndroid : Colors.shadow,
+    },
 
-ItemCardContainer: {
-    backgroundColor: Colors.whiteColor,
-    borderRadius: 16,
-    height: 120,
+    ItemCardContainer: {
+        backgroundColor: Colors.whiteColor,
+        borderRadius: 16,
+        height: 120,
 
-    //spaces
-    padding: 12,
-    marginBottom: 12,
-    flexDirection: 'row',
-    alignItems: 'center',
-
-    
-    
-    // iOS Shadow
-    shadowColor: Colors.shadow,
-    shadowOpacity: 100,
-    shadowRadius: 80,
-        
-    // Android Shadow
-    shadowColor: Colors.shadow,
-    elevation: Platform.OS === 'android' ? 20 : 0,
-    shadowColor: Platform.OS === 'android' ? Colors.shadowAndroid : Colors.shadow,
-},
-
-ImageTagContainer: {
-    width: '35%',  
-    position: 'relative',
-    marginRight: 12,
-},
-
-MiniImageHolderContainer: {
-    backgroundColor: Colors.lightGreyColor,
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100%',
-    width: '100%',
-},
-
-ImageItemContainer: {
-    backgroundColor: Colors.whiteColor,
-    borderRadius: 16,
-    width: '100%',
-    height: 200,
-    marginBottom: 24,
-    marginTop: 12,
-
-},
+        //spaces
+        padding: 12,
+        marginBottom: 12,
+        flexDirection: 'row',
+        alignItems: 'center',
 
 
-ImageStyle: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 8,
-  },
+
+        // iOS Shadow
+        shadowColor: Colors.shadow,
+        shadowOpacity: 100,
+        shadowRadius: 80,
+
+        // Android Shadow
+        shadowColor: Colors.shadow,
+        elevation: Platform.OS === 'android' ? 20 : 0,
+        shadowColor: Platform.OS === 'android' ? Colors.shadowAndroid : Colors.shadow,
+    },
+
+    ImageTagContainer: {
+        width: '35%',
+        position: 'relative',
+        marginRight: 12,
+    },
+
+    MiniImageHolderContainer: {
+        backgroundColor: Colors.lightGreyColor,
+        borderRadius: 8,
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100%',
+        width: '100%',
+    },
+
+    ImageItemContainer: {
+        backgroundColor: Colors.whiteColor,
+        borderRadius: 16,
+        width: '100%',
+        height: 200,
+        marginBottom: 24,
+        marginTop: 12,
+
+    },
 
 
-//Tiny Tag container
-TagContainer: {
-    position: 'absolute',
-    top: 5,
-    left: 5,
-    backgroundColor: Colors.purpleColor,
-    borderRadius: 4,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 5, 
-    paddingVertical: -3, 
-    zIndex: 2, 
-},
+    ImageStyle: {
+        width: '100%',
+        height: '100%',
+        borderRadius: 8,
+    },
+
+
+    //Tiny Tag container
+    TagContainer: {
+        position: 'absolute',
+        top: 5,
+        left: 5,
+        backgroundColor: Colors.purpleColor,
+        borderRadius: 4,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingHorizontal: 5,
+        paddingVertical: -3,
+        zIndex: 2,
+    },
 
     //TabNavigator container with shadow 
     navigatorContainer: {
         backgroundColor: Colors.whiteColor,
-        width: Dimensions.get('window').width*0.9,
+        width: Dimensions.get('window').width * 0.9,
         borderRadius: 40,
         zIndex: 3,
-            
+
         //spaces
         marginBottom: 24,
         alignItems: 'center',
@@ -322,12 +333,12 @@ TagContainer: {
         left: 20,
         right: 20,
 
-        
+
         // iOS Shadow
         shadowColor: Colors.shadow,
         shadowOpacity: 100,
         shadowRadius: 80,
-            
+
         // Android Shadow
         shadowColor: Colors.shadow,
         elevation: Platform.OS === 'android' ? 20 : 0,
@@ -336,19 +347,19 @@ TagContainer: {
 
     //TabNavigator inside container with shadow 
     navigatorInnerContainer: {
-            width: '90%',
-            //spaces
-            padding: 12,
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-            alignItems: 'center',
+        width: '90%',
+        //spaces
+        padding: 12,
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
     },
 
 
     //image holder full screen
     imageHolderImage: {
-            width: '100%',
-            height: '100%',
+        width: '100%',
+        height: '100%',
     },
 
 
@@ -356,16 +367,16 @@ TagContainer: {
     whiteFormContainer: {
         backgroundColor: Colors.whiteColor,
         borderRadius: 16,
-        
+
         //spaces
         padding: 24,
         marginBottom: 24,
-    
+
         // iOS Shadow
         shadowColor: Colors.shadow,
         shadowOpacity: 100,
         shadowRadius: 40,
-        
+
         // Android Shadow
         shadowColor: Colors.shadow,
         elevation: Platform.OS === 'android' ? 20 : 0,
@@ -377,7 +388,7 @@ TagContainer: {
         backgroundColor: Colors.whiteColor,
         borderRadius: 16,
         height: 70,
-        
+
         //spaces
         padding: 24,
         paddingTop: 28,
@@ -385,12 +396,12 @@ TagContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-    
+
         // iOS Shadow
         shadowColor: Colors.shadow,
         shadowOpacity: 100,
         shadowRadius: 40,
-        
+
         // Android Shadow
         shadowColor: Colors.shadow,
         elevation: Platform.OS === 'android' ? 20 : 0,
@@ -402,16 +413,16 @@ TagContainer: {
         backgroundColor: Colors.whiteColor,
         borderRadius: 16,
         height: 200,
-        
+
         //spaces
         padding: 24,
         marginBottom: 14,
-    
+
         // iOS Shadow
         shadowColor: Colors.shadow,
         shadowOpacity: 100,
         shadowRadius: 40,
-        
+
         // Android Shadow
         shadowColor: Colors.shadow,
         elevation: Platform.OS === 'android' ? 20 : 0,
@@ -423,14 +434,14 @@ TagContainer: {
         flexDirection: 'row',
         marginVertical: 24,
         justifyContent: 'center',
-        
+
     },
 
     //Circle button with text Container
     CircleButtonTextContainer: {
         alignItems: 'center',
         marginVertical: 44,
-        marginHorizontal: -12,  
+        marginHorizontal: -12,
     },
 
     //Intro Logo Container
@@ -446,17 +457,17 @@ TagContainer: {
         borderRadius: 12,
         borderWidth: 2,
         borderColor: Colors.redColor,
-                
+
         //spaces
         padding: 12,
         marginBottom: 0,
         zIndex: 2,
-            
+
         // iOS Shadow
         shadowColor: Colors.shadow,
         shadowOpacity: 100,
         shadowRadius: 80,
-                
+
         // Android Shadow
         shadowColor: Colors.shadow,
         elevation: Platform.OS === 'android' ? 20 : 0,
@@ -469,17 +480,17 @@ TagContainer: {
         borderRadius: 12,
         borderWidth: 2,
         borderColor: Colors.purpleColor,
-                
+
         //spaces
         padding: 12,
         marginBottom: 0,
         zIndex: 2,
-            
+
         // iOS Shadow
         shadowColor: Colors.shadow,
         shadowOpacity: 100,
         shadowRadius: 80,
-                
+
         // Android Shadow
         shadowColor: Colors.shadow,
         elevation: Platform.OS === 'android' ? 20 : 0,
@@ -492,17 +503,17 @@ TagContainer: {
         borderRadius: 12,
         borderWidth: 2,
         borderColor: Colors.greenColor,
-                
+
         //spaces
         padding: 12,
         marginBottom: 0,
         zIndex: 2,
-            
+
         // iOS Shadow
         shadowColor: Colors.shadow,
         shadowOpacity: 100,
         shadowRadius: 80,
-                
+
         // Android Shadow
         shadowColor: Colors.shadow,
         elevation: Platform.OS === 'android' ? 20 : 0,
@@ -511,36 +522,36 @@ TagContainer: {
 
     //white main container with shadow
     requestContainer: {
-    backgroundColor: Colors.whiteColor,
-    borderRadius: 12,
-    
-    //spaces
-    padding: 24,
-    paddingTop: 36,
-    marginBottom: 24,
-    marginTop: -14,
-    zIndex: 1,
+        backgroundColor: Colors.whiteColor,
+        borderRadius: 12,
 
-    // size definition
-    margin: 20,
+        //spaces
+        padding: 24,
+        paddingTop: 36,
+        marginBottom: 24,
+        marginTop: -14,
+        zIndex: 1,
 
-    // iOS Shadow
-    shadowColor: Colors.shadow,
-    shadowOpacity: 100,
-    shadowRadius: 80,
-    
-    // Android Shadow
-    shadowColor: Colors.shadow,
-    elevation: Platform.OS === 'android' ? 20 : 0,
-    shadowColor: Platform.OS === 'android' ? Colors.shadowAndroid : Colors.shadow,
-  },
+        // size definition
+        margin: 20,
 
-  locationContainer: {
-    alignItems: 'left',
-    flexDirection: 'row',
-    justifyContent: 'left',
+        // iOS Shadow
+        shadowColor: Colors.shadow,
+        shadowOpacity: 100,
+        shadowRadius: 80,
 
-},
+        // Android Shadow
+        shadowColor: Colors.shadow,
+        elevation: Platform.OS === 'android' ? 20 : 0,
+        shadowColor: Platform.OS === 'android' ? Colors.shadowAndroid : Colors.shadow,
+    },
+
+    locationContainer: {
+        alignItems: 'left',
+        flexDirection: 'row',
+        justifyContent: 'left',
+
+    },
 
 profileHeaderContainer: {
     alignItems: 'left',
@@ -559,7 +570,7 @@ MenuHeaderContainer: {
     //_________________HEADERS WITH BACKGROUND COLOR & ICONS_________________
 
     coloredHeader: {
-        backgroundColor: Colors.purpleColor, 
+        backgroundColor: Colors.purpleColor,
         borderBottomRightRadius: 60,
         paddingTop: 40,
         alignItems: 'left',
@@ -567,7 +578,17 @@ MenuHeaderContainer: {
         paddingHorizontal: 16,
         justifyContent: 'left',
         height: 140,
-      },
+    },
+    blackHeader: {
+        backgroundColor: Colors.textColor,
+        borderBottomRightRadius: 60,
+        paddingTop: 40,
+        alignItems: 'left',
+        flexDirection: 'row',
+        paddingHorizontal: 16,
+        justifyContent: 'left',
+        height: 140,
+    },
 
     //_________________TITLES_________________
     //H1 black color
@@ -606,10 +627,10 @@ MenuHeaderContainer: {
 
     //H1 red color
     headerTextRed: {
-    ...Typography.h1,
-    color: Colors.redColor,
-    paddingVertical: 24,
-    marginBottom: -30,
+        ...Typography.h1,
+        color: Colors.redColor,
+        paddingVertical: 24,
+        marginBottom: -30,
     },
 
     //H2 black color
@@ -646,14 +667,14 @@ MenuHeaderContainer: {
         color: Colors.purpleColor,
         paddingVertical: 12,
     },
-    
+
     //H3 black color
     subtitleTextBlack: {
         ...Typography.h3,
         color: Colors.textColor,
         paddingVertical: 6,
     },
-    
+
     //H3 red color
     subtitleTextRed: {
         ...Typography.h3,
@@ -684,9 +705,9 @@ MenuHeaderContainer: {
         color: Colors.textColor,
         paddingVertical: 6,
         opacity: 0.2,
-        },
+    },
 
-    
+
     //H4 black color
     miniTitleTextBlack: {
         ...Typography.h4,
@@ -786,7 +807,7 @@ MenuHeaderContainer: {
         color: Colors.purpleColor,
         paddingVertical: 4,
     },
-      
+
     tinyText: {
         ...Typography.paragraphTiny,
         color: Colors.textColor,
@@ -819,132 +840,132 @@ MenuHeaderContainer: {
         width: '80%',
     },
 
-  buttonPrimary: {
-    backgroundColor: Colors.purpleColor, // Default color
-    borderRadius: 60,
-    paddingVertical: 4,
-    marginVertical: 12,
-    alignItems: 'center',
+    buttonPrimary: {
+        backgroundColor: Colors.purpleColor, // Default color
+        borderRadius: 60,
+        paddingVertical: 4,
+        marginVertical: 12,
+        alignItems: 'center',
 
-  },
-  
+    },
 
-  buttonTextWhite: {
-    ...Typography.cta,
-    color: Colors.whiteColor,
 
-  },
+    buttonTextWhite: {
+        ...Typography.cta,
+        color: Colors.whiteColor,
 
-  buttonSecondary: {
-    borderRadius: 60,
-    paddingVertical: 2,
-    marginVertical: 12,
-    alignItems: 'center',
-    //stoke color
-    borderWidth: 1.5,
-    borderColor: Colors.redColor,
-  },
+    },
 
-  buttonTextRed: {
-    ...Typography.cta,
-    color: Colors.redColor,
+    buttonSecondary: {
+        borderRadius: 60,
+        paddingVertical: 2,
+        marginVertical: 12,
+        alignItems: 'center',
+        //stoke color
+        borderWidth: 1.5,
+        borderColor: Colors.redColor,
+    },
 
-  },
+    buttonTextRed: {
+        ...Typography.cta,
+        color: Colors.redColor,
 
-  buttonTextBlack: {
-    ...Typography.cta,
-    color: Colors.textColor,
+    },
 
-  },
+    buttonTextBlack: {
+        ...Typography.cta,
+        color: Colors.textColor,
+
+    },
 
     buttonTextPurple: {
-    ...Typography.cta,
-    color: Colors.purpleColor,
+        ...Typography.cta,
+        color: Colors.purpleColor,
 
     },
 
     buttonTextGreen: {
         ...Typography.cta,
         color: Colors.greenColor,
-    
+
     },
 
     buttonTextWhite: {
         ...Typography.cta,
         color: Colors.whiteColor,
-    
+
     },
 
-  iconText: {
-    ...Typography.paragraphSmallGrey,
-    color: Colors.textColor,
-    marginTop: 2,
-  },
+    iconText: {
+        ...Typography.paragraphSmallGrey,
+        color: Colors.textColor,
+        marginTop: 2,
+    },
 
 
 
-  editIcon: {
-    position: 'absolute',
-    top: 10,
-    right: 10, 
-    zIndex: 1,
-  },
+    editIcon: {
+        position: 'absolute',
+        top: 10,
+        right: 10,
+        zIndex: 1,
+    },
 
-//for navigation bar
-  iconContainer: {
-    alignItems: 'center',
-    paddingTop: 4,
-  },
+    //for navigation bar
+    iconContainer: {
+        alignItems: 'center',
+        paddingTop: 4,
+    },
 
-  editCardContainer: {
-    position: 'relative', 
-    padding: 10, 
-  },
+    editCardContainer: {
+        position: 'relative',
+        padding: 10,
+    },
 
-  bottomUpdateContainer: {
-    position: 'absolute',
-    bottom: 10, 
-    right: 10, 
-  },
+    bottomUpdateContainer: {
+        position: 'absolute',
+        bottom: 10,
+        right: 10,
+    },
 
-  titleText: {
-    marginBottom: -8,
-  },
+    titleText: {
+        marginBottom: -8,
+    },
 
 
 
-  circleButton: {
-    width: 78, 
-    height: 78,
-    borderRadius: 50, 
-    marginHorizontal: 14,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 2,
-  },
+    circleButton: {
+        width: 78,
+        height: 78,
+        borderRadius: 50,
+        marginHorizontal: 14,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: 2,
+    },
 
-  errorText: {
-    ...Typography.paragraphSmallRed,
-    color: Colors.textColor,
-    marginBottom: 10,
-  },
+    errorText: {
+        ...Typography.paragraphSmallRed,
+        color: Colors.textColor,
+        marginBottom: 10,
+    },
 
-  scrollViewContent: {
-    flexGrow: 1,
-    paddingBottom: 50,
-    
-  },
+    scrollViewContent: {
+        flexGrow: 1,
+        paddingBottom: 50,
 
-// BackButton Styles
+    },
+
+    // BackButton Styles
     backButtonContainer: {
-    backgroundColor: Colors.whiteColor,
-    borderRadius: 100,
-    width: 48,
-    padding: 2,
-    paddingTop: -1,
-    alignItems: 'center',
-    justifyContent: 'center',
-},
+        backgroundColor: Colors.whiteColor,
+        borderRadius: 100,
+        width: 48,
+        padding: 2,
+        paddingTop: -1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
 
 backContainer: {
     position: 'absolute',
