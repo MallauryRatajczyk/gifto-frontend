@@ -1,9 +1,11 @@
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native'; // Importer useNavigation
 const { formatDateToUserReadable } = require('../modules/getDate');
 
 export default function Notification(props) {
+    const navigation = useNavigation(); // Obtenir l'objet navigation
     const [itemName, setItemName] = useState("");
     const [isPending, setIsPending] = useState(props.statut === "pending");
     const [interlocuteur, setInterlocuteur] = useState("");
@@ -33,17 +35,34 @@ export default function Notification(props) {
 
     //arret vendredi
     const isRead = () => {
-        const data = { possesseur: props.possesseur, demandeur: props.demandeur, statut: 'read', token: user.token }
-        setIsPending(!isPending);
-        fetch(`http://192.168.1.81:3000/demande/${props.id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        })
+        if (props.statut === "pending") {
+            const data = { possesseur: props.possesseur, demandeur: props.demandeur, statut: 'read', token: user.token }
+            setIsPending(false);
+            fetch(`http://192.168.1.81:3000/demande/read/${props.id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+        }
+
+        //navigation.navigate('Chat', { message: props.message, interlocuteur })
+        navigation.navigate('Demande')
+    }
+
+    const unread = () => {
+        if (props.statut === "read") {
+            const data = { possesseur: props.possesseur, demandeur: props.demandeur, statut: 'pending', token: user.token }
+            setIsPending(true);
+            fetch(`http://192.168.1.81:3000/demande/read/${props.id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+        }
     }
 
     return (
-        <TouchableOpacity style={styles.container} onPress={isRead}>
+        <TouchableOpacity style={styles.container} onPress={isRead} onLongPress={unread} delayLongPress={200}>
             <View style={isPending ? styles.box : styles.boxRead}>
                 <View style={isPending ? dotStyle : styles.dotRead} />
                 <Text style={isPending ? styles.title : styles.titleRead}>
@@ -53,7 +72,7 @@ export default function Notification(props) {
                     {formatDateToUserReadable(new Date(props.date))}
                 </Text>
                 <Text style={isPending ? styles.text : styles.textRead}>
-                    {props.message}
+                    {props.lastMessage}
                 </Text>
                 <Text style={isPending ? styles.type : styles.typeRead}>
                     {props.type}

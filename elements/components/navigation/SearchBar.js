@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, TextInput, ActivityIndicator } from 'react-native';
+import { View, TextInput, ActivityIndicator, TouchableOpacity } from 'react-native';
 import Colors from '../../styles/Colors';
 import GlobalStyles from '../../styles/GlobalStyles';
 import { SearchIcon } from '../../assets/Icons';
@@ -42,29 +42,44 @@ export default function SearchBar({
       });
   }, [chercher, onSearch, trocValue]);
 
-  useEffect(() => {
-    const delayDebounce = setTimeout(() => {
-      handleSearch();
-    }, 300);
-
-    return () => clearTimeout(delayDebounce);
-  }, [chercher, handleSearch]);
-
   return (
-    <View style={[GlobalStyles.whiteSearchContainer, { flexDirection: 'row', alignItems: 'center', padding: 10 }]}>
-      <SearchIcon width={24} height={24} color={iconColor} style={{ marginRight: 10 }} />
-      
+    <View style={GlobalStyles.whiteSearchContainer}>
+
       <TextInput
-        style={{ flex: 1, color: textColor, fontSize: 16 }}
+        style={[
+          GlobalStyles.SearchBarText, {paddingHorizontal: 10, height: 36, flex: 1 }]}
         placeholder={placeholder}
         placeholderTextColor={Colors.shadow}
         value={chercher}
         onChangeText={setChercher}
+        onSubmitEditing={handleSearch}
       />
+      <View>
+      <TouchableOpacity 
+        onPress={handleSearch} 
+        style={{ 
+          marginLeft: 10,
+          width: 30,  
+          height: 0, 
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}
+        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+        activeOpacity={0.7}
+      >
+        <SearchIcon width={36} height={36} color={iconColor} style={{ opacity: loading ? 0 : 1 }} />
+      </TouchableOpacity>
       
-      {loading && (
-        <ActivityIndicator size="small" color={Colors.shadow} style={{ marginLeft: 10 }} />
-      )}
+      <ActivityIndicator
+        size="large"
+        color={Colors.shadow}
+        style={{ 
+          position: 'absolute',
+          opacity: loading ? 1 : 0,
+          }}
+        />
+      </View>
+
     </View>
   );
 }
