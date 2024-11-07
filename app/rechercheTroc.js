@@ -139,7 +139,12 @@ export default function RechercheTroc({ navigation }) {
                             <Text style={GlobalStyles.titleTextBlack}>Ajouter un item</Text>
                             <Text style={GlobalStyles.bodyTextGrey}>Vous cherchez à échanger des articles avec quelque chose qui vous plait ?</Text>
                             <View>
-                                <MainButton title="Créer !" onPress={() => navigation.navigate('CreationTroc')} normalBackgroundColor={Colors.purpleColor} clickedBackgroundColor={Colors.textColor} />
+                                <MainButton
+                                    title="Créer !"
+                                    onPress={() => navigation.navigate('AjoutTroc')}
+                                    normalBackgroundColor={Colors.purpleColor}
+                                    clickedBackgroundColor={Colors.textColor}
+                                />
                             </View>
                         </View>
                     </View>

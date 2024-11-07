@@ -31,7 +31,7 @@ export default function Authentification({ navigation }) {
                 </View>
 
                 <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.purpleSquare} onPress={() => navigation.navigate('Connection')} >
+                    <TouchableOpacity style={styles.purpleSquare} onPress={() => navigation.navigate('ConnexionPage')} >
                         <Text style={styles.textButton}>Se connecter</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.whiteSquare} onPress={() => navigation.navigate('Inscription')} >
