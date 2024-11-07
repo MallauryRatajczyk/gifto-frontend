@@ -1,27 +1,23 @@
 import { useState, useEffect } from 'react';
-import { View, Image, Text, StyleSheet, TouchableOpacity, Modal, FlatList, ActivityIndicator } from 'react-native';
+import { View, Image, Text, StyleSheet, TouchableOpacity, Modal, ScrollView, ActivityIndicator } from 'react-native';
 import { useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native'; // Importer useNavigation
+import { useNavigation } from '@react-navigation/native';
 const { formatDateToUserReadable } = require('../modules/getDate');
 
-
 export default function CarteItem(props) {
-    console.log(props)
     const navigation = useNavigation();
     const [itemName, setItemName] = useState("Exemple d'item");
     const [itemImage, setItemImage] = useState(null);
-    const [idDemande, setIdDemande] = useState(null);
+    const [idDemande, setIdDemande] = useState([]);
     const [itemDesc, setItemDesc] = useState("Description de l'exemple d'item.");
-    const [interlocuteur, setInterlocuteur] = useState("Utilisateur Exemple");
-    const [demande, setDemande] = useState([]); // Liste vide de demandes
+    const [interlocuteur, setInterlocuteur] = useState([]);
+    const [demande, setDemande] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
-    const [loading, setLoading] = useState(true); // Indicateur de chargement
-    const [isValidate, setIsValidate] = useState(false)
+    const [loading, setLoading] = useState(true);
+    const [isValidate, setIsValidate] = useState(false);
     const user = useSelector((state) => state.user.value);
 
-
     useEffect(() => {
-
         async function findItem(id) {
             try {
                 const fetched = await fetch(`http://192.168.1.81:3000/item/${id}`);
@@ -30,35 +26,28 @@ export default function CarteItem(props) {
                 setItemName(response.item.name);
                 setItemDesc(response.item.description);
                 if (response.item.image) {
-                    setItemImage(response.item.image)
+                    setItemImage(response.item.image);
                 }
             } catch (error) {
                 console.error("Error fetching item:", error);
             }
         }
 
-        //ICI mercredi
         async function getDemande(id) {
             try {
                 const fetchedDemande = await fetch(`http://192.168.1.81:3000/demande/item/${id}`);
                 if (!fetchedDemande.ok) throw new Error('Failed to fetch demandes');
                 const responseDemande = await fetchedDemande.json();
-                console.log('responseDemande', responseDemande)
-                setIdDemande(responseDemande.demande._id)
-                const fetchedDemandeur = await fetch(`http://192.168.1.81:3000/users/${responseDemande.demandes[0].demandeur}`);
-                if (!fetchedDemande.ok) throw new Error('Failed to fetch user');
-                const responseDemandeur = await fetchedDemandeur.json();
-                setInterlocuteur(responseDemandeur.user.username)
-                const demandesSansMessages = responseDemande.demandes.map((demande, i) => ({
-                    key: i,
-                    name: interlocuteur,
-                    statut: demande.statut,
-                    dateCreation: formatDateToUserReadable(new Date(demande.dateCreation)),
-                }));
-                setDemande(demandesSansMessages);
-                //console.log(responseDemande.demandes.find(x => x.statut === "accepted"))
+                console.log("responseDemande", responseDemande)
+                console.log("responseDemande", responseDemande.demandes)
+                if (responseDemande.demandes) {
+                    for (let elem of responseDemande.demandes)
+                        setIdDemande([...idDemande, elem._id]);
+                }
+                setDemande(responseDemande.demandes);
+                // Si une demande a le statut "accepted", on met à jour l'état de validation
                 if (responseDemande.demandes.find(x => x.statut === "accepted")) {
-                    setIsValidate(true)
+                    setIsValidate(true);
                 }
             } catch (error) {
                 console.error("Error fetching demandes:", error);
@@ -73,6 +62,29 @@ export default function CarteItem(props) {
         setLoading(false); // Fin du chargement
     }, [props.id]);
 
+    // Récupérer l'interlocuteur (une seule fois pour chaque demandeur unique)
+    useEffect(() => {
+        const fetchInterlocuteur = async (demandeurId) => {
+            try {
+                const fetchedDemandeur = await fetch(`http://192.168.1.81:3000/users/${demandeurId}`);
+                if (!fetchedDemandeur.ok) throw new Error('Failed to fetch user');
+                const responseDemandeur = await fetchedDemandeur.json();
+                setInterlocuteur([...interlocuteur, responseDemandeur.user.username]);
+            } catch (error) {
+                console.error("Error fetching interlocuteur:", error);
+            }
+        };
+
+        // Si on a des demandes, on récupère l'interlocuteur pour chaque demandeur
+        if (demande.length > 0) {
+            // On récupère l'interlocuteur pour le premier demandeur (par exemple, on peut étendre cette logique)
+            for (let elem of demande) {
+                fetchInterlocuteur(elem.demandeur);
+            }
+
+        }
+    }, [demande]);
+
     const openModal = () => {
         setModalVisible(true);
     };
@@ -81,31 +93,26 @@ export default function CarteItem(props) {
         setModalVisible(false);
     };
 
-    const validate = () => {
-        const data = { statut: 'accepted', token: user.token }
-        fetch(`http://192.168.1.81:3000/demande/read/${idDemande}`, {
+    const validate = (i) => {
+        const data = { statut: 'accepted', token: user.token };
+        fetch(`http://192.168.1.81:3000/demande/read/${idDemande[i]}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
-        })
-        setModalVisible(false)
-        setIsValidate(true)
-    }
+        });
+        setModalVisible(false);
+        setIsValidate(true);
+    };
 
-    const refused = () => {
-        const data = { statut: 'declined', token: user.token }
-        fetch(`http://192.168.1.81:3000/demande/read/${idDemande}`, {
+    const refused = (i) => {
+        const data = { statut: 'declined', token: user.token };
+        fetch(`http://192.168.1.81:3000/demande/read/${idDemande[i]}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
-        })
-        setModalVisible(false)
-    }
-
-    const viewMessage = () => {
-        closeModal()
-        navigation.navigate('Chat', { messages: props.message, interlocuteur })
-    }
+        });
+        setModalVisible(false);
+    };
 
     const getStatut = (statut) => {
         switch (statut) {
@@ -114,32 +121,48 @@ export default function CarteItem(props) {
             case "declined": return ("refusé");
             case "accepted": return ("validé");
         }
-    }
+    };
 
-    const request = ({ item }) => {
-        console.log('item', item);
-        (
-            <View style={[styles.requestContainer, item.statut === "declined" ? { backgroundColor: "#F08784" } : item.statut === "accepted" ? { backgroundColor: "#00BA88" } : {}]}>
-                <Text style={styles.requestTitle}>Demande de: {item.name}</Text>
-                <Text style={styles.requestDescription}>Statut: {getStatut(item.statut)}</Text>
-                <Text style={styles.requestDate}>Date de création: {item.dateCreation}</Text>
-                <View style={{ flex: 1, flexDirection: "row", justifyContent: "space-between" }}>
-                    <TouchableOpacity onPress={viewMessage}>
-                        <Text>Voir les messages</Text>
+    const lesDemandes = demande.map((x, i) => {
+
+        let initialMessages = []
+        for (let elem of x.message) {
+            initialMessages.push(
+                { _id: 1, text: String(elem.message) || "Message vide", createdAt: new Date(elem.date), user: { _id: 2, name: 'User 2' } },
+            )
+        }
+        return (
+            <View key={i} style={[styles.requestContainer, x.statut === "declined" ? { backgroundColor: "#F08784" } : x.statut === "accepted" ? { backgroundColor: "#00BA88" } : {}]}>
+                <Text style={styles.requestTitle}>Demande de: {interlocuteur[i]}</Text>
+                <Text style={styles.requestDescription}>Statut: {getStatut(x.statut)}</Text>
+                <Text style={styles.requestDate}>Date de création: {formatDateToUserReadable(new Date(x.dateCreation))}</Text>
+
+                {/* Boutons déplacés sous la description */}
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity onPress={() => {
+                        closeModal();
+                        navigation.navigate('Chat', {
+                            initialMessages: initialMessages, // messages déjà récupérés
+                            interlocuteur: interlocuteur[i],   // nom de l'interlocuteur
+                            idInterlocuteur: x.demandeur,      // id du demandeur
+                            myId: x.possesseur,                // id du possesseur de l'item
+                        });
+                    }} style={styles.button}>
+                        <Text style={styles.buttonText}>Voir les messages</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Text>Voir le profil</Text>
+                    <TouchableOpacity style={styles.button}>
+                        <Text style={styles.buttonText}>Voir le profil</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={refused}>
-                        <Text>Refuser</Text>
+                    <TouchableOpacity onPress={() => refused(i)} style={[styles.button, { backgroundColor: "#F08784" }]}>
+                        <Text style={styles.buttonText}>Refuser</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={validate}>
-                        <Text>Valider</Text>
+                    <TouchableOpacity onPress={() => validate(i)} style={[styles.button, { backgroundColor: "#00BA88" }]}>
+                        <Text style={styles.buttonText}>Valider</Text>
                     </TouchableOpacity>
                 </View>
             </View>
-        );
-    }
+        )
+    });
 
     return (
         <TouchableOpacity style={styles.container} onPress={openModal}>
@@ -155,19 +178,18 @@ export default function CarteItem(props) {
                             <Text style={styles.modalButtonText}>Fermer</Text>
                         </TouchableOpacity>
 
-                        {/* Contenu du Modal */}
-                        {loading ? (
-                            <ActivityIndicator size="large" color="#8B85EF" />
-                        ) : (
-                            <FlatList
-                                data={demande}
-                                renderItem={request}
-                                keyExtractor={(item) => item.id}
-                            />
-                        )}
+                        {/* ScrollView pour le contenu défilant */}
+                        <ScrollView contentContainerStyle={styles.scrollContent}>
+                            {loading ? (
+                                <ActivityIndicator size="large" color="#8B85EF" />
+                            ) : (
+                                lesDemandes // Liste des demandes avec les boutons et informations
+                            )}
+                        </ScrollView>
                     </View>
                 </View>
             </Modal>
+
 
             {/* Carte principale */}
             <View style={styles.cardContainer}>
@@ -191,6 +213,7 @@ export default function CarteItem(props) {
         </TouchableOpacity>
     );
 }
+
 
 const styles = StyleSheet.create({
     container: {
@@ -250,19 +273,29 @@ const styles = StyleSheet.create({
     },
 
     // Modal Styles
+    // Styles pour le modal
     modalOverlay: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fond semi-transparent
     },
+
+    // Container du modal ajusté pour une taille flexible
     modalContainer: {
-        width: '80%',
-        height: '70%',
+        width: '80%', // 80% de la largeur de l'écran
+        maxHeight: '80%',  // Limiter la hauteur du modal à 80% de l'écran
         backgroundColor: 'white',
         borderRadius: 12,
         padding: 20,
+        overflow: 'hidden',  // Masque les éléments qui débordent
     },
+
+    // Container à l'intérieur du ScrollView pour ajouter de l'espace et du padding
+    scrollContent: {
+        paddingBottom: 20, // Ajoute un peu d'espace en bas pour ne pas que le contenu touche le bord
+    },
+
     modalButton: {
         alignItems: 'center',
         backgroundColor: '#8B85EF',
@@ -270,10 +303,12 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         marginBottom: 20,
     },
+
     modalButtonText: {
         color: '#F7FAFE',
         fontSize: 16,
     },
+
 
     // Styles pour les demandes
     requestContainer: {
@@ -293,4 +328,25 @@ const styles = StyleSheet.create({
         fontSize: 12,
         color: '#888',
     },
+    buttonContainer: {
+        marginTop: 10, // Ajout de marge pour espacer les boutons du texte
+        flexDirection: 'column', // Organiser les boutons sous la demande
+        alignItems: 'center', // Centrer les boutons
+    },
+
+    button: {
+        backgroundColor: '#8B85EF',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 25,
+        marginBottom: 10, // Espacement entre les boutons
+        width: '80%', // Optionnel, peut ajuster la largeur si nécessaire
+    },
+
+    buttonText: {
+        color: '#F7FAFE',
+        fontSize: 16,
+        textAlign: 'center',
+    }
+
 });

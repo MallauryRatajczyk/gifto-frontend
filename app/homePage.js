@@ -52,7 +52,7 @@ export default function HomePage({navigation}) {
           icon={RecevoirIcon}
           title="Recevoir"
           bodyText="Recevez des objets gratuitement ou en troc !"
-          onPress={() => navigation.navigate('ItemRecevoirPage')}
+          onPress={() => navigation.navigate('RechercheRecevoir')}
           textColor={Colors.greenColor}
           iconColor={Colors.greenColor}
         />

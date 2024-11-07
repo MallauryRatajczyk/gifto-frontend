@@ -9,7 +9,7 @@ import { ProfileIcon, FavoriteIcon } from '../elements/assets/Icons';
 import TroquerCard from '../elements/components/cards/TroquerCard';
 import CompletionCard from '../elements/components/cards/CompletionCard';
 
-const BACKEND_ADDRESS = "http://192.168.1.81:3000"
+const BACKEND_ADDRESS = 'http://192.168.86.114:3000';
 
 export default function ItemTroquerPage() {
   const navigation = useNavigation();

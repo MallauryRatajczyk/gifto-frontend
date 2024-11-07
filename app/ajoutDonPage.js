@@ -24,7 +24,6 @@ export default function AjoutDon({ navigation }) {
   const dispatch = useDispatch();
   const user = useSelector(state => state.user.value); 
 
-
   const [selectedImages, setSelectedImages] = useState([]);
   const [isCameraVisible, setIsCameraVisible] = useState(false);
   const [nomArticle, setNomArticle] = useState('');
@@ -43,68 +42,48 @@ export default function AjoutDon({ navigation }) {
     dispatch(addImage(imageUri));
   };
 
-  console.log("selectedImages", selectedImages);
-
   // Supprimer une image
   const handleRemoveImage = (imageUri) => {
     setSelectedImages(selectedImages.filter(uri => uri !== imageUri));
     dispatch(removeImage(imageUri));
   };
-  
+
   // Fermer la camera
 const closeCamera = () => {
   setIsCameraVisible(false);
 }
 
 // Vérifier la validation du formulaire
-const validateForm = () => {
-    if (selectedImages.length === 0) { setErrorMessage("Une photo est requise.");
-        return false;
-      }
-    if (!nomArticle.trim()) {setErrorMessage("Le nom de l'article est requis.");
-      return false;
-    }
-    if (!description.trim()) {setErrorMessage("La description est requise.");
-      return false;
-    }
-    if (!categorie.trim()) {setErrorMessage("La catégorie est requise.");
-      return false;
-    }
-    if (!sousCategorie.trim()) {setErrorMessage("La sous-catégorie est requise.");
-      return false;
-    }
-    setErrorMessage('');  // Aucune erreur si tout est bien rempli
-    return true;
-  };
+
 
 //Soumettre le formulaire
 const handleSubmit = () => {
-    console.log("selectedImages", selectedImages); // Log the selectedImages state on submit
-    if (validateForm()) {
+    if (!nomArticle || !description || selectedImages.length === 0) {
+        setErrorMessage("Veuillez remplir tous les champs requis");
+    } 
+    else { 
         console.log('Formulaire validé, tous les champs sont bien remplis.');
             setPopupVisible(true); 
 
-        fetch(`${BACKEND_ADDRESS}/item`, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({token: user.token, name: user.username, description: description, image: selectedImages, categorie: categorie, sousCategorie: sousCategorie, troc: false})     
-        })  .then((response) => response.json())    
-            .then((data) => {
-            if (data.result) {
-                dispatch(addDonation(data.itemPop))
-                setPopupVisible(false); 
-            } else {
-                console.error('Erreur de création de la demande:', data.error); //verification du fetch
-                setPopupVisible(false); 
-            }
-        })
-        .catch(error => {
-            console.error('Erreur dans la requête:', error);
+    fetch(`${BACKEND_ADDRESS}/item`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({token: user.token, name: user.username, description: description, image: selectedImages, categorie: categorie, sousCategorie: sousCategorie, troc: false})     
+    })  .then((response) => response.json())    
+        .then((data) => {
+        if (data.result) {
+            dispatch(addDonation(data.itemPop))
             setPopupVisible(false); 
-        }); 
-    } else {
-        setErrorMessage("Veuillez remplir tous les champs requis");
-    }
+        } else {
+            console.error('Erreur de création de la demande:', data.error);      //verification du fetch
+            setPopupVisible(false); 
+        }
+    })
+    .catch(error => {
+        console.error('Erreur dans la requête:', error);
+        setPopupVisible(false); 
+    }); 
+} 
 };
 
 //fermer la popup et aller à la page d'accueil
@@ -112,7 +91,6 @@ const closePopup = () => {
     setPopupVisible(false);
     navigation.navigate('Home'); 
 };
-
 
   return (
     <SafeAreaProvider style={GlobalStyles.appStyle}>

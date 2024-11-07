@@ -1,93 +1,109 @@
-import React from 'react';
-import { View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import { useSelector } from 'react-redux';
 import GlobalStyles from '../elements/styles/GlobalStyles';
 import MainButton from '../elements/components/buttons/MainButton';
 import NotificationHeader from '../elements/components/navigation/NotificationHeader';
 import Notification from '../components/notification';
-import { useSelector } from 'react-redux';
-import { useState, useEffect } from 'react';
 
-
-const BACKEND_ADDRESS = "http://192.168.1.81:3000"
+const BACKEND_ADDRESS = "http://192.168.1.81:3000";
 
 export default function NotificationPage({ navigation }) {
   const [id, setId] = useState('');
   const [notifications, setNotifications] = useState([]);
-  const [error, setError] = useState('')
+  const [error, setError] = useState('');
   const user = useSelector((state) => state.user.value);
 
+  // Fonction pour récupérer l'ID de l'utilisateur et les notifications
   useEffect(() => {
-    async function fetchData() {
+    const fetchNotifications = async () => {
       try {
-        const fetchedID = await fetch(`${BACKEND_ADDRESS}/users/token/${user.token}`);
-        const responseId = await fetchedID.json();
-        setId(responseId.user.id);
+        const userResponse = await fetch(`${BACKEND_ADDRESS}/users/token/${user.token}`);
+        const userData = await userResponse.json();
+        setId(userData.user.id);
 
-        const fetched = await fetch(`${BACKEND_ADDRESS}/demande/mesdemandes/${responseId.user.id}`);
-        const response = await fetched.json();
-        console.log(responseId, response)
-        if (response.error) {
-          setError(response.error);
+        const notificationsResponse = await fetch(`${BACKEND_ADDRESS}/demande/mesdemandes/${userData.user.id}`);
+        const notificationsData = await notificationsResponse.json();
+
+        if (notificationsData.error) {
+          setError(notificationsData.error);
         } else {
-          setNotifications(response.demandes);
+          setNotifications(notificationsData.demandes);
         }
       } catch (error) {
-        console.error("Erreur lors de la récupération des données:", error);
-        setError("Une erreur s'est produite.");
+        console.error("Erreur lors de la récupération des notifications:", error);
+        setError("Une erreur s'est produite lors de la récupération des notifications.");
       }
-    }
-    fetchData();
-  }, [user.token]); // Ajouter user.token comme dépendance
+    };
 
-  const allNotifications = notifications.map((x, i) => {
-    console.log(x)
-    let interlocuteur = '';
-    let drt = 'Troquer'; // Valeur par défaut
-    if (!x.type.troc) {
-      if (id === x.possesseur) {
-        interlocuteur = x.demandeur;
-        drt = "Donner";
-      } else {
-        interlocuteur = x.possesseur;
-        drt = "Recevoir";
-      }
-    }
-    return (
-      <Notification
-        id={x._id}
-        key={i}
-        item={x.item}
-        lastMessage={x.message[x.message.length - 1].message}
-        message={x.message}
-        interlocuteur={interlocuteur}
-        possesseur={x.possesseur}
-        demandeur={x.demandeur}
-        statut={x.statut}
-        type={drt}
-        objProp={x.type.objetPropose}
-        de={x.message[x.message.length - 1].de}
-        a={x.message[x.message.length - 1].a}
-        date={x.message[x.message.length - 1].date}
-      />
-    );
-  });
+    fetchNotifications();
+  }, [user.token]);
+
+  // Fonction pour générer la vue des notifications
+  const renderNotifications = () => {
+    return notifications.map((notification, index) => {
+      const { _id, item, message, possesseur, demandeur, statut, type } = notification;
+      const lastMessage = message[message.length - 1];
+      const interlocuteur = possesseur === id ? demandeur : possesseur;
+      const drt = type && !type.troc ? (possesseur === id ? "Donner" : "Recevoir") : 'Troquer';
+
+      return (
+        <Notification
+          key={_id}
+          id={_id}
+          item={item}
+          lastMessage={lastMessage.message}
+          message={message}
+          interlocuteur={interlocuteur}
+          possesseur={possesseur}
+          demandeur={demandeur}
+          statut={statut}
+          type={drt}
+          de={lastMessage.de}
+          a={lastMessage.a}
+          date={lastMessage.date}
+        />
+      );
+    });
+  };
 
   return (
     <View style={GlobalStyles.screenMainContainer}>
+      {/* Header */}
       <NotificationHeader />
-      <View >
-        <MainButton
-          title="Historique"
-          onPress={() => navigation.navigate('HistoryPage')}
-        />
-        <MainButton
-          title="Demandes reçus"
-          onPress={() => navigation.navigate('Demande')}
-        />
+
+      {/* Navigation Buttons */}
+      <View style={styles.buttonContainer}>
+        <MainButton title="Historique" onPress={() => navigation.navigate('HistoryPage')} />
+        <MainButton title="Demandes reçues" onPress={() => navigation.navigate('Demande')} />
       </View>
-      {allNotifications}
+
+      {/* Notifications or Error Message */}
+      {error ? (
+        <View style={styles.errorContainer}>
+          <Text style={styles.errorText}>{error}</Text>
+        </View>
+      ) : (
+        renderNotifications()
+      )}
     </View>
   );
 }
 
-
+const styles = StyleSheet.create({
+  buttonContainer: {
+    marginVertical: 20,
+  },
+  errorContainer: {
+    marginTop: 20,
+    padding: 15,
+    backgroundColor: '#F8D7DA',
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  errorText: {
+    color: '#721C24',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+});

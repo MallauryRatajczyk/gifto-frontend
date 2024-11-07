@@ -6,7 +6,7 @@ import DemandeHeader from '../elements/components/navigation/DemandeHeader';
 import Demande from '../components/demande';
 
 export default function NotificationPage({ navigation }) {
-    const [id, setId] = useState('');
+
     const [item, setItem] = useState([]);
     const [error, setError] = useState('');
     const user = useSelector((state) => state.user.value);
@@ -16,17 +16,14 @@ export default function NotificationPage({ navigation }) {
             try {
                 const fetchedID = await fetch(`http://192.168.1.81:3000/users/token/${user.token}`);
                 const responseId = await fetchedID.json();
-                setId(responseId.user.id);
                 // Pour tests, on remplace par un ID fixe 671fb98fe3a8ffe9c0ea2697 / 672386d302d94d974fe999b2
-                //const fetched = await fetch(`http://192.168.1.81:3000/item/user/${responseId.user.id}`);
-                const fetched = await fetch(`http://192.168.1.81:3000/item/user/672386d302d94d974fe999b2`);
+                const fetched = await fetch(`http://192.168.1.81:3000/item/user/${responseId.user.id}`);
+                //const fetched = await fetch(`http://192.168.1.81:3000/item/user/672386d302d94d974fe999b2`);
                 const response = await fetched.json();
-
                 if (response.error) {
                     setError(response.error);
                 } else {
                     setItem(response.item);
-                    console.log('item', response, response.item)
                 }
             } catch (error) {
                 console.error("Erreur lors de la récupération des données:", error);

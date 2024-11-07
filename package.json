@@ -31,7 +31,7 @@
         "@react-oauth/google": "^0.12.1",
         "@reduxjs/toolkit": "^2.3.0",
         "dotenv": "^16.4.5",
-        "expo": "~51.0.28",
+        "expo": "^51.0.38",
         "expo-auth-session": "~5.5.2",
         "expo-camera": "^15.0.16",
         "expo-constants": "~16.0.2",

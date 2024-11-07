@@ -6,7 +6,7 @@ import Colors from '../../styles/Colors';
 import MainButton from '../buttons/MainButton';
 import SelectArticleButton from '../buttons/SelectArticleButton';
 
-const BACKEND_ADDRESS = 'http://192.168.1.3:3000';
+const BACKEND_ADDRESS = 'http://192.168.86.114:3000';
 const TroquerCard = ({
   visible,
   onClose,
