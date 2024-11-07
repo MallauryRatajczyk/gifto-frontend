@@ -1,192 +1,156 @@
 import { useState, useEffect } from 'react';
-import { ActivityIndicator, FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { FlatList, Text, View, ScrollView } from "react-native";
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import MainButton from '../elements/components/buttons/MainButton';
 import Typography from "../elements/styles/Typography";
 import Colors from '../elements/styles/Colors';
 import GlobalStyles from '../elements/styles/GlobalStyles';
-import { SearchIcon } from '../elements/assets/Icons';
 import React from 'react';
 import ImageHolder from '../elements/components/navigation/ImageHolder';
-import HeaderMenu from '../elements/components/navigation/HeaderMenu';
+import { RecevoirIcon } from '../elements/assets/Icons';
+import ItemCard from '../elements/components/cards/ItemCard';
 
 import SearchBar from '../elements/components/navigation/SearchBar';
+import { StyleSheet } from 'react-native';
 
-const BACKEND_ADDRESS = "http://192.168.1.81:3000"
+const BACKEND_ADDRESS = "http://192.168.86.114:3000"
 
-export default function RechercheRecevoir({ navigation }) {
-  const [chercher, setChercher] = useState('');
-  const [resultats, setResultats] = useState([]);
-  const [itemRecommande, setItemRecommande] = useState([]);
-  const [montreResult, setMontreResult] = useState(false);
-  const [loading, setLoading] = useState(false);
+export default function RechercheTroc({ navigation }) {
+    const [resultats, setResultats] = useState([]);
+    const [itemRecommande, setItemRecommande] = useState([]);
+    const [montreResult, setMontreResult] = useState(false);
 
-  const textColor = Colors.textColor;
-  const iconColor = Colors.greenColor;
-
-  useEffect(() => {
-    async function itemRandom() {
-        const fetched = await fetch(`${BACKEND_ADDRESS}/item`);
-        const response = await fetched.json();
-        if (response) {
-            // Filtre les items où troc est false
-            const itemsReceved = response.item.filter(articl => articl.troc === false);
-            const tableauMelange = itemsReceved.sort((a, b) => Math.random() - 0.5);
-            if (tableauMelange.length == 1 || tableauMelange.length == 2) {
-                setItemRecommande(tableauMelange);
-            } else if (tableauMelange.length >= 3) {
-                setItemRecommande(tableauMelange.slice(0, 3));
-            }
+    useEffect(() => {
+        function itemRandom() {
+            fetch(`${BACKEND_ADDRESS}/item`)
+                .then(response => response.json())
+                .then(response => {
+                    if (response) {
+                        const itemsTroc = response.item.filter(articl => articl.troc === true);
+                        const tableauMelange = itemsTroc.sort((a, b) => Math.random() - 0.5);
+                        if (tableauMelange.length == 1 || tableauMelange.length == 2) {
+                            setItemRecommande(tableauMelange);
+                        } else if (tableauMelange.length >= 3) {
+                            setItemRecommande(tableauMelange.slice(0, 3));
+                        }
+                    }
+                });
         }
+        itemRandom();
+    }, []);
+
+    const handleSearchResults = (results) => {
+        if (results.length === 0 && !montreResult) {
+            return;
+        }
+        setResultats(results);
+        setMontreResult(true);
+    };
+
+    const handlePressItem = (itemId) => {
+        navigation.navigate('ItemRecevoirPage', { itemId: itemId });
     }
-    itemRandom(); // Appelle la fonction pour charger les articles recommandés au démarrage
-}, []);
 
-const handleSearch = () => {
-  if (chercher.trim() === '') return;
-  setLoading(true);
-  fetch(`${BACKEND_ADDRESS}/item`)
-      .then(response => response.json())
-      .then(data => {
-          // Filtre les items où troc est true
-          const filtreTrocFalse = data.item.filter(item => item.troc === false);
-          const resultatsFiltres = filtreTrocFalse.filter(item =>
-              item.name.toLowerCase().includes(chercher.toLowerCase())
-          );
-          setResultats(resultatsFiltres);
-          setMontreResult(true);
-          setLoading(false);
-          setChercher('');
-      })
-      .catch(error => {
-          console.error(error);
-          setMontreResult(true); // Afficher les résultats même en cas d'erreur
-          setResultats([]);
-          setLoading(false);
-          setChercher('');
-      });
-}
-const handlePressItem = (itemId) => {
-  navigation.navigate('ItemRechercherPage', { itemId: itemId});
-}
-
-  return (
-    <SafeAreaProvider style={{ flex: 1 }}>
-            <SafeAreaView style={{ flex: 1 }}>
-                <View style={GlobalStyles.screenMainContainer}>
-
-                        <Text style={[styles.coloredHeader, styles.headerTextWhite]}>Recevoir</Text>
-
-                    <View style={[GlobalStyles.whiteSearchContainer, { flexDirection: 'row', alignItems: 'center', padding: 10 }]}>
-                        <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
-                            <SearchIcon width={24} height={24} color={iconColor} style={{ marginRight: 10 }} />
-                        </TouchableOpacity>
-                        <TextInput
-                            onChangeText={(value) => setChercher(value)}
-                            value={chercher}
-                            style={{ flex: 1, color: textColor, fontSize: 16 }}
-                            placeholder="Rechercher"
-                            placeholderTextColor={Colors.shadow}
-                            onPress={handleSearch}
-                        />
+    return (
+        <SafeAreaProvider>
+            <SafeAreaView style={GlobalStyles.appStyle}>
+                <ScrollView 
+                    contentContainerStyle={GlobalStyles.scrollViewContent}
+                    showsVerticalScrollIndicator={false}
+                >
+                    {/* Header */}
+                    <View style={[styles.coloredHeader, {flexDirection: 'column', alignItems: 'center', height: 220}]} >
+                        <View style={[{ marginBottom: 20, width: '94%' }]}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10, marginBottom: 20 }}>
+                                <RecevoirIcon width={50} height={50} color={Colors.whiteColor} />
+                                <Text style={[GlobalStyles.headerTextWhite, { marginBottom: -50 }]}>Recevoir</Text>
+                            </View>
+                            
+                            <SearchBar 
+                                placeholder="Rechercher"
+                                trocValue={true}
+                                onSearch={handleSearchResults}
+                            />
+                        </View>
                     </View>
-                    {loading && <ActivityIndicator size="small" color={Colors.shadow} style={{ marginTop: 10 }} />}
-                    <View style={{
-                        paddingTop: 10,
-                        alignItems: "center",
-                        marginBottom: 25
-                    }}>
-                        {montreResult && resultats.length === 0 && (
-                            <Text>Aucun résultat trouvé.</Text>
-                        )}
-                        {montreResult && resultats.length > 0 ? (
+
+                    {/* Resultat de la recherche */}
+                    <View style={[{ marginTop: 40, alignItems: 'center' }]}>
+                        {montreResult && resultats.length > 0 && (
                             <>
-                                <Text>Résultats de recherche :</Text>
-                                <FlatList
-                                    data={resultats}
-                                    keyExtractor={(item) => item._id.toString()}
-                                    renderItem={({ item }) => (
+                                <Text style={GlobalStyles.subtitleTextPurple}>Résultats de recherche</Text>
+                                <View style={{ paddingHorizontal: 20, justifyContent: 'center' }}>
+                                    {resultats.map((item) => (
                                         <ItemCard
-                                        imageSource={{ uri: item.image || '-' }}
-                                        title={item.name}
-                                        description={item.description}
-                                        subcategory={item.subcategory}
-                                        showSubcategory={true}
-                                        onPress={() => handlePressItem(item._id)}
-                                    />
-                                    )}
-                                    style={{ marginTop: 10 }}
-                                />
-                            </>
-                        ) : (
-                            <>
-                                <View style={GlobalStyles.screenHomeContainer}>
-                                    <Text style={GlobalStyles.titleTextBlack}>Recommandations</Text>
+                                            key={item._id.toString()}
+                                            imageSource={{ uri: item.image || '-' }}
+                                            title={item.name}
+                                            description={item.description}
+                                            subcategory={item.subcategory}
+                                            showSubcategory={true}
+                                            onPress={() => handlePressItem(item._id)}
+                                        />
+                                    ))}
                                 </View>
-                                <FlatList
-                                    data={itemRecommande}
-                                    keyExtractor={(item) => item._id.toString()}
-                                    horizontal
-                                    style={GlobalStyles.RecommendationContainer}
-                                    renderItem={({ item }) => (
-                                        <ItemCard
-                                        imageSource={{ uri: item.image || '-' }}
-                                        title={item.name}
-                                        description={item.description}
-                                        subcategory={item.subcategory}
-                                        showSubcategory={true}
-                                        onPress={() => handlePressItem(item._id)}
-                                    />
-                                    )}
-                                />
                             </>
                         )}
                     </View>
-                  </View>
+
+                    {/* Message aucun résultat */}
+                    {montreResult && resultats.length === 0 && (
+                        <View style={GlobalStyles.screenHomeContainer}>
+                            <Text style={GlobalStyles.bodyTextGrey}>Aucun résultat trouvé.</Text>
+                        </View>
+                    )}
+
+                    {/* Recommandations */}
+                    {(!montreResult || resultats.length === 0) && (
+                        <>
+                            <View style={[GlobalStyles.screenHomeContainer, { marginTop: -70 }]}>
+                                <Text style={GlobalStyles.titleTextBlack}>Recommandations</Text>
+                            </View>
+                            <View style={{ 
+                                overflow: 'visible', 
+
+                            }}>
+                                <FlatList 
+                                    data={itemRecommande}
+                                    keyExtractor={
+                                        (item) => item._id.toString()}
+                                    horizontal
+                                    renderItem={({ item }) => (
+                                        <View style={{ 
+                                            padding: 10,
+                                        }}>
+                                            <ImageHolder 
+                                                onPress={() => handlePressItem(item._id)}
+                                            />
+                                        </View>
+                                    )}
+                                    showsHorizontalScrollIndicator={false}
+                                />
+                            </View>
+                        </>
+                    )}
+
+                    {/* Spacing */}
+                    <View style={{ marginVertical: 100 }} />
+
+                </ScrollView>
             </SafeAreaView>
         </SafeAreaProvider>
-  );
-}
-
-
-//        <ImageHolder onPress={() => console.log('Image holder clicked!')} />
-
+    );
+};
 const styles = StyleSheet.create({ //peut être à modifier
-  coloredHeader: {
-      backgroundColor: Colors.greenColor, // Default color
-      borderBottomRightRadius: 60,
-      paddingTop: 60,
-      marginBottom: 36,
-      alignItems: 'left',
-      flexDirection: 'row',
-      paddingHorizontal: 16,
-      justifyContent: 'left',
-      height: 140,
-  },
-  headerTextWhite: {
-      ...Typography.h1,
-      color: Colors.whiteColor,
-      paddingVertical: 24,
-      marginLeft: 12,
-      marginRight: 12,
-      marginBottom: -30,
-  },
-  titleTextBlack: {
-      ...Typography.h2,
-      color: Colors.textColor,
-      paddingVertical: 12,
-  },
-  searchButton: {
-      marginLeft: 10,
-  },
-  item: {
-      flexDirection: 'row',
-      alignItems: 'center',
-  },
-  image: {
-      width: 50,
-      height: 50,
-      borderRadius: 5,
-      marginRight: 10,
-  },
-});  
+    coloredHeader: {
+        backgroundColor: Colors.greenColor, // Default color
+        borderBottomRightRadius: 60,
+        paddingTop: 60,
+        marginBottom: 36,
+        alignItems: 'left',
+        flexDirection: 'row',
+        paddingHorizontal: 16,
+        justifyContent: 'left',
+        height: 140,
+    },
+})

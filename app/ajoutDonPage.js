@@ -13,7 +13,7 @@ import AjoutHeader from '../elements/components/navigation/AjoutHeader';
 import MainButton from '../elements/components/buttons/MainButton'; // Validation button
 import { addDonation } from '../reducers/donation';
 
-const BACKEND_ADDRESS = "http://192.168.86.114:3000";      // adresse à modifier
+const BACKEND_ADDRESS = "http://192.168.1.182:3000";      // adresse à modifier
 
 export default function AjoutDon({ navigation }) {
 
@@ -36,67 +36,49 @@ export default function AjoutDon({ navigation }) {
     dispatch(addImage(imageUri));
   };
 
-  console.log("selectedImages", selectedImages);
-
   // Supprimer une image
   const handleRemoveImage = (imageUri) => {
     setSelectedImages(selectedImages.filter(uri => uri !== imageUri));
     dispatch(removeImage(imageUri));
   };
-  
+
   // Fermer la camera
 const closeCamera = () => {
   setIsCameraVisible(false);
 }
 
 // Vérifier la validation du formulaire
-const validateForm = () => {
-    if (selectedImages.length === 0) { setErrorMessage("Une photo est requise.");
-        return false;
-      }
-    if (!nomArticle.trim()) {setErrorMessage("Le nom de l'article est requis.");
-      return false;
-    }
-    if (!description.trim()) {setErrorMessage("La description est requise.");
-      return false;
-    }
-    if (!categorie.trim()) {setErrorMessage("La catégorie est requise.");
-      return false;
-    }
-    if (!sousCategorie.trim()) {setErrorMessage("La sous-catégorie est requise.");
-      return false;
-    }
-    setErrorMessage('');  // Aucune erreur si tout est bien rempli
-    return true;
-  };
 
 //Soumettre le formulaire
 const handleSubmit = () => {
-    if (validateForm()) {
+    if (!nomArticle || !description || selectedImages.length === 0) {
+        setErrorMessage("Veuillez remplir tous les champs requis");
+    } 
+    else { 
         console.log('Formulaire validé, tous les champs sont bien remplis.');
             setPopupVisible(true); 
 
-        fetch(`${BACKEND_ADDRESS}/item`, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({token: user.token, name: user.username, description: description, image: selectedImages, categorie: categorie, sousCategorie: sousCategorie, troc: false})     
-        })  .then((response) => response.json())    
-            .then((data) => {
-            if (data.result) {
-                dispatch(addDonation(data.itemPop))
-                setPopupVisible(false); 
-            } else {
-                console.error('Erreur de création de la demande:', data.error);      //verification du fetch
-                setPopupVisible(false); 
-            }
-        })
-        .catch(error => {
-            console.error('Erreur dans la requête:', error);
+    fetch(`${BACKEND_ADDRESS}/item`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({token: user.token, name: user.username, description: description, image: selectedImages, categorie: categorie, sousCategorie: sousCategorie, troc: false})     
+    })  .then((response) => response.json())    
+        .then((data) => {
+        if (data.result) {
+
+            dispatch(addDonation(data.itemPop))
             setPopupVisible(false); 
-        }); 
-    } else {
-        setErrorMessage("Veuillez remplir tous les champs requis");
-    }
+        } else {
+            console.error('Erreur de création de la demande:', data.error);      //verification du fetch
+            setPopupVisible(false); 
+        }
+    })
+    .catch(error => {
+        console.error('Erreur dans la requête:', error);
+        setPopupVisible(false); 
+    }); 
+   
+}
 };
 
 //fermer la popup et aller à la page d'accueil
@@ -129,30 +111,30 @@ const closePopup = () => {
                 </TouchableOpacity>
 
 
-                    <Photos
-                        navigation={navigation}
-                        onImageAdd={handleImageAdd}                               // Ajoute une image
-                        onClose={closeCamera} 
-                        isCameraVisible={isCameraVisible}                        // Ferme la camera
-                    />
-                    
-                    {/* Affichage et suppression d'images */}
-                    <View style={styles.imagesContainer}>
-                        {selectedImages.map((uri, index) => (
-                        <View key={index} style={styles.imageWrapper}>
-                        <Image source={{ uri }} style={styles.imagePreview} />
-                        <TouchableOpacity style={styles.removeIcon} onPress={() => handleRemoveImage(uri)}>
-                            <_FontAwesome name="trash" size={20} color="red" />
-                        </TouchableOpacity>
-                        </View>
-                        ))}
+                <Photos
+                    navigation={navigation}
+                    onImageAdd={handleImageAdd}                               // Ajoute une image
+                    onClose={closeCamera} 
+                    isCameraVisible={isCameraVisible}                        // Ferme la camera
+                />
+                
+                {/* Affichage et suppression d'images */}
+                <View style={styles.imagesContainer}>
+                    {selectedImages.map((uri, index) => (
+                    <View key={index} style={styles.imageWrapper}>
+                    <Image source={{ uri }} style={styles.imagePreview} />
+                    <TouchableOpacity style={styles.removeIcon} onPress={() => handleRemoveImage(uri)}>
+                        <_FontAwesome name="trash" size={20} color="red" />
+                    </TouchableOpacity>
                     </View>
-                    <View style={styles.formContainer}>
-                        {/* Nom de l'article */}
-                        <Text style={styles.paragraphMain}>Nom de l'article</Text>
-                        <TextInput style={styles.textAreas} value={nomArticle} onChangeText={setNomArticle}/>
-                        {/* Utilisation du composant Categories */}
-                        <Categories categorie={categorie} setCategorie={setCategorie} sousCategorie={sousCategorie} setSousCategorie={setSousCategorie}/>
+                    ))}
+                </View>
+                <View style={styles.formContainer}>
+                    {/* Nom de l'article */}
+                    <Text style={styles.paragraphMain}>Nom de l'article</Text>
+                    <TextInput style={styles.textAreas} value={nomArticle} onChangeText={setNomArticle}/>
+                    {/* Utilisation du composant Categories */}
+                    <Categories categorie={categorie} setCategorie={setCategorie} sousCategorie={sousCategorie} setSousCategorie={setSousCategorie}/>
 
                     {/* Description */}
                     <Text style={styles.paragraphMain}>Description de l'article</Text>
@@ -169,15 +151,17 @@ const closePopup = () => {
                     />
 
                      {/* Completion Popup */}
-                     <CompletionCard
-                        visible={popupVisible}
-                        onClose={closePopup}
-                        iconColor={Colors.redColor} // Customize icon color
-                        title="Opération Validée." // Customize title
-                        navigation={navigation}
-                        navigateTo="Home" 
-                        duration={2000} 
-                    />
+                     {popupVisible && (
+          <CompletionCard
+            visible={popupVisible}
+            onClose={closePopup}
+            iconColor={Colors.redColor}
+            title="Opération Validée."
+            navigation={navigation}
+            navigateTo="Home"
+            duration={2000}
+          />
+        )}
     
                     
                 </View>
@@ -263,20 +247,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15, 
     fontFamily: 'BalooBhaijaan2_400Regular', 
     fontSize: 16, }, 
-    paragraphSmall: { //for description text    
-    fontFamily: 'BalooBhaijaan2_400Regular',    
-    fontSize: 11,    
-    lineHeight: 12,  },  
+    paragraphSmall: { //for description text
+    fontFamily: 'BalooBhaijaan2_400Regular',
+    fontSize: 11,
+    lineHeight: 12,  },
     paragraphMain: { 
-    //main bodycopy font     //    
-    fontFamily: 'BalooBhaijaan2_400Regular',    
-    fontSize: 13,    
-    lineHeight: 14,  
-    },  
+    //main bodycopy font     //
+    fontFamily: 'BalooBhaijaan2_400Regular',
+    fontSize: 13,
+    lineHeight: 14,
+    },
     textAreas: {
     borderWidth: 2,
     borderColor: 'grey',
-    borderradius: 15,
+    borderRadius: 15,
     padding: 10,
     width: '100%',
     },

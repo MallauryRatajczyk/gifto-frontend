@@ -1,5 +1,3 @@
-//Amir will retouch it in the future
-
 import React, { useState } from 'react';
 import { View, TouchableOpacity, Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -13,48 +11,75 @@ const DateInputCard = ({
   onChange,
   placeholder = 'Date de naissance',
 }) => {
-  const [show, setShow] = useState(false); // Controls date picker visibility
-
-  // Toggles the date picker visibility
-  const toggleShow = () => {
-    setShow(!show);
-  };
+  const [show, setShow] = useState(false);
 
   // Handles the date selection
   const changeDate = (event, selectedDate) => {
-    if (event.type === 'set') {
-      const currentDate = selectedDate || value;
-      onChange(currentDate); // Passes the selected date back to parent component
-      if (Platform.OS === 'android') {
-        setShow(false); // Closes the date picker on Android
-      }
-    } else {
-      setShow(false); // Closes the date picker if user cancels
+    setShow(false); // Always close the picker
+    if (event.type === 'set' && selectedDate) {
+      onChange(selectedDate); // Update the date only if a date was selected
+    }
+  };
+
+  const getFormattedDate = () => {
+    if (!value) return '';
+    try {
+      return value.toLocaleDateString();
+    } catch (error) {
+      return '';
     }
   };
 
   return (
-    <View>
-      {/* Title and Date Input */}
-      <TouchableOpacity onPress={toggleShow}>
+    <View style={{ marginVertical: 0, padding: 0 }}>
+      <TouchableOpacity 
+        onPress={() => setShow(true)}
+        activeOpacity={0.7}
+        style={{
+          borderRadius: 10,
+          margin: 0,
+          padding: 0,
+        }}
+      >
         <InputCard
           title={title}
-          value={value ? value.toLocaleDateString() : ''}
+          value={getFormattedDate()}
           placeholder={placeholder}
-          editable={false} // Prevents keyboard from opening
+          editable={false}
           pointerEvents="none"
+          inputProps={{
+            placeholderTextColor: Colors.textColor,
+            style: { 
+              color: value ? GlobalStyles.textColor : Colors.textColor,
+              backgroundColor: 'transparent',
+            }
+          }}
+          style={{
+            margin: 0,
+            padding: 0,
+          }}
         />
       </TouchableOpacity>
 
       {/* Date Picker */}
       {show && (
-        <DateTimePicker
-          mode="date"
-          display="spinner"
-          value={value || new Date()}
-          onChange={changeDate}
-          style={{ backgroundColor: Colors.whiteColor }}
-        />
+        <View style={{
+          backgroundColor: Colors.whiteColor,
+          color: Colors.redColor,
+          borderRadius: 10,
+          marginTop: 10,
+          overflow: 'hidden'
+        }}>
+          <DateTimePicker
+            mode="date"
+            display="spinner"
+            value={value || new Date()}
+            onChange={changeDate}
+            style={{ backgroundColor: Colors.whiteColor }}
+            themeVariant="light"
+            textColor={Colors.textColor}
+          />
+        </View>
       )}
     </View>
   );

@@ -14,7 +14,8 @@ import HeaderMenu from '../elements/components/navigation/HeaderMenu';
 import PictureProfile from '../elements/components/buttons/PictureProfileButton';
 
 import SearchBar from '../elements/components/navigation/SearchBar';
-const BACKEND_ADDRESS = "http://192.168.1.81:3000"
+
+const BACKEND_ADDRESS = "http://192.168.1.3:3000"
 
 export default function ItemTroc({ navigation }) {
     const profileImageUrl = useSelector((state) => state.user.value.imageUrl);

@@ -5,6 +5,22 @@ import * as Application from 'expo-application';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import * as Google from 'expo-auth-session/providers/google';
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+
+import { toConnectUser } from '../reducers/user';
+import { GiftoSymbol, GoogleIcon, AppleIcon, WindowsIcon } from '../elements/assets/Icons';
+import Colors from '../elements/styles/Colors';
+import GlobalStyles from '../elements/styles/GlobalStyles';
+
+import MainButton from '../elements/components/buttons/MainButton';
+import SecondaryButton from '../elements/components/buttons/SecondaryButton';
+import CircleButton from '../elements/components/buttons/CircleButton';
+import InputCard from '../elements/components/cards/InputCard';
+import PasswordInputCard from '../elements/components/cards/PasswordInputCard';
+
+//REMARQUE : NOUS DEVONS METTRE À JOUR LES LIENS DU BOUTON CERCLE (WINDOWS ET APPLE) !!!!!!!
+
+const BACKEND_ADDRESS = "http://192.168.1.3:3000"
 
 export default function Authentification({ navigation }) {
     const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
@@ -13,6 +29,37 @@ export default function Authentification({ navigation }) {
             useProxy: true, // Utilisez true si vous êtes en développement avec Expo Go
         }),
     });
+
+    // Initialize the dispatch function for Redux actions
+    const dispatch = useDispatch();
+
+    // Define state variables for email, password, and error messages
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+
+    // Function to handle user login
+    const connect = (userObject) => {
+        fetch(`${BACKEND_ADDRESS}/users/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(userObject)
+        }).then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    setError(data.error)
+                } else { // If login is successful, dispatch the user data to the Redux store
+                    dispatch(toConnectUser({ 
+                        token: data.token, 
+                        email: data.email, 
+                        username: data.username 
+                    }));
+                    navigation.navigate('TabNavigator') // Navigate to the main application screen
+                }
+            })
+    }
+
+    // Handle the response from Google authentication
     useEffect(() => {
         if (response?.type === 'success') {
             const { id_token } = response.params;

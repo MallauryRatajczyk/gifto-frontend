@@ -8,7 +8,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 // import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { useIsFocused } from "@react-navigation/native";
 
-const BACKEND_ADDRESS = "http://192.168.1.182:3000";
+const BACKEND_ADDRESS = "http://192.168.86.114:3000";
 
 export default function Photos({ navigation, isCameraVisible, onClose, onImageAdd }) {
 	const dispatch = useDispatch();

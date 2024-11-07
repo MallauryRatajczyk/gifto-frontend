@@ -18,33 +18,74 @@ const TroquerCard = ({
   const [loading, setLoading] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const userToken = useSelector((state) => state.user.value.token);
-
+  console.log('user token', userToken);
 // Fetch user's items
 useEffect(() => {
-  console.log('Fetching user items...');
+  if (!userToken) return;
+  
+  console.log('Fetching user items with token:', userToken);
   setLoading(true);
-  fetch(`${BACKEND_ADDRESS}/item/user/${userToken}`, {
+  
+  fetch(`${BACKEND_ADDRESS}/item/user/myitems`, {
+    method: 'GET',
     headers: {
       'Authorization': `Bearer ${userToken}`,
+      'Content-Type': 'application/json',
     },
   })
-    .then(response => response.json())
+    .then(response => {
+      console.log('Response status:', response.status);
+      return response.json();
+    })
     .then(data => {
+      console.log('Full response data:', data);
       if (data.result) {
-        console.log('User items response:', data);
-        setUserItems(data.item);
+        setUserItems(data.item || []);
+      } else {
+        console.error('Error in response:', data.error);
+        setUserItems([]);
       }
+    })
+    .catch(error => {
+      console.error('Network error:', error);
+      setUserItems([]);
     })
     .finally(() => setLoading(false));
 }, [userToken]);
-
+console.log('item', userItems);
 
 const handleSelectArticlePress = (item) => {
+  console.log('Selected item:', item);
   setSelectedItem(item);
 };
 
 const handleCTAPress = () => {
-  if (!selectedItem) return;
+  if (!selectedItem) {
+    console.log('No item selected');
+    return;
+  }
+
+  console.log('Selected item:', selectedItem);
+  console.log('Item to exchange ID:', itemToExchangeId);
+
+  const requestBody = {
+    token: userToken,
+    possesseur: itemToExchangeId,
+    demandeur: selectedItem.proprietaire,
+    type: {
+      troc: true,
+      objetPropose: [selectedItem._id]
+    },
+    message: [{
+      de: selectedItem.proprietaire,
+      a: itemToExchangeId,
+      message: `Je souhaite échanger mon article ${selectedItem.name}`
+    }],
+    item: itemToExchangeId,
+    statut: 'pending'
+  };
+
+  console.log('Sending request body:', requestBody);
 
   fetch(`${BACKEND_ADDRESS}/demande`, {
     method: 'POST',
@@ -52,22 +93,23 @@ const handleCTAPress = () => {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${userToken}`,
     },
-    body: JSON.stringify({
-      token: userToken,
-      demandeur: selectedItem.proprietaire, // ID of user making the request
-      possesseur: itemToExchangeId, // ID of item owner
-      item: itemToExchangeId, // ID of requested item
-      type: 'exchange',
-      message: `Je souhaite échanger mon article ${selectedItem.name}`
-    })
+    body: JSON.stringify(requestBody)
   })
-    .then(response => response.json())
+    .then(response => {
+      console.log('Response status:', response.status);
+      return response.json();
+    })
     .then(data => {
-      console.log('Exchange response:', data);
+      console.log('Full exchange response:', data);
       if (data.result) {
         setPopupVisible(true);
         setShowTroquerCard(false);
+      } else {
+        console.error('Exchange failed:', data.error);
       }
+    })
+    .catch(error => {
+      console.error('Exchange error:', error);
     });
 };
 

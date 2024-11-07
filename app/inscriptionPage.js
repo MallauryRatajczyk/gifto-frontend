@@ -15,9 +15,7 @@ import InputCard from '../elements/components/cards/InputCard';
 import PasswordInputCard from '../elements/components/cards/PasswordInputCard';
 import DateInputCard from '../elements/components/cards/DateInputCard';
 
-const { dateRequired } = require('../modules/dateRequirement')
-
-const BACKEND_ADDRESS = "http://192.168.86.114:3000"
+const BACKEND_ADDRESS = "http://192.168.1.3:3000"
 
 export default function Inscription({ navigation }) {
   const dispatch = useDispatch();
