@@ -5,12 +5,12 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/logoGifto.png",
-    "scheme": "Gifto",
+    "scheme": "gifto",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/logoGiftoSpaced.png",
       "backgroundColor": "#F7FAFE",
-      "resizeMode": "center"
+      "resizeMode": "contain"
     },
     "ios": {
       "supportsTablet": true
@@ -18,8 +18,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/logoGiftoMinify.png",
-        "backgroundColor": "#F7FAFE",
-        "resizeMode": "contain"
+        "backgroundColor": "#F7FAFE"
       }
     },
     "web": {
@@ -40,6 +39,17 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "f1642551-a099-449a-b67d-a0456c5e9878"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/f1642551-a099-449a-b67d-a0456c5e9878"
     }
   }
 }

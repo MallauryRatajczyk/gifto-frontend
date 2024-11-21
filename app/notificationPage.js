@@ -6,7 +6,7 @@ import MainButton from '../elements/components/buttons/MainButton';
 import NotificationHeader from '../elements/components/navigation/NotificationHeader';
 import Notification from '../components/notification';
 
-const BACKEND_ADDRESS =process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
+const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
 export default function NotificationPage({ navigation }) {
   const [id, setId] = useState('');
@@ -46,10 +46,9 @@ export default function NotificationPage({ navigation }) {
       const lastMessage = message[message.length - 1];
       const interlocuteur = possesseur === id ? demandeur : possesseur;
       const drt = type && !type.troc ? (possesseur === id ? "Donner" : "Recevoir") : 'Troquer';
-
       return (
         <Notification
-          key={_id}
+          key={index}
           id={_id}
           item={item}
           lastMessage={lastMessage.message}

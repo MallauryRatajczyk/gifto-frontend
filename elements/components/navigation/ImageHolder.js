@@ -10,9 +10,9 @@ export default function ImageHolder({ onPress }) {
   const images = useSelector((state) => state.imagesArticles.value.images);
 
   return (
-    <TouchableOpacity 
+    <TouchableOpacity
       style={[
-        GlobalStyles.ImageHolderContainer, 
+        GlobalStyles.ImageHolderContainer,
         { backgroundColor: images && images.length > 0 ? 'transparent' : '#fff' } // White background if no image
       ]}
       onPress={onPress}
@@ -20,10 +20,10 @@ export default function ImageHolder({ onPress }) {
     >
       {images && images.length > 0 ? (
         // Render the first image in the array
-        <Image 
-          source={{ uri: images[0] }} 
-          style={{ width: '60%', height: '60%', borderRadius: 10 }} 
-          resizeMode="cover" 
+        <Image
+          source={{ uri: "https://benedettiparis.com/cdn/shop/files/S2bd0c9028bc04092bd2dd77189fd2e889.webp?v=1704992154&width=823" }}
+          style={{ width: '60%', height: '60%', borderRadius: 10 }}
+          resizeMode="cover"
         />
       ) : (
         // Display the icon centered in the white box if there are no images

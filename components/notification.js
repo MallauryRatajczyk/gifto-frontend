@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native'; // Importer useNavigation
 const { formatDateToUserReadable } = require('../modules/getDate');
 
-const BACKEND_ADDRESS =process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
+const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
 export default function Notification(props) {
     const navigation = useNavigation(); // Obtenir l'objet navigation
@@ -17,19 +17,17 @@ export default function Notification(props) {
     useEffect(() => {
         async function findItem(id) {
             try {
-                const fetched = await fetch(`http://${BACKEND_ADDRESS}/item/${id}`);
+                const fetched = await fetch(`${BACKEND_ADDRESS}/item/${id}`);
                 const response = await fetched.json();
                 if (response && response.item && response.item.name) {
                     setItemName(response.item.name);
                 } else {
-                    console.error("Item not found or malformed response", response);
+                    console.error("Item non trouvé", response);
                 }
             } catch (error) {
                 console.error("Erreur lors de la récupération de l'élément", error);
             }
         }
-        findItem(props.item);
-
         if (props.type === "Donner") {
             setDotStyle(styles.dotDonner);
         } else if (props.type === "Recevoir") {
@@ -40,10 +38,11 @@ export default function Notification(props) {
     }, []);
 
     const isRead = () => {
+        console.log('user.token', user.token)
         if (props.statut === "pending") {
             const data = { statut: 'read', token: user.token }
             setIsPending(false);
-            fetch(`http://${BACKEND_ADDRESS}/demande/read/${props.id}`, {
+            fetch(`${BACKEND_ADDRESS}/demande/read/${props.id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
@@ -56,7 +55,7 @@ export default function Notification(props) {
         if (props.statut === "read") {
             const data = { statut: 'pending', token: user.token }
             setIsPending(true);
-            fetch(`http://${BACKEND_ADDRESS}/demande/read/${props.id}`, {
+            fetch(`${BACKEND_ADDRESS}/demande/read/${props.id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
