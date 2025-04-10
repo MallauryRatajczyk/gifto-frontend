@@ -1,20 +1,21 @@
 # Gifto Frontend
 
-Gifto Frontend est l'interface utilisateur de l'application Gifto, une plateforme permettant [décrire brièvement la fonctionnalité principale de l'application, par exemple : "de créer et de partager des listes de souhaits pour des occasions spéciales"].
+Gifto Frontend est l'interface utilisateur de l'application Gifto, une plateforme permettant de troquer et donner des objets.
 
 ## Fonctionnalités
 
-- **Création de listes de souhaits** : [expliquez cette fonctionnalité, par exemple : "Les utilisateurs peuvent créer des listes de souhaits personnalisées pour différentes occasions."]
-- **Partage de listes** : [décrivez comment les utilisateurs peuvent partager leurs listes avec d'autres.]
-- **[Autres fonctionnalités]** : [ajoutez d'autres fonctionnalités pertinentes.]
+- **Créer un profil de donateur/receveur**
+- **Donner des objets**
+- **Troquer des objets**
+- **Recevoir des objets**
 
 ## Prérequis
 
 Avant de commencer, assurez-vous d'avoir installé les éléments suivants :
 
-- [Node.js](https://nodejs.org/) (version recommandée : XX)
+- [Node.js](https://nodejs.org/)
 - [Yarn](https://yarnpkg.com/) ou npm
-- [Autres dépendances ou services requis]
+- [Autres dépendances ou services requis] (React Native, etc.)
 
 ## Installation
 
