@@ -62,15 +62,7 @@ Avant de commencer, assurez-vous d'avoir installé les éléments suivants :
 
 2. **Accéder à l'application** :
 
-    L'application sera accessible à `http://localhost:3000` (ou autre port configuré).
-
-## Tests
-
-Pour exécuter les tests, utilisez la commande suivante :
-
-```bash
-yarn test 
-```
+    L'application sera accessible à `http://localhost:8080` (ou autre port configuré).
 
 ## 👩‍💻 À propos
 Mallaury Ratajczyk
